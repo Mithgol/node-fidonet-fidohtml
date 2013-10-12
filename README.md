@@ -12,6 +12,8 @@ You may visit https://github.com/Mithgol/node-fidonet-fidohtml#readme occasional
 
 ## Testing Fidonet HTML
 
+[![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.png?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
+
 It is necessary to install [Mocha](http://visionmedia.github.io/mocha/) and [JSHint](http://jshint.com/) for testing.
 
 * You may install Mocha globally (`npm install mocha -g`) or locally (`npm install mocha` in the directory of the Fidonet HTML module).
