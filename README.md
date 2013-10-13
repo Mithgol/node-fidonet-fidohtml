@@ -10,6 +10,23 @@ The **Fidonet HTML** module makes HTML code out of a Fidonet message.
 
 You may visit https://github.com/Mithgol/node-fidonet-fidohtml#readme occasionally to read the latest `README` because the package's version is not planned to grow after changes when they happen in `README` only. (However, `npm publish --force` may happen eventually.)
 
+## Using Fidonet HTML
+
+When you `require()` the installed module, you get a constructor that uses the options object as its parameter:
+
+```js
+var FidoHTML = require('fidohtml');
+var decoder = FidoHTML(options);
+```
+
+The constructed object has the following method:
+
+### fromText(messageText)
+
+Generates (and returns) HTML code from the given Unicode message's text.
+
+* Converts linebreaks to `<br>` tags.
+
 ## Testing Fidonet HTML
 
 [![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.png?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
