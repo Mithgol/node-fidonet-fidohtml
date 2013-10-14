@@ -3,7 +3,9 @@ var FidoHTML = function(){
 };
 
 FidoHTML.prototype.fromText = function(msgText){
-   return msgText.replace(/\r?\n/g, '<br>');
+   var out = msgText.replace(/\r?\n/g, '<br>');
+   out = out.replace(/  /g, ' \u00A0');
+   return out;
 };
 
 module.exports = FidoHTML;

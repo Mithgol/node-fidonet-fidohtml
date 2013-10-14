@@ -27,6 +27,8 @@ Generates (and returns) HTML code from the given Unicode message's text.
 
 * Converts linebreaks to `<br>` tags.
 
+* The second of two adjacent spaces is converted to a no-break space.
+
 ## Testing Fidonet HTML
 
 [![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.png?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
