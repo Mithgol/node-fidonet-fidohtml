@@ -19,6 +19,8 @@ var FidoHTML = require('fidohtml');
 var decoder = FidoHTML(options);
 ```
 
+The options object may be absent. (It's currently ignored anyway.)
+
 The constructed object has the following method:
 
 ### fromText(messageText)
