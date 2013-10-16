@@ -10,7 +10,7 @@
    "url": "https://github.com/Mithgol/node-fidonet-fidohtml.git"
 },
 "scripts": {
-   "pretest": "jshint fidohtml.js test/test.js",
+   "pretest": "jshint --verbose fidohtml.js test/test.js",
    "test": "mocha --reporter spec --timeout 60s"
 }
 }
