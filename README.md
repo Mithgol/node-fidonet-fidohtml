@@ -27,7 +27,9 @@ The constructed object has the following method:
 
 Generates (and returns) HTML code from the given Unicode message's text.
 
-* Converts linebreaks to `<br>` tags.
+* URLs become hyperlinks.
+
+* Linebreaks become `<br>` tags.
 
 * The second of two adjacent spaces is converted to a no-break space.
 
