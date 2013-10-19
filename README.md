@@ -29,9 +29,15 @@ Generates (and returns) HTML code from the given Unicode message's text.
 
 * URLs become hyperlinks.
 
-* Linebreaks become `<br>` tags.
-
 * The second of two adjacent spaces is converted to a no-break space.
+
+* Angle brackets (`<` and `>`) are converted to `&lt;` and `&gt;`.
+
+* Quotes (`"`) are converted to `&quot;`.
+
+* Ampersands (`&`) are converted to `&amp;`.
+
+* Linebreaks become `<br>` tags.
 
 ## Testing Fidonet HTML
 

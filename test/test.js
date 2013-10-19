@@ -36,12 +36,6 @@ describe('URL processor', function(){
 });
 
 describe('Plain text processor', function(){
-   it('Linebreaks (LF and CR+LF) become <br> tags', function(){
-      assert.deepEqual(
-         FidoHTML.fromText('foo\nbar\r\nbuzz'),
-         'foo<br>bar<br>buzz'
-      );
-   });
    it('The second of two adjacent spaces becomes NBSP', function(){
       assert.deepEqual(
          FidoHTML.fromText(' '),
@@ -58,6 +52,30 @@ describe('Plain text processor', function(){
       assert.deepEqual(
          FidoHTML.fromText('    '),
          ' \u00A0 \u00A0'
+      );
+   });
+   it('Angle brackets are converted to &lt; and &gt;', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo <bar> more'),
+         'foo &lt;bar&gt; more'
+      );
+   });
+   it('Quotes are converted to &quot;', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo "bar" quux'),
+         'foo &quot;bar&quot; quux'
+      );
+   });
+   it('Ampersands are converted to &amp;', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('for you & forever'),
+         'for you &amp; forever'
+      );
+   });
+   it('Linebreaks (LF and CR+LF) become <br> tags', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo\nbar\r\nbuzz'),
+         'foo<br>bar<br>buzz'
       );
    });
 });

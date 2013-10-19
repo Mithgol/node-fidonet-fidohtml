@@ -3,8 +3,12 @@ var FidoHTML = function(){
 };
 
 var afterURL = function(middle){
-   var out = middle.replace(/\r?\n/g, '<br>');
-   out = out.replace(/  /g, ' \u00A0');
+   var out = middle.replace(/  /g, ' \u00A0');
+   out = out.replace(/&/g, '&amp;');
+   out = out.replace(/</g, '&lt;');
+   out = out.replace(/>/g, '&gt;');
+   out = out.replace(/\x22/g, '&quot;');
+   out = out.replace(/\r?\n/g, '<br>');
    return out;
 };
 
