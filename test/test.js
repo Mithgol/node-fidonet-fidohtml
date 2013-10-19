@@ -9,13 +9,13 @@ describe('URL processor', function(){
          'foo <a href="http://example.com">http://example.com</a> bar'
       );
    });
-   it('https:// URL is processed in the beginning of a string', function(){
+   it('https:// URL is processed at the beginning of a string', function(){
       assert.deepEqual(
          FidoHTML.fromText('https://example.com foo'),
          '<a href="https://example.com">https://example.com</a> foo'
       );
    });
-   it('ftp:// URL is processed in the end of a string', function(){
+   it('ftp:// URL is processed at the end of a string', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo ftp://example.com/'),
          'foo <a href="ftp://example.com/">ftp://example.com/</a>'
@@ -25,6 +25,12 @@ describe('URL processor', function(){
       assert.deepEqual(
          FidoHTML.fromText('mailto:someone@example.com'),
          '<a href="mailto:someone@example.com">mailto:someone@example.com</a>'
+      );
+   });
+   it('skype: URL in square brackets is processed', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo [skype:echo123] bar'),
+         'foo [<a href="skype:echo123">skype:echo123</a>] bar'
       );
    });
 });
