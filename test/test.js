@@ -36,22 +36,32 @@ describe('URL processor', function(){
 });
 
 describe('Plain text processor', function(){
+   it('The space in the beginning of a line becomes NBSP', function(){
+      assert.deepEqual(
+         FidoHTML.fromText(' foo'),
+         '\u00A0foo'
+      );
+      assert.deepEqual(
+         FidoHTML.fromText('foo bar'),
+         'foo bar'
+      );
+   });
    it('The second of two adjacent spaces becomes NBSP', function(){
       assert.deepEqual(
-         FidoHTML.fromText(' '),
-         ' '
+         FidoHTML.fromText('foo '),
+         'foo '
       );
       assert.deepEqual(
-         FidoHTML.fromText('  '),
-         ' \u00A0'
+         FidoHTML.fromText('foo  '),
+         'foo \u00A0'
       );
       assert.deepEqual(
-         FidoHTML.fromText('   '),
-         ' \u00A0 '
+         FidoHTML.fromText('foo   '),
+         'foo \u00A0 '
       );
       assert.deepEqual(
-         FidoHTML.fromText('    '),
-         ' \u00A0 \u00A0'
+         FidoHTML.fromText('foo    '),
+         'foo \u00A0 \u00A0'
       );
    });
    it('Angle brackets are converted to &lt; and &gt;', function(){

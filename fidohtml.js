@@ -14,7 +14,7 @@ var afterURL = function(middle){
 
 FidoHTML.prototype.fromText = function(msgText){
    /* jshint -W101 */
-   var arrHyper = msgText.split(
+   var arrHyper = msgText.replace(/(^|\r?\n) /g, '$1\u00A0').split(
       /(\b(?:https?|ftp|mailto|bitcoin|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp):.*?)(?=$|[\s<>\x22\x27{}|\^\[\]`])/
    );
    for( var i = 0; i < arrHyper.length; i+=2 ){

@@ -29,6 +29,8 @@ Generates (and returns) HTML code from the given Unicode message's text.
 
 * URLs become hyperlinks.
 
+* A space in the beginning of a line is converted to a no-break space.
+
 * The second of two adjacent spaces is converted to a no-break space.
 
 * Angle brackets (`<` and `>`) are converted to `&lt;` and `&gt;`.
