@@ -2,28 +2,28 @@ var FidoHTML = function(){
    if (!(this instanceof FidoHTML)) return new FidoHTML();
 };
 
+var symbols = [[/  /g, ' \u00A0'], [/&/g, '&amp;'], [/</g, '&lt;'],
+               [/>/g, '&gt;'], [/\x22/g, '&quot;'], [/\r?\n/g, '<br>']];
+
 var afterURL = function(middle){
-   var out = middle.replace(/  /g, ' \u00A0');
-   out = out.replace(/&/g, '&amp;');
-   out = out.replace(/</g, '&lt;');
-   out = out.replace(/>/g, '&gt;');
-   out = out.replace(/\x22/g, '&quot;');
-   out = out.replace(/\r?\n/g, '<br>');
-   return out;
+   return symbols.reduce(function(result, symbol){
+      return result.replace(symbol[0], symbol[1]);
+   }, middle);
+};
+
+var wrapLink = function(link) {
+   return '<a href="' + link + '">' + link + '</a>';
 };
 
 FidoHTML.prototype.fromText = function(msgText){
    /* jshint -W101 */
-   var arrHyper = msgText.replace(/(^|\r?\n) /g, '$1\u00A0').split(
+   var lines = msgText.replace(/(^|\r?\n) /g, '$1\u00A0').split(
       /(\b(?:https?|ftp|mailto|bitcoin|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp):.*?)(?=$|[\s<>\x22\x27{}|\^\[\]`])/
    );
-   for( var i = 0; i < arrHyper.length; i+=2 ){
-      arrHyper[i] = afterURL( arrHyper[i] );
-   }
-   for( var j = 1; j < arrHyper.length; j+=2 ){
-      arrHyper[j] = '<a href="' + arrHyper[j] + '">' + arrHyper[j] + '</a>';
-   }
-   return arrHyper.join('');
+
+   return lines.map(function(line, index) {
+         return (index % 2 ? wrapLink : afterURL)(line);
+      }).join('');
 };
 
 module.exports = FidoHTML;
