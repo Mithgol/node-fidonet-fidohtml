@@ -17,7 +17,7 @@ var afterURL = function(middle){
    }, middle);
 };
 
-var wrapLink = function(link) {
+var wrapLink = function(link){
    return '<a href="' + link + '">' + link + '</a>';
 };
 
@@ -27,9 +27,9 @@ FidoHTML.prototype.fromText = function(msgText){
       /(\b(?:https?|ftp|mailto|bitcoin|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp):.*?)(?=$|[\s<>\x22\x27{}|\^\[\]`])/
    );
 
-   return lines.map(function(line, index) {
-         return (index % 2 ? wrapLink : afterURL)(line);
-      }).join('');
+   return lines.map(function(line, index){
+      return (index % 2 ? wrapLink : afterURL)(line);
+   }).join('');
 };
 
 module.exports = FidoHTML;
