@@ -2,8 +2,14 @@ var FidoHTML = function(){
    if (!(this instanceof FidoHTML)) return new FidoHTML();
 };
 
-var symbols = [[/  /g, ' \u00A0'], [/&/g, '&amp;'], [/</g, '&lt;'],
-               [/>/g, '&gt;'], [/\x22/g, '&quot;'], [/\r?\n/g, '<br>']];
+var symbols = [
+   [/  /g, ' \u00A0'],
+   [/&/g, '&amp;'],
+   [/</g, '&lt;'],
+   [/>/g, '&gt;'],
+   [/\x22/g, '&quot;'],
+   [/\r?\n/g, '<br>']
+];
 
 var afterURL = function(middle){
    return symbols.reduce(function(result, symbol){
