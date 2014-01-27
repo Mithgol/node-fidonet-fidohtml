@@ -1,5 +1,7 @@
 The **Fidonet HTML** module makes HTML code out of a Fidonet message.
 
+It requires Node.js version 0.8 (or newer) because npm-driven installation [fails](https://github.com/npm/npm/issues/4379) on Node.js version 0.6 (or older).
+
 ## Installing Fidonet HTML
 
 [![(npm package version)](https://badge.fury.io/js/fidohtml.png)](https://npmjs.org/package/fidohtml)
