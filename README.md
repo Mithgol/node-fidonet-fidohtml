@@ -10,7 +10,7 @@ It requires Node.js version 0.8 (or newer) because npm-driven installation [f
 
 * Latest githubbed version: `npm install https://github.com/Mithgol/node-fidonet-fidohtml/tarball/master`
 
-You may visit https://github.com/Mithgol/node-fidonet-fidohtml#readme occasionally to read the latest `README` because the package's version is not planned to grow after changes when they happen in `README` only. (However, `npm publish --force` may happen eventually.)
+You may visit https://github.com/Mithgol/node-fidonet-fidohtml#readme occasionally to read the latest `README` because the package's version is not planned to grow after changes when they happen in `README` only. (And `npm publish --force` is [forbidden](http://blog.npmjs.org/post/77758351673/no-more-npm-publish-f) nowadays.)
 
 ## Using Fidonet HTML
 
