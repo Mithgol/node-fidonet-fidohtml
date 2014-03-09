@@ -1,5 +1,8 @@
-var FidoHTML = function(){
-   if (!(this instanceof FidoHTML)) return new FidoHTML();
+var FidoHTML = function(options){
+   if (!(this instanceof FidoHTML)) return new FidoHTML(options);
+
+   if( typeof options === 'undefined' ) options = {};
+   this.options = options;
 };
 
 var symbols = [
