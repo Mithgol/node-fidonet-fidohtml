@@ -20,18 +20,19 @@ var afterURL = function(middle){
    }, middle);
 };
 
-var wrapLink = function(link){
+FidoHTML.prototype.wrapLink = function(link){
    return '<a href="' + link + '">' + link + '</a>';
 };
 
 FidoHTML.prototype.fromText = function(msgText){
    /* jshint -W101 */
+   var _converter = this;
    var lines = msgText.replace(/(^|\r?\n) /g, '$1\u00A0').split(
       /(\b(?:https?|ftp|mailto|bitcoin|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp):.*?)(?=$|[\s<>\x22\x27{}|\^\[\]`])/
    );
 
    return lines.map(function(line, index){
-      if( index % 2 ) return wrapLink(line);
+      if( index % 2 ) return _converter.wrapLink(line);
       return afterURL(line);
    }).join('');
 };
