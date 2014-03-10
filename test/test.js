@@ -1,5 +1,6 @@
 /* global describe, it */
 var FidoHTML = require('../')();
+var inDataMode = require('../')({dataMode: true});
 var assert = require('assert');
 
 describe('URL processor', function(){
@@ -31,6 +32,18 @@ describe('URL processor', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo [skype:echo123] bar'),
          'foo [<a href="skype:echo123">skype:echo123</a>] bar'
+      );
+   });
+   it('dataMode works fine', function(){
+      assert.deepEqual(
+         inDataMode.fromText('mailto:someone@example.com'),
+         '<a href="javascript:;" data-href="mailto:someone@example.com">' +
+         'mailto:someone@example.com</a>'
+      );
+      assert.deepEqual(
+         inDataMode.fromText('foo [skype:echo123] bar'),
+         'foo [<a href="javascript:;" data-href="skype:echo123">' +
+         'skype:echo123</a>] bar'
       );
    });
 });
