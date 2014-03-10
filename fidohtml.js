@@ -31,7 +31,8 @@ FidoHTML.prototype.fromText = function(msgText){
    );
 
    return lines.map(function(line, index){
-      return (index % 2 ? wrapLink : afterURL)(line);
+      if( index % 2 ) return wrapLink(line);
+      return afterURL(line);
    }).join('');
 };
 
