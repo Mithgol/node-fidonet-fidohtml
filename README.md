@@ -21,7 +21,7 @@ var FidoHTML = require('fidohtml');
 var decoder = FidoHTML(options);
 ```
 
-The options object may be absent. (It's currently ignored anyway.)
+The options object may be absent.
 
 The constructed object has the following method:
 
@@ -29,7 +29,7 @@ The constructed object has the following method:
 
 Generates (and returns) HTML code from the given Unicode message's text.
 
-* URLs become hyperlinks.
+* URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags and the URL is copied to the tag's `href` attribute. However, if `options.dataMode` is present and `true`, then `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (In this mode additional client-side JavaScript processing of hyperlinks becomes necessary. Useful for whitelisting or otherwise preventing the default browser's action.)
 
 * A space in the beginning of a line is converted to a no-break space.
 

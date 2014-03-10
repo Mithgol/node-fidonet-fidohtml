@@ -21,6 +21,9 @@ var afterURL = function(middle){
 };
 
 FidoHTML.prototype.wrapLink = function(link){
+   if( this.options.dataMode ){
+      return '<a href="javascript:;" data-href="' + link + '">' + link + '</a>';
+   }
    return '<a href="' + link + '">' + link + '</a>';
 };
 
