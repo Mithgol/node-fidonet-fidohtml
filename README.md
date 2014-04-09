@@ -45,7 +45,7 @@ Generates (and returns) HTML code from the given Unicode message's text.
 
 ## Testing Fidonet HTML
 
-[![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.png?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
+[![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.svg?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
 
 It is necessary to install [Mocha](http://visionmedia.github.io/mocha/) and [JSHint](http://jshint.com/) for testing.
 
