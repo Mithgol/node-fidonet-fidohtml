@@ -28,6 +28,12 @@ describe('URL processor', function(){
          '<a href="mailto:someone@example.com">mailto:someone@example.com</a>'
       );
    });
+   it('a mailto: scheme followed by a whitespace is not an URL', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('mailto: someone@example.com'),
+         'mailto: someone@example.com'
+      );
+   });
    it('skype: URL in square brackets is processed', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo [skype:echo123] bar'),
