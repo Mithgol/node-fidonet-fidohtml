@@ -1,10 +1,11 @@
 {
 "name": "fidohtml",
 "main": "fidohtml.js",
-"version": "0.5.0",
+"version": "0.5.1",
 "description": "Makes HTML code out of a Fidonet message.",
 "keywords": ["Fidonet", "Fido", "HTML"],
 "author": { "name": "Mithgol the Webmaster" },
+"license": "MIT",
 "repository": {
    "type": "git",
    "url": "https://github.com/Mithgol/node-fidonet-fidohtml.git"
