@@ -4,7 +4,7 @@ It requires Node.js version 0.8 (or newer) because npm-driven installation [f
 
 ## Installing Fidonet HTML
 
-[![(npm package version)](https://nodei.co/npm/fidohtml.png?compact=true)](https://npmjs.org/package/fidohtml)
+[![(npm package version)](https://nodei.co/npm/fidohtml.png?downloads=true)](https://npmjs.org/package/fidohtml)
 
 * Latest packaged version: `npm install fidohtml`
 
