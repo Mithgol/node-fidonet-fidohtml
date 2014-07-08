@@ -14,14 +14,16 @@ You may visit https://github.com/Mithgol/node-fidonet-fidohtml#readme occasional
 
 ## Using Fidonet HTML
 
-When you `require()` the installed module, you get a constructor that uses the options object as its parameter:
+When you `require()` the installed module, you get a constructor that uses an optional `options` object as its parameter:
 
 ```js
 var FidoHTML = require('fidohtml');
 var decoder = FidoHTML(options);
 ```
 
-The options object may be absent.
+The `options` object (or any of its properties) may be absent. When present, the following properties are used:
+
+* `options.dataMode` — by default it is `false`; when it's true, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
 
 The constructed object has the following method:
 
@@ -29,7 +31,9 @@ The constructed object has the following method:
 
 Generates (and returns) HTML code from the given Unicode message's text.
 
-* URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags and the URL is copied to the tag's `href` attribute. However, if `options.dataMode` is present and `true`, then `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (In this mode additional client-side JavaScript processing of hyperlinks becomes necessary. Useful for whitelisting or otherwise preventing the default browser's action.)
+* URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags.
+   * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
+   * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
 * A space in the beginning of a line is converted to a no-break space.
 
