@@ -1,5 +1,8 @@
 var ASTree = require('astree');
+var Dauria = require('dauria');
+var MIME = require('mime');
 var UUE = require('uue');
+var _s = require('underscore.string');
 
 var FidoHTML = function(options){
    if (!(this instanceof FidoHTML)) return new FidoHTML(options);
@@ -25,6 +28,58 @@ var FidoHTML = function(options){
    }, [
       { type: 'quote', props: [ 'quotedText' ] }
    ]);
+   this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
+      var mimeType = MIME(objectUUE.name);
+      if([
+         'image/jpeg',
+         'image/png',
+         'image/gif',
+         'image/svg+xml'
+      ].indexOf(mimeType) >= 0 ){ // image
+         var addSourceData = '';
+         if( _converter.options.dataMode ){
+            addSourceData = [
+               ' data-source="',
+               Buffer(
+                  objectUUE.source
+               ).toString('base64'),
+               '"'
+            ].join('');
+         }
+         return [
+            '<div class="imageUUE" ',
+            'data-name="',
+            _s.escapeHTML( objectUUE.name ),
+            '"',
+            addSourceData,
+            '>',
+            '<img src="',
+            Dauria.getBase64DataURI(objectUUE.data, mimeType),
+            '">',
+            '</div>'
+         ].join('');
+      } else { // not an image
+         if( _converter.options.dataMode ){
+            return [
+               '<div class="fileUUE" data-name="',
+               _s.escapeHTML( objectUUE.name ),
+               '" data-content="',
+               objectUUE.data.toString('base64'),
+               '">',
+               objectUUE.source,
+               '</div>'
+            ].join('');
+         } else { // not an image, and not in dataMode
+            return [
+               '<a class="fileUUE" href="',
+               Dauria.getBase64DataURI(objectUUE.data, mimeType),
+               '">',
+               objectUUE.source,
+               '</a>'
+            ].join('');
+         }
+      }
+   });
 
    // convert URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
