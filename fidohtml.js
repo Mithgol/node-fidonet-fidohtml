@@ -1,4 +1,5 @@
 var ASTree = require('astree');
+var UUE = require('uue');
 
 var FidoHTML = function(options){
    if (!(this instanceof FidoHTML)) return new FidoHTML(options);
@@ -20,7 +21,7 @@ var FidoHTML = function(options){
    // detect UUE code fragments
    this.ASTree.defineSplitter(function(inputData){
       if( typeof inputData !== 'string' ) return inputData;
-      return require('uue').split(inputData);
+      return UUE.split(inputData);
    }, [
       { type: 'quote', props: [ 'quotedText' ] }
    ]);
