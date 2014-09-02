@@ -18,7 +18,7 @@ var FidoHTML = function(options){
       return sourceText.replace(/(^|\r?\n) /g, '$1\u00A0');
    });
 
-   // detect UUE code fragments
+   // detect (and isolate) UUE code fragments
    this.ASTree.defineSplitter(function(inputData){
       if( typeof inputData !== 'string' ) return inputData;
       return UUE.split(inputData);
@@ -37,7 +37,8 @@ var FidoHTML = function(options){
          } else { // regex-captured fragment's index: 1, 3, 5...
             return {
                type: 'hyperlink',
-               URL: sourceFragment
+               URL: sourceFragment,
+               textURL: sourceFragment
             };
          }
       });
@@ -45,12 +46,16 @@ var FidoHTML = function(options){
    this.ASTree.defineRenderer(['hyperlink'], function(hyperlink /*, render*/){
       if( _converter.options.dataMode ){
          return '<a href="javascript:;" data-href="' + hyperlink.URL + '">' +
-                hyperlink.URL + '</a>';
+                hyperlink.textURL + '</a>';
       }
-      return '<a href="' + hyperlink.URL + '">' + hyperlink.URL + '</a>';
+      return '<a href="' + hyperlink.URL + '">' + hyperlink.textURL + '</a>';
    });
 
-   // (in plain text only) perform character replacements
+   // perform character replacements:
+   // *) in plain text
+   // *) in quoted text
+   // *) in UUE code blocks
+   // *) in the text of URLs
    this.ASTree.defineSplitter(function(sourceNode){
       if( typeof sourceNode !== 'string' ) return sourceNode;
 
@@ -66,7 +71,11 @@ var FidoHTML = function(options){
       return replacements.reduce(function(result, replacement){
          return result.replace(replacement[0], replacement[1]);
       }, sourceNode);
-   });
+   }, [
+      { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'UUE', props: [ 'source' ] },
+      { type: 'hyperlink', props: [ 'textURL' ] }
+   ]);
 };
 
 FidoHTML.prototype.fromText = function(msgText){
