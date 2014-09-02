@@ -10,6 +10,9 @@ var FidoHTML = function(options){
    this.ASTree = ASTree();
 
    // do not break spaces in the beginning of the lines
+   // note: this replacement cannot be further down,
+   //       because then it would treat the beginning of a fragment
+   //       as a beginning of a line (e.g. a space after a hyperlink)
    this.ASTree.defineSplitter(function(sourceText){
       return sourceText.replace(/(^|\r?\n) /g, '$1\u00A0');
    });
