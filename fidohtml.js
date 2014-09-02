@@ -17,6 +17,14 @@ var FidoHTML = function(options){
       return sourceText.replace(/(^|\r?\n) /g, '$1\u00A0');
    });
 
+   // detect UUE code fragments
+   this.ASTree.defineSplitter(function(inputData){
+      if( typeof inputData !== 'string' ) return inputData;
+      return require('uue').split(inputData);
+   }, [
+      { type: 'quote', props: [ 'quotedText' ] }
+   ]);
+
    // convert URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
