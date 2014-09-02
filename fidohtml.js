@@ -84,6 +84,7 @@ var FidoHTML = function(options){
    // convert URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
+      if( typeof sourceCode !== 'string' ) return sourceCode;
       return sourceCode.split(
          /(\b(?:https?|ftp|mailto|bitcoin|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|mms|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp):[^\s<>\x22\x27{}|\^\[\]`]+)/
       ).map(function(sourceFragment, fragmentIndex){
