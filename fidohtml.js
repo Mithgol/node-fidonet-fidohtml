@@ -29,7 +29,7 @@ var FidoHTML = function(options){
       { type: 'quote', props: [ 'quotedText' ] }
    ]);
    this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
-      var mimeType = MIME(objectUUE.name);
+      var mimeType = MIME.lookup(objectUUE.name);
       if([
          'image/jpeg',
          'image/png',
