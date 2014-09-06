@@ -1,14 +1,18 @@
 var ASTree = require('astree');
 var Dauria = require('dauria');
+var extend = require('extend');
 var MIME = require('mime');
 var UUE = require('uue');
 var _s = require('underscore.string');
 
+var defaults = {
+   dataMode: false
+};
+
 var FidoHTML = function(options){
    if (!(this instanceof FidoHTML)) return new FidoHTML(options);
 
-   if( typeof options === 'undefined' ) options = {};
-   this.options = options;
+   this.options = extend(true, {}, defaults, options);
 
    var _converter = this;
    this.ASTree = ASTree();
