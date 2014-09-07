@@ -6,7 +6,8 @@ var UUE = require('uue');
 var _s = require('underscore.string');
 
 var defaults = {
-   dataMode: false
+   dataMode: false,
+   fontColor: false
 };
 
 var FidoHTML = function(options){

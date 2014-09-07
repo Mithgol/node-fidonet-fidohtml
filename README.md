@@ -23,7 +23,9 @@ var decoder = FidoHTML(options);
 
 The `options` object (or any of its properties) may be absent. When present, the following properties are used:
 
-* `options.dataMode` — by default it is `false`; when it's true, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
+* `options.dataMode` — by default it is `false`; when it's `true`, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
+
+* `options.fontColor` — by default it is `false`; when it's `true`, some elements are enclosed in `<font color="…">` and `</font>` tags. Such mode is useful when the necessary CSS styles are not expected to be available for HTML output; for example, if HTML is exported in RSS to some RSS browser or to some web site that does not expect specific (Fidonet-related) values of the `class="…"` attribute.
 
 The constructed object has the following method:
 
