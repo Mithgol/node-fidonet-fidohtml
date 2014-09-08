@@ -7,7 +7,10 @@ var _s = require('underscore.string');
 
 var defaults = {
    dataMode: false,
-   fontColor: false
+   fontColor: false,
+   color: {
+      origin: '#333366'
+   }
 };
 
 var FidoHTML = function(options){
@@ -23,7 +26,45 @@ var FidoHTML = function(options){
    //       because then it would treat the beginning of a fragment
    //       as a beginning of a line (e.g. a space after a hyperlink)
    this.ASTree.defineSplitter(function(sourceText){
-      return sourceText.replace(/(^|\r?\n) /g, '$1\u00A0');
+      return sourceText.replace(/(^|\n) /g, '$1\u00A0');
+   });
+
+   // origin line
+   // FTS-0004.001, “Conference Mail Message Control Information”, section 3
+   this.ASTree.defineSplitter(function(sourceText){
+      var results = /^(.*)\n(\u00A0?\* Origin: .*\(([^)]+)\))\s*$/.exec(
+         sourceText
+      );
+      if( results === null ) return sourceText; // no origin
+      return [
+         results[1], // pre-origin text
+         {
+            type: 'origin',
+            preParens: results[2], // before parentheses
+            addrSource: results[3],
+            addrText: results[3]
+         }
+      ];
+   });
+   this.ASTree.defineRenderer(['origin'], function(origin, render){
+      var outputHTML = '<div class="originLine">';
+      if( _converter.options.fontColor ){
+         outputHTML += '<font color="' +
+            _converter.options.color.origin +
+         '">';
+      }
+      outputHTML += render(origin.preParens);
+      outputHTML += '(<span data-addr="';
+      outputHTML += _s.escapeHTML(origin.addrSource);
+      outputHTML += '">';
+      outputHTML += render(origin.addrText);
+      outputHTML += '</span>)';
+      if( _converter.options.fontColor ){
+         outputHTML += '</font>';
+      }
+      outputHTML += '</div>';
+
+      return outputHTML;
    });
 
    // detect (and isolate) UUE code fragments
@@ -103,7 +144,9 @@ var FidoHTML = function(options){
             };
          }
       });
-   });
+   }, [
+      { type: 'origin', props: ['preParens'] }
+   ]);
    this.ASTree.defineRenderer(['hyperlink'], function(hyperlink /*, render*/){
       if( _converter.options.dataMode ){
          return '<a href="javascript:;" data-href="' + hyperlink.URL + '">' +
@@ -117,6 +160,7 @@ var FidoHTML = function(options){
    // *) in quoted text
    // *) in UUE code blocks
    // *) in the text of URLs
+   // *) in the text of origins (including address)
    this.ASTree.defineSplitter(function(sourceNode){
       if( typeof sourceNode !== 'string' ) return sourceNode;
 
@@ -135,7 +179,8 @@ var FidoHTML = function(options){
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'UUE', props: [ 'source' ] },
-      { type: 'hyperlink', props: [ 'textURL' ] }
+      { type: 'hyperlink', props: [ 'textURL' ] },
+      { type: 'origin', props: ['preParens', 'addrText'] }
    ]);
 };
 
