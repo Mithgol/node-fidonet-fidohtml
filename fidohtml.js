@@ -1,6 +1,7 @@
 var ASTree = require('astree');
 var Dauria = require('dauria');
 var extend = require('extend');
+var Fiunis = require('fiunis');
 var MIME = require('mime');
 var UUE = require('uue');
 var _s = require('underscore.string');
@@ -126,6 +127,14 @@ var FidoHTML = function(options){
          }
       }
    });
+
+   // convert Fidonet Unicode substrings (but not in UUE blocks)
+   this.ASTree.defineSplitter(function(sourceWithFiunis){
+      if( typeof sourceWithFiunis !== 'string' ) return sourceWithFiunis;
+      return Fiunis.decode(sourceWithFiunis);
+   }, [
+      { type: 'origin', props: ['preParens', 'addrText'] }
+   ]);
 
    // convert URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
