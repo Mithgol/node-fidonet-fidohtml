@@ -44,6 +44,10 @@ Generates (and returns) HTML code from the given Unicode message's text.
       * `data-name` — name of the encoded file
       * `data-content` — base64-encoded content of the file
 
+* Fidonet origin line (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 3) is wrapped in `<div class="originLine">`. The origin's address part is additionally wrapped in `<span data-addr="…">`. The whole origin is also wrapped in `<font color="…">` (using `options.color.origin`) when `options.fontColor` is `true`.
+
+* [Fidonet Unicode substrings](https://github.com/Mithgol/fiunis) are converted to their Unicode equivalents (but not in UUE blocks).
+
 * URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags.
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
