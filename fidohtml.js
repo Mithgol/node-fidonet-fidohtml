@@ -33,7 +33,7 @@ var FidoHTML = function(options){
    // origin line
    // FTS-0004.001, “Conference Mail Message Control Information”, section 3
    this.ASTree.defineSplitter(function(sourceText){
-      var results = /^(.*)\n(\u00A0?\* Origin: .*\(([^)]+)\))\s*$/.exec(
+      var results = /^(.*)\n(\u00A0?\* Origin: .*)\(([^)]+)\)\s*$/.exec(
          sourceText
       );
       if( results === null ) return sourceText; // no origin
