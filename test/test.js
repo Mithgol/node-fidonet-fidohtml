@@ -112,8 +112,8 @@ describe('Plain text processor', function(){
 describe('Origin parser', function(){
    it('parses an origin', function(){
       assert.deepEqual(
-         FidoHTML.fromText('foo\n * Origin: bar (1:2/3.4)'),
-         'foo<div class="originLine"> * Origin: bar ' +
+         FidoHTML.fromText('foo\nbar\n * Origin: bazz (1:2/3.4)'),
+         'foo<br>bar<div class="originLine"> * Origin: bazz ' +
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });

@@ -33,7 +33,9 @@ var FidoHTML = function(options){
    // origin line
    // FTS-0004.001, “Conference Mail Message Control Information”, section 3
    this.ASTree.defineSplitter(function(sourceText){
-      var results = /^(.*)\n(\u00A0?\* Origin: .*)\(([^)]+)\)\s*$/.exec(
+      // dot does NOT match `'\n'`
+      var results =
+      /^((?:\n|.)*)\n(\u00A0?\* Origin: .*)\(([^)]+)\)\s*$/.exec(
          sourceText
       );
       if( results === null ) return sourceText; // no origin
@@ -60,6 +62,73 @@ var FidoHTML = function(options){
       outputHTML += '">';
       outputHTML += render(origin.addrText);
       outputHTML += '</span>)';
+      if( _converter.options.fontColor ){
+         outputHTML += '</font>';
+      }
+      outputHTML += '</div>';
+
+      return outputHTML;
+   });
+
+   // tearline
+   // FTS-0004.001, “Conference Mail Message Control Information”, section 2
+   this.ASTree.defineSplitter(function(sourceText){
+      if( typeof sourceText !== 'string' ) return sourceText;
+
+      // dot does NOT match `'\n'`
+      var results = /^((?:\n|.)*)\n(-{3}(?: .*))?$/.exec(
+         sourceText
+      );
+      if( results === null ) return sourceText; // no tearline
+      return [
+         results[1], // pre-tearline text
+         {
+            type: 'tearline',
+            content: results[2]
+         }
+      ];
+   });
+   this.ASTree.defineRenderer(['tearline'], function(tearline, render){
+      var outputHTML = '<div class="tearline">';
+      if( _converter.options.fontColor ){
+         outputHTML += '<font color="' +
+            _converter.options.color.tearline +
+         '">';
+      }
+      outputHTML += render(tearline.content);
+      if( _converter.options.fontColor ){
+         outputHTML += '</font>';
+      }
+      outputHTML += '</div>';
+
+      return outputHTML;
+   });
+
+   // tagline
+   this.ASTree.defineSplitter(function(sourceText){
+      if( typeof sourceText !== 'string' ) return sourceText;
+
+      // dot does NOT match `'\n'`
+      var results = /^((?:\n|.)*)\n(\.{3}.*)$/.exec(
+         sourceText
+      );
+      if( results === null ) return sourceText; // no tearline
+      return [
+         results[1], // pre-tearline text
+         {
+            type: 'tearline',
+            content: results[2]
+         }
+      ];
+   });
+   this.ASTree.defineRenderer(['tagline'], function(tagline, render){
+      var outputHTML = '<div class="tagline">';
+      if( _converter.options.fontColor ){
+         outputHTML += '<font color="' +
+            _converter.options.color.tagline +
+         '">';
+      }
+      outputHTML += render(tagline.content);
       if( _converter.options.fontColor ){
          outputHTML += '</font>';
       }
@@ -133,7 +202,9 @@ var FidoHTML = function(options){
       if( typeof sourceWithFiunis !== 'string' ) return sourceWithFiunis;
       return Fiunis.decode(sourceWithFiunis);
    }, [
-      { type: 'origin', props: ['preParens', 'addrText'] }
+      { type: 'origin', props: ['preParens', 'addrText'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
    ]);
 
    // convert URLs to hyperlinks
@@ -154,7 +225,9 @@ var FidoHTML = function(options){
          }
       });
    }, [
-      { type: 'origin', props: ['preParens'] }
+      { type: 'origin', props: ['preParens'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
    ]);
    this.ASTree.defineRenderer(['hyperlink'], function(hyperlink /*, render*/){
       if( _converter.options.dataMode ){
@@ -170,6 +243,7 @@ var FidoHTML = function(options){
    // *) in UUE code blocks
    // *) in the text of URLs
    // *) in the text of origins (including address)
+   // *) in tearlines and taglines
    this.ASTree.defineSplitter(function(sourceNode){
       if( typeof sourceNode !== 'string' ) return sourceNode;
 
@@ -189,7 +263,9 @@ var FidoHTML = function(options){
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'hyperlink', props: [ 'textURL' ] },
-      { type: 'origin', props: ['preParens', 'addrText'] }
+      { type: 'origin', props: ['preParens', 'addrText'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
    ]);
 };
 
