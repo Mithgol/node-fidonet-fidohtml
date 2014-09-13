@@ -10,7 +10,9 @@ var defaults = {
    dataMode: false,
    fontColor: false,
    color: {
-      origin: '#333366'
+      origin: '#333366',
+      tearline: '#46a0a0',
+      tagline: '#a05500'
    }
 };
 
