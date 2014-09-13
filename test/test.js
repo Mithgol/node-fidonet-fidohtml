@@ -109,11 +109,15 @@ describe('Plain text processor', function(){
    });
 });
 
-describe('Origin parser', function(){
-   it('parses an origin', function(){
+describe('Tagline / tearline / origin parser', function(){
+   it('parses tagline / tearline / origin', function(){
       assert.deepEqual(
-         FidoHTML.fromText('foo\nbar\n * Origin: bazz (1:2/3.4)'),
-         'foo<br>bar<div class="originLine"> * Origin: bazz ' +
+         FidoHTML.fromText(
+            'foo\nbar\n... baz\n--- quux\n * Origin: FGHI (1:2/3.4)'
+         ),
+         'foo<br>bar<div class="tagline">... baz</div>' +
+         '<div class="tearline">--- quux</div>' +
+         '<div class="originLine"> * Origin: FGHI ' +
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });

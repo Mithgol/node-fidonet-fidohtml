@@ -116,7 +116,7 @@ var FidoHTML = function(options){
       return [
          results[1], // pre-tearline text
          {
-            type: 'tearline',
+            type: 'tagline',
             content: results[2]
          }
       ];
