@@ -121,4 +121,21 @@ describe('Tagline / tearline / origin parser', function(){
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
+   it('URLs are processed in taglines / tearlines / origins', function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo\nbar\n... telnet:slothmud.org:6101' +
+            '\n--- The irc://irc.freenode.net/#node.js chat' +
+            '\n * Origin: FGHI geo:44.58,38.11 point (1:2/3.4)'
+         ),
+         'foo<br>bar<div class="tagline">... ' +
+         '<a href="telnet:slothmud.org:6101">telnet:slothmud.org:6101</a>' +
+         '</div><div class="tearline">--- The ' +
+         '<a href="irc://irc.freenode.net/#node.js">' +
+         'irc://irc.freenode.net/#node.js</a> chat</div>' +
+         '<div class="originLine"> * Origin: FGHI ' +
+         '<a href="geo:44.58,38.11">geo:44.58,38.11</a>' +
+         ' point (<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
+      );
+   });
 });
