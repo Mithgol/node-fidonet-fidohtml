@@ -109,7 +109,8 @@ describe('Plain text processor', function(){
    });
 });
 
-describe('Tagline / tearline / origin parser', function(){
+describe('Tagline / tearline / origin parser, Fidonet Unicode substrings',
+function(){
    it('parses tagline / tearline / origin', function(){
       assert.deepEqual(
          FidoHTML.fromText(
@@ -136,6 +137,20 @@ describe('Tagline / tearline / origin parser', function(){
          '<div class="originLine"> * Origin: FGHI ' +
          '<a href="geo:44.58,38.11">geo:44.58,38.11</a>' +
          ' point (<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
+      );
+   });
+   it('Fidonet Unicode substrings in these lines and the rest of the message',
+   function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo &+BDAENwRK;\nbar\n... &+BDEEQwQ6BDg;' +
+            '\n--- &+BDIEYwQ0BDg;' +
+            '\n * Origin: &+BDMEOwQwBDMEPgQ7BEw; (1:2/3.4)'
+         ),
+         'foo азъ<br>bar<div class="tagline">... буки' +
+         '</div><div class="tearline">--- в\u0463ди</div>' +
+         '<div class="originLine"> * Origin: глаголь ' +
+         '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
 });
