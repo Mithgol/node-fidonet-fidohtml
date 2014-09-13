@@ -25,9 +25,10 @@ The `options` object (or any of its properties) may be absent. When present,
 
 * `options.dataMode` — by default it is `false`; when it's `true`, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
 
-* `options.fontColor` — by default it is `false`; when it's `true`, some elements are enclosed in `<font color="…">` and `</font>` tags. Such mode is useful when the necessary CSS styles are not expected to be available for HTML output; for example, if HTML is exported in RSS to some RSS browser or to some web site that does not expect specific (Fidonet-related) values of the `class="…"` attribute. Properties of the `options.color` object are used as such colors.
-
-* `options.color.origin` — color of the origin line (see FTS-0004.001, “Conference Mail Message Control Information”, section 3). By default, `'#333366'`.
+* `options.fontColor` — by default it is `false`; when it's `true`, some elements are enclosed in `<font color="…">` and `</font>` tags. Such mode is useful when the necessary CSS styles are not expected to be available for HTML output; for example, if HTML is exported in RSS to some RSS browser or to some web site that does not expect specific (Fidonet-related) values of the `class="…"` attribute. Properties of the `options.color` object are used as such colors:
+   * `options.color.origin` — color of the origin line (see FTS-0004.001, “Conference Mail Message Control Information”, section 3). By default, `'#333366'`.
+   * `options.color.tearline` — color of the tearline (see FTS-0004.001, “Conference Mail Message Control Information”, section 2). By default, `'#46a0a0'`.
+   * `options.color.tagline` — color of the tagline. By default, `'#a05500'`.
 
 The constructed object has the following method:
 
@@ -44,7 +45,11 @@ Generates (and returns) HTML code from the given Unicode message's text.
       * `data-name` — name of the encoded file
       * `data-content` — base64-encoded content of the file
 
-* Fidonet origin line (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 3) is wrapped in `<div class="originLine">`. The origin's address part is additionally wrapped in `<span data-addr="…">`. The whole origin is also wrapped in `<font color="…">` (using `options.color.origin`) when `options.fontColor` is `true`.
+* Origin line (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 3) is wrapped in `<div class="originLine">`. The origin's address part is additionally wrapped in `<span data-addr="…">`. The whole origin is also wrapped in `<font color="…">` (using `options.color.origin`) when `options.fontColor` is `true`.
+
+* Tearline (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 2) is wrapped in `<div class="tearline">`. It is also wrapped in `<font color="…">` (using `options.color.tearline`) when `options.fontColor` is `true`.
+
+* A tagline (a line that immediately precedes the origin and/or the tearline and starts with three dots `...`) is wrapped in `<div class="tagline">`. It is also wrapped in `<font color="…">` (using `options.color.tagline`) when `options.fontColor` is `true`.
 
 * [Fidonet Unicode substrings](https://github.com/Mithgol/fiunis) are converted to their Unicode equivalents (but not in UUE blocks).
 
