@@ -122,6 +122,17 @@ function(){
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
+   it('an empty tearline is fine too', function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo\nbar\n... baz\n---\n * Origin: FGHI (1:2/3.4)'
+         ),
+         'foo<br>bar<div class="tagline">... baz</div>' +
+         '<div class="tearline">---</div>' +
+         '<div class="originLine"> * Origin: FGHI ' +
+         '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
+      );
+   });
    it('URLs are processed in taglines / tearlines / origins', function(){
       assert.deepEqual(
          FidoHTML.fromText(

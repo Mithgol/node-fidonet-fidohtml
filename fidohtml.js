@@ -78,7 +78,7 @@ var FidoHTML = function(options){
       if( typeof sourceText !== 'string' ) return sourceText;
 
       // dot does NOT match `'\n'`
-      var results = /^((?:\n|.)*)\n(-{3}(?: .*))?$/.exec(
+      var results = /^((?:\n|.)*)\n(-{3}(?: .*)?)$/.exec(
          sourceText
       );
       if( results === null ) return sourceText; // no tearline
