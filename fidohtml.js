@@ -204,6 +204,7 @@ var FidoHTML = function(options){
       if( typeof sourceWithFiunis !== 'string' ) return sourceWithFiunis;
       return Fiunis.decode(sourceWithFiunis);
    }, [
+      { type: 'quote', props: [ 'quotedText' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
@@ -227,6 +228,7 @@ var FidoHTML = function(options){
          }
       });
    }, [
+      { type: 'quote', props: [ 'quotedText' ] },
       { type: 'origin', props: ['preParens'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
