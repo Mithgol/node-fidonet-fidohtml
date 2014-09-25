@@ -4,7 +4,7 @@ It is a module for Node.js (using Node.js version 0.10.x is recommended).
 
 ## Installing Fidonet HTML
 
-[![(npm package version)](https://nodei.co/npm/fidohtml.png?downloads=true)](https://npmjs.org/package/fidohtml)
+[![(npm package version)](https://nodei.co/npm/fidohtml.png?downloads=true&downloadRank=true)](https://npmjs.org/package/fidohtml)
 
 * Latest packaged version: `npm install fidohtml`
 
