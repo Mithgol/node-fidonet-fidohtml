@@ -139,6 +139,16 @@ var FidoHTML = function(options){
       return outputHTML;
    });
 
+   // if an empty line appears immediately before tagline-tearline-origin,
+   // add a non-breaking space on that line
+   this.ASTree.defineSplitter(function(sourceText){
+      if( typeof sourceText !== 'string' ) return sourceText;
+
+      if( sourceText[sourceText.length - 1] !== '\n' ) return sourceText;
+
+      return sourceText + '\u00A0';
+   });
+
    // detect (and isolate) UUE code fragments
    this.ASTree.defineSplitter(function(inputData){
       if( typeof inputData !== 'string' ) return inputData;
