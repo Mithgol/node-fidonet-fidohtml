@@ -12,7 +12,7 @@ var defaults = {
    color: {
       origin: '#85144b',
       tearline: '#3d9970',
-      tagline: '#ffdc00'
+      tagline: '#ff851b'
    }
 };
 
