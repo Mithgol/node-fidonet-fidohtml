@@ -1,7 +1,7 @@
 {
 "name": "fidohtml",
 "main": "fidohtml.js",
-"version": "0.7.5",
+"version": "0.7.6",
 "description": "Makes HTML code out of a Fidonet message.",
 "keywords": ["Fidonet", "Fido", "HTML"],
 "author": { "name": "Mithgol the Webmaster" },
@@ -12,12 +12,12 @@
 },
 "dependencies": {
    "astree": "~1.0.0",
-   "dauria": "~1.1.1",
-   "extend": "~1.3.0",
-   "fiunis": "~1.1.0",
+   "dauria": "~1.1.2",
+   "extend": "~2.0.0",
+   "fiunis": "~1.1.1",
    "mime": "~1.2.11",
    "underscore.string": "~2.3.3",
-   "uue": "~1.2.0"
+   "uue": "~1.2.4"
 },
 "scripts": {
    "pretest": "jshint --verbose fidohtml.js test/test.js",
