@@ -176,3 +176,26 @@ function(){
       );
    });
 });
+
+describe('UUE decoder', function(){
+   it('decodes UUE buffer with the word "Cat"', function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'begin 644 buffer.bin\n#0V%T\n`\nend'
+         ),
+         '<a class="fileUUE" ' +
+         'href="data:application/octet-stream;base64,Q2F0">' +
+         'begin 644 buffer.bin<br>#0V%T<br>`<br>end</a>'
+      );
+   });
+   it('decodes UUE text with the word "Cat"', function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'begin 644 cat.txt\n#0V%T\n`\nend'
+         ),
+         '<a class="fileUUE" ' +
+         'href="data:text/plain;base64,Q2F0">' +
+         'begin 644 cat.txt<br>#0V%T<br>`<br>end</a>'
+      );
+   });
+});
