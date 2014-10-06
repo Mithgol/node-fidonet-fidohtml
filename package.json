@@ -17,7 +17,7 @@
    "fiunis": "~1.1.1",
    "mime": "~1.2.11",
    "underscore.string": "~2.3.3",
-   "uue": "~1.2.4"
+   "uue": "~2.0.0"
 },
 "scripts": {
    "pretest": "jshint --verbose fidohtml.js test/test.js",
