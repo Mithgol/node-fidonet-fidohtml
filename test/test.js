@@ -101,9 +101,9 @@ describe('Plain text processor', function(){
          'for you &amp; forever'
       );
    });
-   it('Linebreaks (LF and CR+LF) become <br> tags', function(){
+   it('Linebreaks (LF aka 0x0A) become <br> tags', function(){
       assert.deepEqual(
-         FidoHTML.fromText('foo\nbar\r\nbuzz'),
+         FidoHTML.fromText('foo\nbar\nbuzz'),
          'foo<br>bar<br>buzz'
       );
    });
