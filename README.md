@@ -40,15 +40,6 @@ Generates (and returns) HTML code from the given Fidonet message's text. Tha
 
 The following conversions are performed:
 
-* If a UUE block represents an image (i.e. if the [`mime`](https://www.npmjs.org/package/mime) package thinks that the block's filename corresponds to `'image/jpeg'`, or `'image/png'`, or `'image/gif'`, or `'image/svg+xml'` MIME type), then it is converted to an image. (The image's `src` attribute contains an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the image.) The image is wrapped in a `div` element with `class="imageUUE"` and a `data-name` attribute containing the file's name.
-   * `options.dataMode === true` → a `data-source` attribute is also added, containing the base64-encoded HTML5 representation of UUE codes
-
-* If a UUE block does not represent an image,
-   * `options.dataMode === false` → the block is wrapped in `a class="fileUUE"` element with a `href` attribute containing an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the decoded file.
-   * `options.dataMode === true` → the block is wrapped in `div class="fileUUE"` element with the following attributes:
-      * `data-name` — name of the encoded file
-      * `data-content` — base64-encoded content of the file
-
 * Origin line (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 3) is wrapped in `<div class="originLine">`. The origin's address part is additionally wrapped in `<span data-addr="…">`. The whole origin is also wrapped in `<font color="…">` (using `options.color.origin`) when `options.fontColor` is `true`.
 
 * Tearline (see [FTS-0004.001](http://ftsc.org/docs/fts-0004.001), “Conference Mail Message Control Information”, section 2) is wrapped in `<div class="tearline">`. It is also wrapped in `<font color="…">` (using `options.color.tearline`) when `options.fontColor` is `true`.
@@ -56,6 +47,15 @@ The following conversions are performed:
 * A tagline (a line that immediately precedes the origin and/or the tearline and starts with three dots `...`) is wrapped in `<div class="tagline">`. It is also wrapped in `<font color="…">` (using `options.color.tagline`) when `options.fontColor` is `true`.
 
 * Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…"` tag. The value of `data-authorID` contains the quote's author's initials and the following “greater than” characters — for example, `'MtW>>'`.
+
+* [Uuencoded](https://en.wikipedia.org/wiki/Uuencoding) data (even if quoted) is decoded and may appear as an image or a hyperlink:
+   * If a UUE block represents an image (i.e. if the [`mime`](https://www.npmjs.org/package/mime) package thinks that the block's filename corresponds to `'image/jpeg'`, or `'image/png'`, or `'image/gif'`, or `'image/svg+xml'` MIME type), then it is converted to an image. (The image's `src` attribute contains an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the image.) The image is wrapped in a `div` element with `class="imageUUE"` and a `data-name` attribute containing the file's name.
+      * `options.dataMode === true` → a `data-source` attribute is also added, containing the base64-encoded HTML5 representation of UUE codes
+   * If a UUE block does not represent an image,
+      * `options.dataMode === false` → the block is wrapped in `a class="fileUUE"` element with a `href` attribute containing an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the decoded file.
+      * `options.dataMode === true` → the block is wrapped in `div class="fileUUE"` element with the following attributes:
+         * `data-name` — name of the encoded file
+         * `data-content` — base64-encoded content of the file
 
 * [Fidonet Unicode substrings](https://github.com/Mithgol/fiunis) are converted to their Unicode equivalents (but not in UUE blocks).
 
