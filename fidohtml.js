@@ -143,7 +143,7 @@ var FidoHTML = function(options){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
       return textWithQuotes.split( // there are always initial and final `\n`
-         /(\n\s*([^\s\n>]*)>.*\n(?:\s*\2>.*\n)*)/
+         /(\n\s*([^\s\n>]*>+).*\n(?:\s*\2.*\n)*)/
       ).map(function(textFragment, fragmentIndex, fragmentList){
          if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
             return textFragment;
@@ -151,7 +151,7 @@ var FidoHTML = function(options){
             return null;
          } else { // regex-captured fragment's index: 1, 4, 7...
             var textWithRemovedQuotes = textFragment.split(
-               /\n\s*[^\s\n>]*>\s*/
+               /\n\s*[^\s\n>]*>+\s*/
             ).join(
                '\n' // \n followed by some authorID is replaced with simple \n
             );

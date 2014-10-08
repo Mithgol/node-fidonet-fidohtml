@@ -211,7 +211,7 @@ describe('Quote processor', function(){
          ].join('')),
          [
             'foo',
-            '<blockquote data-authorID="bar" class="fidoQuote">',
+            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
             'baz<br>quux',
             '</blockquote>',
             'Fnord.'
