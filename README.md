@@ -25,7 +25,9 @@ The `options` object (or any of its properties) may be absent. When present,
 
 * `options.dataMode` — by default it is `false`; when it's `true`, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
 
-* `options.fontColor` — by default it is `false`; when it's `true`, some elements are enclosed in `<font color="…">` and `</font>` tags. Such mode is useful when the necessary CSS styles are not expected to be available for HTML output; for example, if HTML is exported in RSS to some RSS browser or to some web site that does not expect specific (Fidonet-related) values of the `class="…"` attribute. Properties of the `options.color` object are used as such colors:
+* `options.fontColor` — by default it is `false`; when it's `true`, some elements are enclosed in `<font color="…">` and `</font>` tags. Such mode is useful when the necessary CSS styles are not expected to be available for HTML output; for example, if HTML is exported in RSS to some RSS browser or to some web site that does not expect specific (Fidonet-related) values of the `class="…"` attribute.
+
+* `options.color` — an object with the properties containing colors that are used in `color="…"` attributes when `options.fontColor` is `true`. These colors are:
    * `options.color.origin` — color of the origin line (see FTS-0004.001, “Conference Mail Message Control Information”, section 3). By default, `'#85144b'` ([clrs.cc](http://clrs.cc/) maroon).
    * `options.color.tearline` — color of the tearline (see FTS-0004.001, “Conference Mail Message Control Information”, section 2). By default, `'#3d9970'` ([clrs.cc](http://clrs.cc/) olive).
    * `options.color.tagline` — color of the tagline. By default, `'#ff851b'` ([clrs.cc](http://clrs.cc/) orange).
