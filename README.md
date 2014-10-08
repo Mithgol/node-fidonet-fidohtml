@@ -34,7 +34,9 @@ The constructed object has the following method:
 
 ### fromText(messageText)
 
-Generates (and returns) HTML code from the given Unicode message's text.
+Generates (and returns) HTML code from the given Fidonet message's text. That text is expected to be given in a JavaScript string (a Unicode string, not a binary) and with LF line endings (`'\n'`, i.e. hexadecimal `0A`).
+
+The following conversions are performed:
 
 * If a UUE block represents an image (i.e. if the [`mime`](https://www.npmjs.org/package/mime) package thinks that the block's filename corresponds to `'image/jpeg'`, or `'image/png'`, or `'image/gif'`, or `'image/svg+xml'` MIME type), then it is converted to an image. (The image's `src` attribute contains an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the image.) The image is wrapped in a `div` element with `class="imageUUE"` and a `data-name` attribute containing the file's name.
    * `options.dataMode === true` → a `data-source` attribute is also added, containing the base64-encoded HTML5 representation of UUE codes

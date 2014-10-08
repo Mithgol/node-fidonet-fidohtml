@@ -308,7 +308,7 @@ var FidoHTML = function(options){
          [/</g, '&lt;'],
          [/>/g, '&gt;'],
          [/\x22/g, '&quot;'],
-         [/\r?\n/g, '<br>']
+         [/\n/g, '<br>']
       ];
 
       return replacements.reduce(function(result, replacement){
