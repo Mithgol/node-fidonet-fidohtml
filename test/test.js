@@ -199,3 +199,23 @@ describe('UUE decoder', function(){
       );
    });
 });
+
+describe('Quote processor', function(){
+   it('detects simple quoted text', function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'foo\n',
+            ' bar> baz\n',
+            ' bar> quux\n',
+            'Fnord.'
+         ].join('')),
+         [
+            'foo',
+            '<blockquote data-authorID="bar" class="fidoQuote">',
+            'baz<br>quux',
+            '</blockquote>',
+            'Fnord.'
+         ].join('')
+      );
+   });
+});
