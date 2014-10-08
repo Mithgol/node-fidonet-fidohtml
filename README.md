@@ -51,6 +51,8 @@ Generates (and returns) HTML code from the given Unicode message's text.
 
 * A tagline (a line that immediately precedes the origin and/or the tearline and starts with three dots `...`) is wrapped in `<div class="tagline">`. It is also wrapped in `<font color="…">` (using `options.color.tagline`) when `options.fontColor` is `true`.
 
+* Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…"` tag. The value of `data-authorID` contains the quote's author's initials and the following “greater than” characters — for example, `'MtW>>'`.
+
 * [Fidonet Unicode substrings](https://github.com/Mithgol/fiunis) are converted to their Unicode equivalents (but not in UUE blocks).
 
 * URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags.
