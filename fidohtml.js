@@ -139,64 +139,11 @@ var FidoHTML = function(options){
       return outputHTML;
    });
 
-   this.ASTree.defineSplitter(function(textWithQuotes){
-      if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
-
-      return textWithQuotes.split( // there are always initial and final `\n`
-         /(\n\s*([^\s\n>]*>+).*\n(?:\s*\2.*\n)*)/
-      ).map(function(textFragment, fragmentIndex, fragmentList){
-         if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
-            return textFragment;
-         } else if( fragmentIndex % 3 === 2 ){ // author ID's index: 2, 5...
-            return null;
-         } else { // regex-captured fragment's index: 1, 4, 7...
-            var textWithRemovedQuotes = textFragment.split(
-               /\n\s*[^\s\n>]*>+\s*/
-            ).join(
-               '\n' // \n followed by some authorID is replaced with simple \n
-            );
-            textWithRemovedQuotes = textWithRemovedQuotes.slice(
-               1,textWithRemovedQuotes.length-1 // kill initial and final `\n`
-            );
-            return {
-               type: 'quote',
-               authorID: fragmentList[ fragmentIndex + 1 ],
-               quotedText: textWithRemovedQuotes
-            };
-         }
-      }).filter(function(nextFragment){
-         return nextFragment !== null;
-      });
-   });
-   this.ASTree.defineRenderer(['quote'], function(quote, render){
-      var outputHTML = '<blockquote ';
-      outputHTML += 'data-authorID="';
-      outputHTML += _s.escapeHTML(quote.authorID);
-      outputHTML += '" class="fidoQuote">';
-      outputHTML += render(quote.quotedText);
-      outputHTML += '</blockquote>';
-
-      return outputHTML;
-   });
-
-   // if an empty line appears immediately before tagline-tearline-origin,
-   // or immediately before some quoted text,
-   // then add a non-breaking space on that line
-   this.ASTree.defineSplitter(function(sourceText){
-      if( typeof sourceText !== 'string' ) return sourceText;
-
-      if( sourceText[sourceText.length - 1] !== '\n' ) return sourceText;
-
-      return sourceText + '\u00A0';
-   });
-
    // detect (and isolate) UUE code fragments
    this.ASTree.defineSplitter(function(inputData){
       if( typeof inputData !== 'string' ) return inputData;
       return UUE.split(inputData);
-   }, [
-      { type: 'quote', props: [ 'quotedText' ] }
-   ]);
+   });
    this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
       var mimeType = MIME.lookup(objectUUE.name);
       if([
@@ -248,6 +195,57 @@ var FidoHTML = function(options){
             ].join('');
          }
       }
+   });
+
+   this.ASTree.defineSplitter(function(textWithQuotes){
+      if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
+
+      return textWithQuotes.split( // there are always initial and final `\n`
+         /(\n\s*([^\s\n>]*>+).*\n(?:\s*\2.*\n)*)/
+      ).map(function(textFragment, fragmentIndex, fragmentList){
+         if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
+            return textFragment;
+         } else if( fragmentIndex % 3 === 2 ){ // author ID's index: 2, 5...
+            return null;
+         } else { // regex-captured fragment's index: 1, 4, 7...
+            var textWithRemovedQuotes = textFragment.split(
+               /\n\s*[^\s\n>]*>+\s*/
+            ).join(
+               '\n' // \n followed by some authorID is replaced with simple \n
+            );
+            textWithRemovedQuotes = textWithRemovedQuotes.slice(
+               1,textWithRemovedQuotes.length-1 // kill initial and final `\n`
+            );
+            return {
+               type: 'quote',
+               authorID: fragmentList[ fragmentIndex + 1 ],
+               quotedText: textWithRemovedQuotes
+            };
+         }
+      }).filter(function(nextFragment){
+         return nextFragment !== null;
+      });
+   });
+   this.ASTree.defineRenderer(['quote'], function(quote, render){
+      var outputHTML = '<blockquote ';
+      outputHTML += 'data-authorID="';
+      outputHTML += _s.escapeHTML(quote.authorID);
+      outputHTML += '" class="fidoQuote">';
+      outputHTML += render(quote.quotedText);
+      outputHTML += '</blockquote>';
+
+      return outputHTML;
+   });
+
+   // if an empty line appears immediately before tagline-tearline-origin,
+   // or immediately before some quoted text,
+   // then add a non-breaking space on that line
+   this.ASTree.defineSplitter(function(sourceText){
+      if( typeof sourceText !== 'string' ) return sourceText;
+
+      if( sourceText[sourceText.length - 1] !== '\n' ) return sourceText;
+
+      return sourceText + '\u00A0';
    });
 
    // convert Fidonet Unicode substrings (but not in UUE blocks)
