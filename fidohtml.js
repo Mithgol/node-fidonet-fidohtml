@@ -201,7 +201,7 @@ var FidoHTML = function(options){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
       return textWithQuotes.split( // there are always initial and final `\n`
-         /(\n\s*([^\s\n>]*>+).*\n(?:\s*\2.*\n)*)/
+         /(\n\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
       ).map(function(textFragment, fragmentIndex, fragmentList){
          if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
             return textFragment;
@@ -214,8 +214,17 @@ var FidoHTML = function(options){
                '\n' // \n followed by some authorID is replaced with simple \n
             );
             textWithRemovedQuotes = textWithRemovedQuotes.slice(
-               1,textWithRemovedQuotes.length-1 // kill initial and final `\n`
+               1, textWithRemovedQuotes.length // kill initial `\n`
             );
+            if(
+               textWithRemovedQuotes.charAt(
+                  textWithRemovedQuotes.length - 1
+               ) === '\n'
+            ){
+               textWithRemovedQuotes = textWithRemovedQuotes.slice(
+                  0, textWithRemovedQuotes.length-1 // kill final `\n`
+               );
+            }
             return {
                type: 'quote',
                authorID: fragmentList[ fragmentIndex + 1 ],
