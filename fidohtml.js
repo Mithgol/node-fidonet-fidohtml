@@ -200,14 +200,19 @@ var FidoHTML = function(options){
    this.ASTree.defineSplitter(function(textWithQuotes){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
-      return textWithQuotes.split( // there are always initial and final `\n`
-         /(\n\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
+      return textWithQuotes.split(
+         // initial `\n` is expected & captured unless the source begins there
+         // final `\n` is captured if not before the next (different) quote
+         /((?:^|\n)\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
       ).map(function(textFragment, fragmentIndex, fragmentList){
          if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
             return textFragment;
          } else if( fragmentIndex % 3 === 2 ){ // author ID's index: 2, 5...
             return null;
          } else { // regex-captured fragment's index: 1, 4, 7...
+            if( textFragment.charAt(0) !== '\n' ){ // see (?:^|\n) in regex
+               textFragment = '\n' + textFragment;
+            }
             var textWithRemovedQuotes = textFragment.split(
                /\n\s*[^\s\n>]*>+\s*/
             ).join(

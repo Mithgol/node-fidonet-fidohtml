@@ -218,4 +218,19 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
+   it('detects quoted text in the beginning of a message', function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            ' bar> baz\n',
+            ' bar> quux\n',
+            'Fnord.'
+         ].join('')),
+         [
+            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            'baz<br>quux',
+            '</blockquote>',
+            'Fnord.'
+         ].join('')
+      );
+   });
 });
