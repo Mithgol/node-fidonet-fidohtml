@@ -1,4 +1,5 @@
 var ASTree = require('astree');
+var colorsCSS = require('colors.css');
 var Dauria = require('dauria');
 var extend = require('extend');
 var Fiunis = require('fiunis');
@@ -10,9 +11,9 @@ var defaults = {
    dataMode: false,
    fontColor: false,
    color: {
-      origin: '#85144b',
-      tearline: '#3d9970',
-      tagline: '#ff851b'
+      origin: colorsCSS.maroon,
+      tearline: colorsCSS.olive,
+      tagline: colorsCSS.orange
    }
 };
 
