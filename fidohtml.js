@@ -197,25 +197,38 @@ var FidoHTML = function(options){
       }
    });
 
+   // quotes
    this.ASTree.defineSplitter(function(textWithQuotes){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
-      return textWithQuotes.split(
+      var getInitialSplitRegExp = function(){
+         /* jshint maxlen: false */
          // initial `\n` is expected & captured unless the source begins there
          // final `\n` is captured if not before the next (different) quote
-         /((?:^|\n)\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
+         // `\s` in `\n\s*\2` may match newlines, allows empty unquoted lines
+         return (
+            /((?:^|\n)\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
+         );
+      };
+
+      return textWithQuotes.split(
+         getInitialSplitRegExp()
       ).map(function(textFragment, fragmentIndex, fragmentList){
-         if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
+         if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3, 6...
             return textFragment;
-         } else if( fragmentIndex % 3 === 2 ){ // author ID's index: 2, 5...
-            return null;
-         } else { // regex-captured fragment's index: 1, 4, 7...
+         } else if( fragmentIndex % 3 === 1 ){ // regex-captured: 1, 4, 7...
             if( textFragment.charAt(0) !== '\n' ){ // see (?:^|\n) in regex
                textFragment = '\n' + textFragment;
             }
             var textWithRemovedQuotes = textFragment.split(
-               /\n\s*[^\s\n>]*>+\s*/
-            ).join(
+               '\n'
+            ).map(function(fragmentLine){
+               // if a line is quoted, it becomes unquoted
+               return fragmentLine.replace(
+                  /^\s*[^\s\n>]*>+\s*/,
+                  ''
+               );
+            }).join(
                '\n' // \n followed by some authorID is replaced with simple \n
             );
             textWithRemovedQuotes = textWithRemovedQuotes.slice(
@@ -235,7 +248,7 @@ var FidoHTML = function(options){
                authorID: fragmentList[ fragmentIndex + 1 ],
                quotedText: textWithRemovedQuotes
             };
-         }
+         } else return null; // a fragment captured by an inner quote
       }).filter(function(nextFragment){
          return nextFragment !== null;
       });

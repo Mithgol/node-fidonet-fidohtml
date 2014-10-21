@@ -233,4 +233,23 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
+   it('includes empty (unquoted) lines in a surrounding quote', function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Realm.\n',
+            ' bar> baz\n',
+            '\n',
+            '  \n',
+            ' bar> quux\n',
+            'Fnord.'
+         ].join('')),
+         [
+            'Realm.',
+            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            'baz<br><br>\u00A0 <br>quux',
+            '</blockquote>',
+            'Fnord.'
+         ].join('')
+      );
+   });
 });
