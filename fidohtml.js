@@ -202,57 +202,91 @@ var FidoHTML = function(options){
    this.ASTree.defineSplitter(function(textWithQuotes){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
-      var getInitialSplitRegExp = function(){
-         /* jshint maxlen: false */
-         // initial `\n` is expected & captured unless the source begins there
-         // final `\n` is captured if not before the next (different) quote
-         // `\s` in `\n\s*\2` may match newlines, allows empty unquoted lines
-         return (
-            /((?:^|\n)\s*([^\s\n>]*>+).*(?:\n\s*\2.*)*(?:\n(?!\s*[^\s\n>]*>+))?)/
-         );
+      var lines = textWithQuotes.split('\n');
+
+      var arrayAccum = []; // accumulates AST nodes to be returned
+      var accum = ''; // accumulates the content for the current AST node
+      var modeQuote = false; // initial mode is plain text, not inside a quote
+      var authorID; // (possibly empty) initials before the `>`
+      var quoteLevel; // how many `>` are there
+      var matches; // used when we exec a regexp
+
+      var pushCurrentQuote = function(){
+         arrayAccum.push({
+            type: 'quote',
+            authorID: authorID + _s.repeat('>', quoteLevel),
+            quotedText: accum
+         });
       };
 
-      return textWithQuotes.split(
-         getInitialSplitRegExp()
-      ).map(function(textFragment, fragmentIndex, fragmentList){
-         if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3, 6...
-            return textFragment;
-         } else if( fragmentIndex % 3 === 1 ){ // regex-captured: 1, 4, 7...
-            if( textFragment.charAt(0) !== '\n' ){ // see (?:^|\n) in regex
-               textFragment = '\n' + textFragment;
+      lines.forEach(function(nextLine){
+         if( !modeQuote ){ // plain text mode, not in a quote
+            if( /^\s*[^\s>]*>+/.test(nextLine) ){
+               // a quote is found
+               // abort the plain text mode, start the quote mode
+               if( _s.endsWith(accum, '\n\n') ){
+                  arrayAccum.push( accum.slice(0, accum.length - 1) );
+               } else arrayAccum.push(accum);
+               modeQuote = true;
+               matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
+               authorID = matches[1];
+               quoteLevel = matches[2].length;
+               accum = matches[3];
+               return;
             }
-            var textWithRemovedQuotes = textFragment.split(
-               '\n'
-            ).map(function(fragmentLine){
-               // if a line is quoted, it becomes unquoted
-               return fragmentLine.replace(
-                  /^\s*[^\s\n>]*>+\s*/,
-                  ''
-               );
-            }).join(
-               '\n' // \n followed by some authorID is replaced with simple \n
-            );
-            textWithRemovedQuotes = textWithRemovedQuotes.slice(
-               1, textWithRemovedQuotes.length // kill initial `\n`
-            );
-            if(
-               textWithRemovedQuotes.charAt(
-                  textWithRemovedQuotes.length - 1
-               ) === '\n'
-            ){
-               textWithRemovedQuotes = textWithRemovedQuotes.slice(
-                  0, textWithRemovedQuotes.length-1 // kill final `\n`
-               );
+            // a quote is not found, continue the plain text mode
+            if( accum === '' ){
+               accum = nextLine;
+            } else {
+               accum += '\n' + nextLine;
             }
-            return {
-               type: 'quote',
-               authorID: fragmentList[ fragmentIndex + 1 ],
-               quotedText: textWithRemovedQuotes
-            };
-         } else return null; // a fragment captured by an inner quote
-      }).filter(function(nextFragment){
-         return nextFragment !== null;
+            return;
+         }
+         // we are inside a quote
+         matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
+         if( matches === null ){ // a quote is not detected
+            if( /^\s*$/.test(nextLine) ){ // but the line is visually empty
+               accum += '\n' + nextLine;
+               return;
+            }
+            // abort the quote mode, start the plain text mode
+            if( _s.endsWith(accum, '\n\n') ){
+               accum = accum.slice(0, accum.length - 1);
+            }
+            pushCurrentQuote();
+            modeQuote = false;
+            accum = nextLine;
+            return;
+         }
+         // some quote is detected
+         if(
+            authorID === matches[1] &&
+            quoteLevel === matches[2].length
+         ){ // visually equivalent to the current quote
+            accum += '\n' + matches[3];
+            return;
+         }
+         // a different quote is detected
+         // TODO: process nested quotes correctly
+         if( _s.endsWith(accum, '\n\n') ){
+            accum = accum.slice(0, accum.length - 1);
+         }
+         pushCurrentQuote();
+         authorID = matches[1];
+         quoteLevel = matches[2].length;
+         accum = matches[3];
       });
+
+      // correctly flush the accumulated result
+      if( modeQuote ){
+         if( _s.endsWith(accum, '\n\n') ){
+            accum = accum.slice(0, accum.length - 1);
+         }
+         pushCurrentQuote();
+         return arrayAccum;
+      }
+      arrayAccum.push(accum);
+      return arrayAccum;
    });
    this.ASTree.defineRenderer(['quote'], function(quote, render){
       var outputHTML = '<blockquote ';
