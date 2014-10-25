@@ -252,4 +252,26 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
+   it('does not include empty lines surrounding a quote', function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Realm.\n',
+            '\n\n',
+            ' bar> baz\n',
+            '\n',
+            '  \n',
+            ' bar> quux\n',
+            '\n',
+            'Fnord.'
+         ].join('')),
+         [
+            'Realm.<br><br>\u00A0',
+            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            'baz<br><br>\u00A0 <br>quux',
+            '</blockquote>',
+            '\u00A0<br>',
+            'Fnord.'
+         ].join('')
+      );
+   });
 });

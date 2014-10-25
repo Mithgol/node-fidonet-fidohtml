@@ -209,7 +209,16 @@ var FidoHTML = function(options){
       var modeQuote = false; // initial mode is plain text, not inside a quote
       var authorID; // (possibly empty) initials before the `>`
       var quoteLevel; // how many `>` are there
-      var matches; // used when we exec a regexp
+      var matches; // keeps matches from a regexp
+      var newlines; // contains newlines from the tail of a quote
+
+      var grabNewlinesFromQuote = function(){
+         newlines = '';
+         while( _s.endsWith(accum, '\n') ){
+            accum = accum.slice(0, accum.length - 1);
+            newlines += '\n';
+         }
+      };
 
       var pushCurrentQuote = function(){
          arrayAccum.push({
@@ -224,9 +233,7 @@ var FidoHTML = function(options){
             if( /^\s*[^\s>]*>+/.test(nextLine) ){
                // a quote is found
                // abort the plain text mode, start the quote mode
-               if( _s.endsWith(accum, '\n\n') ){
-                  arrayAccum.push( accum.slice(0, accum.length - 1) );
-               } else arrayAccum.push(accum);
+               arrayAccum.push(accum);
                modeQuote = true;
                matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
                authorID = matches[1];
@@ -250,12 +257,10 @@ var FidoHTML = function(options){
                return;
             }
             // abort the quote mode, start the plain text mode
-            if( _s.endsWith(accum, '\n') ){
-               accum = accum.slice(0, accum.length - 1);
-            }
+            grabNewlinesFromQuote();
             pushCurrentQuote();
             modeQuote = false;
-            accum = nextLine;
+            accum = newlines + nextLine;
             return;
          }
          // some quote is detected
@@ -268,10 +273,9 @@ var FidoHTML = function(options){
          }
          // a different quote is detected
          // TODO: process nested quotes correctly
-         if( _s.endsWith(accum, '\n') ){
-            accum = accum.slice(0, accum.length - 1);
-         }
+         grabNewlinesFromQuote();
          pushCurrentQuote();
+         arrayAccum.push(newlines);
          authorID = matches[1];
          quoteLevel = matches[2].length;
          accum = matches[3];
@@ -279,10 +283,9 @@ var FidoHTML = function(options){
 
       // correctly flush the accumulated result
       if( modeQuote ){
-         if( _s.endsWith(accum, '\n') ){
-            accum = accum.slice(0, accum.length - 1);
-         }
+         grabNewlinesFromQuote();
          pushCurrentQuote();
+         arrayAccum.push(newlines);
          return arrayAccum;
       }
       arrayAccum.push(accum);
@@ -301,14 +304,16 @@ var FidoHTML = function(options){
    });
 
    // if an empty line appears immediately before tagline-tearline-origin,
-   // or immediately before some quoted text,
+   // or immediately before (or after) some quoted text,
+   // or in the beginning of the whole message,
    // then add a non-breaking space on that line
    this.ASTree.defineSplitter(function(sourceText){
       if( typeof sourceText !== 'string' ) return sourceText;
 
-      if( sourceText[sourceText.length - 1] !== '\n' ) return sourceText;
+      if( _s.startsWith(sourceText, '\n') ) sourceText = '\u00A0'+sourceText;
+      if( _s.endsWith(sourceText, '\n') ) sourceText += '\u00A0';
 
-      return sourceText + '\u00A0';
+      return sourceText;
    });
 
    // convert Fidonet Unicode substrings (but not in UUE blocks)
