@@ -199,7 +199,7 @@ var FidoHTML = function(options){
    });
 
    // quotes
-   this.ASTree.defineSplitter(function(textWithQuotes){
+   var quoteSplitter = function(textWithQuotes){
       if( typeof textWithQuotes !== 'string' ) return textWithQuotes;
 
       var lines = textWithQuotes.split('\n');
@@ -250,7 +250,7 @@ var FidoHTML = function(options){
                return;
             }
             // abort the quote mode, start the plain text mode
-            if( _s.endsWith(accum, '\n\n') ){
+            if( _s.endsWith(accum, '\n') ){
                accum = accum.slice(0, accum.length - 1);
             }
             pushCurrentQuote();
@@ -268,7 +268,7 @@ var FidoHTML = function(options){
          }
          // a different quote is detected
          // TODO: process nested quotes correctly
-         if( _s.endsWith(accum, '\n\n') ){
+         if( _s.endsWith(accum, '\n') ){
             accum = accum.slice(0, accum.length - 1);
          }
          pushCurrentQuote();
@@ -279,7 +279,7 @@ var FidoHTML = function(options){
 
       // correctly flush the accumulated result
       if( modeQuote ){
-         if( _s.endsWith(accum, '\n\n') ){
+         if( _s.endsWith(accum, '\n') ){
             accum = accum.slice(0, accum.length - 1);
          }
          pushCurrentQuote();
@@ -287,7 +287,8 @@ var FidoHTML = function(options){
       }
       arrayAccum.push(accum);
       return arrayAccum;
-   });
+   };
+   this.ASTree.defineSplitter(quoteSplitter);
    this.ASTree.defineRenderer(['quote'], function(quote, render){
       var outputHTML = '<blockquote ';
       outputHTML += 'data-authorID="';
