@@ -310,8 +310,14 @@ var FidoHTML = function(options){
    this.ASTree.defineSplitter(function(sourceText){
       if( typeof sourceText !== 'string' ) return sourceText;
 
-      if( _s.startsWith(sourceText, '\n') ) sourceText = '\u00A0'+sourceText;
-      if( _s.endsWith(sourceText, '\n') ) sourceText += '\u00A0';
+      if( sourceText === '\n') ){
+         sourceText = '\u00A0';
+      } else {
+         if( _s.startsWith(sourceText, '\n') ){
+            sourceText = '\u00A0' + sourceText;
+         }
+         if( _s.endsWith(sourceText, '\n') ) sourceText += '\u00A0';
+      }
 
       return sourceText;
    });
