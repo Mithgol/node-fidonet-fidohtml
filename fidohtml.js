@@ -223,7 +223,8 @@ var FidoHTML = function(options){
       var pushCurrentQuote = function(){
          arrayAccum.push({
             type: 'quote',
-            authorID: authorID + _s.repeat('>', quoteLevel),
+            authorID: authorID,
+            quoteLevel: quoteLevel,
             quotedText: accum
          });
       };
@@ -293,12 +294,20 @@ var FidoHTML = function(options){
    };
    this.ASTree.defineSplitter(quoteSplitter);
    this.ASTree.defineRenderer(['quote'], function(quote, render){
-      var outputHTML = '<blockquote ';
-      outputHTML += 'data-authorID="';
-      outputHTML += _s.escapeHTML(quote.authorID);
-      outputHTML += '" class="fidoQuote">';
+      var outputHTML = _s.repeat(
+         '<blockquote class="fidoQuoteOuter">', quote.quoteLevel - 1
+      );
+      outputHTML += '<blockquote ';
+      if( _converter.options.dataMode ){
+         outputHTML += 'data-authorID="';
+         outputHTML += _s.escapeHTML(quote.authorID);
+         outputHTML += '" data-quoteLevel="';
+         outputHTML += _s.escapeHTML(quote.quoteLevel);
+         outputHTML += '" ';
+      }
+      outputHTML += 'class="fidoQuote">';
       outputHTML += render(quote.quotedText);
-      outputHTML += '</blockquote>';
+      outputHTML += _s.repeat('</blockquote>', quote.quoteLevel);
 
       return outputHTML;
    });
@@ -310,7 +319,7 @@ var FidoHTML = function(options){
    this.ASTree.defineSplitter(function(sourceText){
       if( typeof sourceText !== 'string' ) return sourceText;
 
-      if( sourceText === '\n') ){
+      if( sourceText === '\n' ){
          sourceText = '\u00A0';
       } else {
          if( _s.startsWith(sourceText, '\n') ){

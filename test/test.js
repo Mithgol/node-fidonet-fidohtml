@@ -203,7 +203,7 @@ describe('UUE decoder', function(){
 describe('Quote processor', function(){
    it('detects simple quoted text', function(){
       assert.deepEqual(
-         FidoHTML.fromText([
+         inDataMode.fromText([
             'foo\n',
             ' bar> baz\n',
             ' bar> quux\n',
@@ -211,7 +211,8 @@ describe('Quote processor', function(){
          ].join('')),
          [
             'foo',
-            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            '<blockquote data-authorID="bar" data-quoteLevel="1"',
+            ' class="fidoQuote">',
             'baz<br>quux',
             '</blockquote>',
             'Fnord.'
@@ -220,13 +221,14 @@ describe('Quote processor', function(){
    });
    it('detects quoted text in the beginning of a message', function(){
       assert.deepEqual(
-         FidoHTML.fromText([
+         inDataMode.fromText([
             ' bar> baz\n',
             ' bar> quux\n',
             'Fnord.'
          ].join('')),
          [
-            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            '<blockquote data-authorID="bar" data-quoteLevel="1"',
+            ' class="fidoQuote">',
             'baz<br>quux',
             '</blockquote>',
             'Fnord.'
@@ -235,7 +237,7 @@ describe('Quote processor', function(){
    });
    it('includes empty (unquoted) lines in a surrounding quote', function(){
       assert.deepEqual(
-         FidoHTML.fromText([
+         inDataMode.fromText([
             'Realm.\n',
             ' bar> baz\n',
             '\n',
@@ -245,7 +247,8 @@ describe('Quote processor', function(){
          ].join('')),
          [
             'Realm.',
-            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            '<blockquote data-authorID="bar" data-quoteLevel="1"',
+            ' class="fidoQuote">',
             'baz<br><br>\u00A0 <br>quux',
             '</blockquote>',
             'Fnord.'
@@ -254,7 +257,7 @@ describe('Quote processor', function(){
    });
    it('does not include empty lines surrounding a quote', function(){
       assert.deepEqual(
-         FidoHTML.fromText([
+         inDataMode.fromText([
             'Realm.\n',
             '\n\n',
             ' bar> baz\n',
@@ -266,7 +269,8 @@ describe('Quote processor', function(){
          ].join('')),
          [
             'Realm.<br><br>\u00A0',
-            '<blockquote data-authorID="bar&gt;" class="fidoQuote">',
+            '<blockquote data-authorID="bar" data-quoteLevel="1"',
+            ' class="fidoQuote">',
             'baz<br><br>\u00A0 <br>quux',
             '</blockquote>',
             '\u00A0<br>',
