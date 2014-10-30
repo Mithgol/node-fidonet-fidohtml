@@ -278,4 +278,32 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
+   it('detects a quote inside another quote (FSC-0032.001 violation)',
+   function(){
+      assert.deepEqual(
+         inDataMode.fromText([
+            'Realm.\n',
+            '\n\n',
+            ' foo> bar\n',
+            ' foo> baz> quux\n',
+            ' foo> quuux\n',
+            '\n',
+            'Fnord.'
+         ].join('')),
+         [
+            'Realm.<br><br>\u00A0',
+            '<blockquote data-authorID="foo" data-quoteLevel="1"',
+            ' class="fidoQuote">',
+            'bar',
+            '<blockquote data-authorID="baz" data-quoteLevel="1"',
+            ' class="fidoQuote">',
+            'quux',
+            '</blockquote>',
+            'quuux',
+            '</blockquote>',
+            '\u00A0<br>',
+            'Fnord.'
+         ].join('')
+      );
+   });
 });

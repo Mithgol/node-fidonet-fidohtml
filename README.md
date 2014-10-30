@@ -46,7 +46,7 @@ The following conversions are performed:
 
 * A tagline (a line that immediately precedes the origin and/or the tearline and starts with three dots `...`) is wrapped in `<div class="tagline">`. It is also wrapped in `<font color="…">` (using `options.color.tagline`) when `options.fontColor` is `true`.
 
-* Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…" data-quoteLevel="…"` tag. (The value of `data-authorID` contains the quote's author's initials, and the value of `data-quoteLevel` contains the number of the following “greater than” characters. However, these `data-` attributes do not appear if `options.dataMode === false`.) The tag is then wrapped in additional `<blockquote class="fidoQuoteOuter">` tags if the `quoteLevel` is greater than 1 (these outer tags do not have `data-` attributes even if `options.dataMode === true`). For example, a quote preceded by `MtW>>>` characters would be converted to the following HTML (newlines and indentation added for clarity):
+* Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…" data-quoteLevel="…"` tag. (The value of `data-authorID` contains the quote's author's initials, and the value of `data-quoteLevel` contains the number of the following “greater than” characters. However, these `data-` attributes do not appear if `options.dataMode === false`.) The tag is then wrapped in additional `<blockquote class="fidoQuoteOuter">` tags if the `quoteLevel` is greater than 1 (these outer tags do not have `data-` attributes even if `options.dataMode === true`). For example, a quote preceded by `MtW>>>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
 
 ```html
 <blockquote class="fidoQuoteOuter">
@@ -54,6 +54,16 @@ The following conversions are performed:
       <blockquote data-authorID="MtW" data-quoteLevel="2" class="fidoQuote">
          ... quoted text goes here ...
       </blockquote>
+   </blockquote>
+</blockquote>
+```
+
+* The above conversion is recursively applied to the quote's contents, and thus even improperly quoted text (where a quote appears inside another quote despite being forbidden in FSC-0032.001) is also processed. For example, if `options.dataMode === true`, then a quote preceded by `foo> bar>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
+
+```html
+<blockquote data-authorID="foo" data-quoteLevel="1" class="fidoQuote">
+   <blockquote data-authorID="bar" data-quoteLevel="1" class="fidoQuote">
+      ... quoted text goes here ...
    </blockquote>
 </blockquote>
 ```
