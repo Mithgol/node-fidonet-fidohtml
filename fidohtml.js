@@ -225,7 +225,7 @@ var FidoHTML = function(options){
             type: 'quote',
             authorID: authorID,
             quoteLevel: quoteLevel,
-            quotedText: accum
+            quotedText: quoteSplitter(accum)
          });
       };
 
