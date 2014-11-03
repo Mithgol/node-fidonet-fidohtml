@@ -342,6 +342,32 @@ var FidoHTML = function(options){
       { type: 'tagline', props: ['content'] }
    ]);
 
+   // wrap lines in <code> where fixed character width is necessary
+   this.ASTree.defineSplitter(function(textLinesBlock){
+      if( typeof textLinesBlock !== 'string' ) return textLinesBlock;
+
+      return textLinesBlock.split(/(\n)/).map(function(lineOrEOL){
+         if( lineOrEOL === '\n' ) return lineOrEOL;
+
+         // Box Drawing:     http://www.unicode.org/charts/PDF/U2500.pdf
+         // Block Elements:  http://www.unicode.org/charts/PDF/U2580.pdf
+         if(!( /[\u2501-\u259F]/.test(lineOrEOL) )) return lineOrEOL;
+
+         return {
+            type: 'lineFixedWidth',
+            lineContent: lineOrEOL
+         };
+      });
+   }, [
+      { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'origin', props: ['preParens', 'addrText'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
+   ]);
+   this.ASTree.defineRenderer(['lineFixedWidth'], function(nextLine, render){
+      return '<code>' + render(nextLine.lineContent) + '</code>';
+   });
+
    // convert URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
@@ -361,6 +387,7 @@ var FidoHTML = function(options){
       });
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'lineFixedWidth', props: [ 'lineContent' ] },
       { type: 'origin', props: ['preParens'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
@@ -397,6 +424,7 @@ var FidoHTML = function(options){
       }, sourceNode);
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'lineFixedWidth', props: [ 'lineContent' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'hyperlink', props: [ 'textURL' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
