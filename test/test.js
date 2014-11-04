@@ -204,11 +204,11 @@ describe('Quote processor', function(){
    it('detects simple quoted text', function(){
       assert.deepEqual(
          inDataMode.fromText([
-            'foo\n',
-            ' bar> baz\n',
-            ' bar> quux\n',
+            'foo',
+            ' bar> baz',
+            ' bar> quux',
             'Fnord.'
-         ].join('')),
+         ].join('\n')),
          [
             'foo',
             '<blockquote data-authorID="bar" data-quoteLevel="1"',
@@ -222,10 +222,10 @@ describe('Quote processor', function(){
    it('detects quoted text in the beginning of a message', function(){
       assert.deepEqual(
          inDataMode.fromText([
-            ' bar> baz\n',
-            ' bar> quux\n',
+            ' bar> baz',
+            ' bar> quux',
             'Fnord.'
-         ].join('')),
+         ].join('\n')),
          [
             '<blockquote data-authorID="bar" data-quoteLevel="1"',
             ' class="fidoQuote">',
@@ -238,13 +238,13 @@ describe('Quote processor', function(){
    it('includes empty (unquoted) lines in a surrounding quote', function(){
       assert.deepEqual(
          inDataMode.fromText([
-            'Realm.\n',
-            ' bar> baz\n',
-            '\n',
-            '  \n',
-            ' bar> quux\n',
+            'Realm.',
+            ' bar> baz',
+            '',
+            '  ',
+            ' bar> quux',
             'Fnord.'
-         ].join('')),
+         ].join('\n')),
          [
             'Realm.',
             '<blockquote data-authorID="bar" data-quoteLevel="1"',
@@ -258,15 +258,16 @@ describe('Quote processor', function(){
    it('does not include empty lines surrounding a quote', function(){
       assert.deepEqual(
          inDataMode.fromText([
-            'Realm.\n',
-            '\n\n',
-            ' bar> baz\n',
-            '\n',
-            '  \n',
-            ' bar> quux\n',
-            '\n',
+            'Realm.',
+            '',
+            '',
+            ' bar> baz',
+            '',
+            '  ',
+            ' bar> quux',
+            '',
             'Fnord.'
-         ].join('')),
+         ].join('\n')),
          [
             'Realm.<br><br>\u00A0',
             '<blockquote data-authorID="bar" data-quoteLevel="1"',
@@ -282,14 +283,15 @@ describe('Quote processor', function(){
    function(){
       assert.deepEqual(
          inDataMode.fromText([
-            'Realm.\n',
-            '\n\n',
-            ' foo> bar\n',
-            ' foo> baz> quux\n',
-            ' foo> quuux\n',
-            '\n',
+            'Realm.',
+            '',
+            '',
+            ' foo> bar',
+            ' foo> baz> quux',
+            ' foo> quuux',
+            '',
             'Fnord.'
-         ].join('')),
+         ].join('\n')),
          [
             'Realm.<br><br>\u00A0',
             '<blockquote data-authorID="foo" data-quoteLevel="1"',
