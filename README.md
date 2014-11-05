@@ -83,6 +83,8 @@ The following conversions are performed:
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
+* If a line contains any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), the whole line is wrapped in `<code>…</code>` tags (and thus a monospace font is expected).
+
 * A space in the beginning of a line is converted to a no-break space.
 
 * The second of two adjacent spaces is converted to a no-break space.
