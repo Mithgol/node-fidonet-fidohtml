@@ -309,3 +309,28 @@ describe('Quote processor', function(){
       );
    });
 });
+
+describe('Fixed width character lines detector', function(){
+   it("pseudographical box characters' width is fixed", function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo bar',
+            '╔═══════╗',
+            '║ Baz.  ║',
+            '╟───────╢',
+            '║ Quux. ║',
+            '╚═══════╝',
+            'Fnord.'
+         ].join('\n')),
+         [
+            'Foo bar',
+            '<code>╔═══════╗</code>',
+            '<code>║ Baz.  ║</code>',
+            '<code>╟───────╢</code>',
+            '<code>║ Quux. ║</code>',
+            '<code>╚═══════╝</code>',
+            'Fnord.'
+         ].join('<br>')
+      );
+   });
+});
