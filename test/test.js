@@ -316,7 +316,7 @@ describe('Fixed width character lines detector', function(){
          FidoHTML.fromText([
             'Foo bar',
             '╔═══════╗',
-            '║ Baz.  ║',
+            '║ Baz.  ║',
             '╟───────╢',
             '║ Quux. ║',
             '╚═══════╝',
@@ -325,10 +325,33 @@ describe('Fixed width character lines detector', function(){
          [
             'Foo bar',
             '<code>╔═══════╗</code>',
-            '<code>║ Baz.  ║</code>',
+            '<code>║ Baz. \u00A0║</code>',
             '<code>╟───────╢</code>',
             '<code>║ Quux. ║</code>',
             '<code>╚═══════╝</code>',
+            'Fnord.'
+         ].join('<br>')
+      );
+   });
+   it('URLs are hyperlinked in blocks of fixed width characters',
+   function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo bar',
+            '╔═══════════════╗',
+            '║ Baz.          ║',
+            '╟───────────────╢',
+            '║ skype:echo123 ║',
+            '╚═══════════════╝',
+            'Fnord.'
+         ].join('\n')),
+         [
+            'Foo bar',
+            '<code>╔═══════════════╗</code>',
+            '<code>║ Baz. \u00A0 \u00A0 \u00A0 \u00A0 \u00A0║</code>',
+            '<code>╟───────────────╢</code>',
+            '<code>║ <a href="skype:echo123">skype:echo123</a> ║</code>',
+            '<code>╚═══════════════╝</code>',
             'Fnord.'
          ].join('<br>')
       );
