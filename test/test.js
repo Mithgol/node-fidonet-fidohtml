@@ -34,6 +34,16 @@ describe('URL processor', function(){
          'mailto: someone@example.com'
       );
    });
+   it('ed2k URL in curly braces is processed', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo {ed2k://|server|example.org|4661|/} bar'),
+         [
+            'foo {<a href="ed2k://|server|example.org|4661|/">',
+            'ed2k://|server|example.org|4661|/',
+            '</a>} bar'
+         ].join('')
+      );
+   });
    it('skype: URL in square brackets is processed', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo [skype:echo123] bar'),
