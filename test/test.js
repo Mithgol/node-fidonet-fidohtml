@@ -103,6 +103,20 @@ describe('Plain text processor', function(){
          'foo \u00A0 \u00A0'
       );
    });
+   it('A starting linebreak generates both NBSP and <br>', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('\nfoo'),
+         '\u00A0<br>foo'
+      );
+      assert.deepEqual(
+         FidoHTML.fromText('\nfoo\nbar'),
+         '\u00A0<br>foo<br>bar'
+      );
+      assert.deepEqual(
+         FidoHTML.fromText('\nfoo\n\nbar'),
+         '\u00A0<br>foo<br><br>bar'
+      );
+   });
    it('Angle brackets are converted to &lt; and &gt;', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo <bar> more'),

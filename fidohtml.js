@@ -207,6 +207,7 @@ var FidoHTML = function(options){
       var arrayAccum = []; // accumulates AST nodes to be returned
       var accum = ''; // accumulates the content for the current AST node
       var modeQuote = false; // initial mode is plain text, not inside a quote
+      var initialMode = true; // when `accum` is initially empty
       var authorID; // (possibly empty) initials before the `>`
       var quoteLevel; // how many `>` are there
       var matches; // keeps matches from a regexp
@@ -234,7 +235,9 @@ var FidoHTML = function(options){
             if( /^\s*[^\s>]*>+/.test(nextLine) ){
                // a quote is found
                // abort the plain text mode, start the quote mode
-               arrayAccum.push(accum);
+               if( initialMode ){
+                  initialMode = false;
+               } else arrayAccum.push(accum);
                modeQuote = true;
                matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
                authorID = matches[1];
@@ -243,14 +246,15 @@ var FidoHTML = function(options){
                return;
             }
             // a quote is not found, continue the plain text mode
-            if( accum === '' ){
+            if( initialMode ){
                accum = nextLine;
-            } else {
-               accum += '\n' + nextLine;
+               initialMode = false;
+               return;
             }
+            accum += '\n' + nextLine;
             return;
          }
-         // we are inside a quote
+         // we are inside a quote AND `initialMode` is already false
          matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
          if( matches === null ){ // a quote is not detected
             if( /^\s*$/.test(nextLine) ){ // but the line is visually empty
@@ -349,6 +353,7 @@ var FidoHTML = function(options){
       var accum = '';
       var arrAccum = [];
       var modeFixedWidth = false;
+      var initialMode = true;
 
       var pushMonospace = function(){
          arrAccum.push({
@@ -361,6 +366,7 @@ var FidoHTML = function(options){
          // Box Drawing:     http://www.unicode.org/charts/PDF/U2500.pdf
          // Block Elements:  http://www.unicode.org/charts/PDF/U2580.pdf
          if( /[\u2501-\u259F]/.test(nextLine) ){ // fixed width characters
+            initialMode = false;
             if( modeFixedWidth ){ // continue fixed width mode
                accum += '\n' + nextLine;
             } else { // start fixed width mode
@@ -370,8 +376,9 @@ var FidoHTML = function(options){
             }
          } else { // variable width characters
             if( !modeFixedWidth ){ // continue variable width mode
-               if( accum === '' ){
+               if( initialMode ){
                   accum = nextLine;
+                  initialMode = false;
                } else accum += '\n' + nextLine;
             } else { // start variable width mode
                pushMonospace();
