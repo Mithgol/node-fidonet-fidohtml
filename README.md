@@ -83,7 +83,9 @@ The following conversions are performed:
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
-* If a line contains any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), the whole line is wrapped in `<code>…</code>` tags (and thus a monospace font is expected).
+* If lines of text contain any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), then a sequence of such lines is wrapped in `<code>…</code>` tags (to be rendered with some monospace font) and then also in `<div class="monospaceBlock">…</div>`. The latter is useful in CSS in the following cases:
+   * When the style of `.monospaceBlock > code` elements has to be different from the other `code` elements.
+   * When the `line-height` inside a `.monospaceBlock` has to be different.
 
 * A space in the beginning of a line is converted to a no-break space.
 

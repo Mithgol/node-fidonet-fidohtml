@@ -346,26 +346,58 @@ var FidoHTML = function(options){
    this.ASTree.defineSplitter(function(textLinesBlock){
       if( typeof textLinesBlock !== 'string' ) return textLinesBlock;
 
-      return textLinesBlock.split(/(\n)/).map(function(lineOrEOL){
-         if( lineOrEOL === '\n' ) return lineOrEOL;
+      var accum = '';
+      var arrAccum = [];
+      var modeFixedWidth = false;
 
+      var pushMonospace = function(){
+         arrAccum.push({
+            type: 'monospaceBlock',
+            content: accum
+         });
+      };
+
+      textLinesBlock.split('\n').forEach(function(nextLine){
          // Box Drawing:     http://www.unicode.org/charts/PDF/U2500.pdf
          // Block Elements:  http://www.unicode.org/charts/PDF/U2580.pdf
-         if(!( /[\u2501-\u259F]/.test(lineOrEOL) )) return lineOrEOL;
-
-         return {
-            type: 'lineFixedWidth',
-            lineContent: lineOrEOL
-         };
+         if( /[\u2501-\u259F]/.test(nextLine) ){ // fixed width characters
+            if( modeFixedWidth ){ // continue fixed width mode
+               accum += '\n' + nextLine;
+            } else { // start fixed width mode
+               if( accum !== '' ) arrAccum.push(accum);
+               modeFixedWidth = true;
+               accum = nextLine;
+            }
+         } else { // variable width characters
+            if( !modeFixedWidth ){ // continue variable width mode
+               if( accum === '' ){
+                  accum = nextLine;
+               } else accum += '\n' + nextLine;
+            } else { // start variable width mode
+               pushMonospace();
+               modeFixedWidth = false;
+               accum = nextLine;
+            }
+         }
       });
+      // all lines are processed, push the accumulator
+      if( modeFixedWidth ){
+         pushMonospace();
+      } else arrAccum.push(accum);
+
+      return arrAccum;
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
    ]);
-   this.ASTree.defineRenderer(['lineFixedWidth'], function(nextLine, render){
-      return '<code>' + render(nextLine.lineContent) + '</code>';
+   this.ASTree.defineRenderer(['monospaceBlock'], function(msBlock, render){
+      return [
+         '<div class="monospaceBlock"><code>',
+         render( msBlock.content ),
+         '</code></div>'
+      ].join('');
    });
 
    // convert URLs to hyperlinks
@@ -387,7 +419,7 @@ var FidoHTML = function(options){
       });
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
-      { type: 'lineFixedWidth', props: [ 'lineContent' ] },
+      { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'origin', props: ['preParens'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
@@ -403,6 +435,7 @@ var FidoHTML = function(options){
    // perform character replacements:
    // *) in plain text
    // *) in quoted text
+   // *) in monospace text
    // *) in UUE code blocks
    // *) in the text of URLs
    // *) in the text of origins (including address)
@@ -424,7 +457,7 @@ var FidoHTML = function(options){
       }, sourceNode);
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
-      { type: 'lineFixedWidth', props: [ 'lineContent' ] },
+      { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'hyperlink', props: [ 'textURL' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },

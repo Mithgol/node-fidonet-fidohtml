@@ -324,13 +324,14 @@ describe('Fixed width character lines detector', function(){
          ].join('\n')),
          [
             'Foo bar',
-            '<code>╔═══════╗</code>',
-            '<code>║ Baz. \u00A0║</code>',
-            '<code>╟───────╢</code>',
-            '<code>║ Quux. ║</code>',
-            '<code>╚═══════╝</code>',
+            '<div class="monospaceBlock"><code>',
+            '╔═══════╗<br>',
+            '║ Baz. \u00A0║<br>',
+            '╟───────╢<br>',
+            '║ Quux. ║<br>',
+            '╚═══════╝</code></div>',
             'Fnord.'
-         ].join('<br>')
+         ].join('')
       );
    });
    it('URLs are hyperlinked in blocks of fixed width characters',
@@ -347,13 +348,14 @@ describe('Fixed width character lines detector', function(){
          ].join('\n')),
          [
             'Foo bar',
-            '<code>╔═══════════════╗</code>',
-            '<code>║ Baz. \u00A0 \u00A0 \u00A0 \u00A0 \u00A0║</code>',
-            '<code>╟───────────────╢</code>',
-            '<code>║ <a href="skype:echo123">skype:echo123</a> ║</code>',
-            '<code>╚═══════════════╝</code>',
+            '<div class="monospaceBlock"><code>',
+            '╔═══════════════╗<br>',
+            '║ Baz. \u00A0 \u00A0 \u00A0 \u00A0 \u00A0║<br>',
+            '╟───────────────╢<br>',
+            '║ <a href="skype:echo123">skype:echo123</a> ║<br>',
+            '╚═══════════════╝</code></div>',
             'Fnord.'
-         ].join('<br>')
+         ].join('')
       );
    });
 });
