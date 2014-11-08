@@ -143,7 +143,25 @@ var FidoHTML = function(options){
    // detect (and isolate) UUE code fragments
    this.ASTree.defineSplitter(function(inputData){
       if( typeof inputData !== 'string' ) return inputData;
-      return UUE.split(inputData);
+
+      // destroy `\n` adjacent to UUE blocks
+      return UUE.split(inputData).map(function(chunk, idx, chunkList){
+         if( typeof chunk !== 'string' ) return chunk;
+
+         if( idx < chunkList.length - 1 ){ // not the last chunk
+            if( _s.endsWith(chunk, '\n') ){
+               chunk = chunk.slice(0, chunk.length - 1);
+            }
+         }
+
+         if( idx > 0 ){ // not the first chunk
+            if( _s.startsWith(chunk, '\n') ){
+               chunk = chunk.slice(1, chunk.length);
+            }
+         }
+
+         return chunk;
+      });
    });
    this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
       var mimeType = MIME.lookup(objectUUE.name);
@@ -188,11 +206,11 @@ var FidoHTML = function(options){
             ].join('');
          } else { // not an image, and not in dataMode
             return [
-               '<a class="fileUUE" href="',
+               '<div class="linkUUE"><a href="',
                Dauria.getBase64DataURI(objectUUE.data, mimeType),
                '">',
                objectUUE.source,
-               '</a>'
+               '</a></div>'
             ].join('');
          }
       }
