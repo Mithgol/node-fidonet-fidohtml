@@ -14,7 +14,8 @@ var defaults = {
       origin: colorsCSS.maroon,
       tearline: colorsCSS.olive,
       tagline: colorsCSS.orange
-   }
+   },
+   styleCodes: 'Yes'
 };
 
 var FidoHTML = function(options){
