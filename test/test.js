@@ -60,6 +60,13 @@ describe('URL processor', function(){
          'foo [<a href="skype:echo123">skype:echo123</a>] bar'
       );
    });
+   it('area:// URL in angle brackets is processed', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo <area://Ru.Blog.Mithgol> bar'),
+         'foo &lt;<a href="area://Ru.Blog.Mithgol">' +
+         'area://Ru.Blog.Mithgol</a>&gt; bar'
+      );
+   });
    it('dataMode works fine', function(){
       assert.deepEqual(
          inDataMode.fromText('mailto:someone@example.com'),
