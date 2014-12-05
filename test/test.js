@@ -1,7 +1,20 @@
 /* global describe, it */
-var FidoHTML = require('../')();
-var inDataMode = require('../')({dataMode: true});
+var FidoHTML;
+var inDataMode;
 var assert = require('assert');
+
+describe('Fidonet HTML parser creation', function(){
+   it('a simple Fidonet HTML parser is created', function(){
+      assert.doesNotThrow(function(){
+         FidoHTML = require('../')();
+      });
+   });
+   it('a Fidonet HTML parser is created in inDataMode', function(){
+      assert.doesNotThrow(function(){
+         inDataMode = require('../')({dataMode: true});
+      });
+   });
+});
 
 describe('URL processor', function(){
    it('http:// URL is processed in the middle of a string', function(){
