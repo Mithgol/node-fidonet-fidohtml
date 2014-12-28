@@ -41,7 +41,11 @@ The constructed object has the following method:
 
 ### fromText(messageText)
 
-Generates (and returns) HTML code from the given Fidonet message's text. That text is expected to be given in a JavaScript string (a Unicode string, not a binary) and with LF line endings (`'\n'`, i.e. hexadecimal `0A`).
+Generates (and returns) HTML code from the given Fidonet message's text.
+
+That text (`messageText`) is expected to be given in a JavaScript string (a Unicode string, not a binary) and with LF line endings (`'\n'`, i.e. hexadecimal `0A`).
+
+This method merely performs the conversions prepared beforehand in the constructor. Therefore the conversions are controlled only by the options given to the constructor, and this method does not accept any additional options to alter those that were previously given.
 
 The following conversions are performed:
 
