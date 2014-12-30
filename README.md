@@ -37,15 +37,19 @@ The `options` object (or any of its properties) may be absent. When present,
    * `'Hide'` — same as above, but the style codes themselves are not displayed.
    * `'No'` — style codes are ignored (treated as any other characters).
 
-The constructed object has the following method:
+The constructed object has the following methods:
+
+### setOptions(options)
+
+This method can be used to alter some (or all) of the options that were previously set in the constructor. It affects the subsequent `.fromText` calls.
 
 ### fromText(messageText)
 
-Generates (and returns) HTML code from the given Fidonet message's text.
+This method generates (and returns) HTML code from the given Fidonet message's text.
 
 That text (`messageText`) is expected to be given in a JavaScript string (a Unicode string, not a binary) and with LF line endings (`'\n'`, i.e. hexadecimal `0A`).
 
-This method merely performs the conversions prepared beforehand in the constructor. Therefore the conversions are controlled only by the options given to the constructor, and this method does not accept any additional options to alter those that were previously given.
+This method merely performs the conversions prepared beforehand in the constructor. Therefore the conversions are controlled only by the options given to the constructor or to the `.setOptions` method. The `.fromText` method does not accept any additional options to alter those that were previously given.
 
 The following conversions are performed:
 

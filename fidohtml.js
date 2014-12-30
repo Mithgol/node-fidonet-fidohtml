@@ -492,6 +492,10 @@ var FidoHTML = function(options){
    ]);
 };
 
+FidoHTML.prototype.setOptions = function(options){
+   this.options = extend(true, {}, this.options, options);
+};
+
 FidoHTML.prototype.fromText = function(msgText){
    return this.ASTree.render(msgText);
 };
