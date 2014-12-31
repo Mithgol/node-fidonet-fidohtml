@@ -270,6 +270,47 @@ describe('UUE decoder', function(){
          ].join('')
       );
    });
+   it('can decode that text in dataMode and then leave dataMode', function(){
+      FidoHTML.setOptions({
+         dataMode: true
+      });
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo.',
+            'begin 644 cat.txt',
+            '#0V%T',
+            '`',
+            'end',
+            'Quux.'
+         ].join('\n')),
+         [
+            'Foo.',
+            '<div class="fileUUE" data-name="cat.txt" data-content="Q2F0">',
+            'begin 644 cat.txt<br>#0V%T<br>`<br>end</div>',
+            'Quux.'
+         ].join('')
+      );
+      FidoHTML.setOptions({
+         dataMode: false
+      });
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo.',
+            'begin 644 cat.txt',
+            '#0V%T',
+            '`',
+            'end',
+            'Quux.'
+         ].join('\n')),
+         [
+            'Foo.',
+            '<div class="linkUUE">',
+            '<a href="data:text/plain;base64,Q2F0">',
+            'begin 644 cat.txt<br>#0V%T<br>`<br>end</a></div>',
+            'Quux.'
+         ].join('')
+      );
+   });
 });
 
 describe('Quote processor', function(){
