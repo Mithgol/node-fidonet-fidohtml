@@ -183,6 +183,16 @@ var FidoHTML = function(options){
                '"'
             ].join('');
          }
+         var imageURL;
+         if( Array.isArray(_converter.options.fileURLParts) ){
+            imageURL = [
+               _converter.options.fileURLParts[0],
+               encodeURIComponent( objectUUE.name ),
+               _converter.options.fileURLParts[1]
+            ].join('');
+         } else {
+            imageURL = Dauria.getBase64DataURI(objectUUE.data, mimeType);
+         }
          return [
             '<div class="imageUUE" ',
             'data-name="',
@@ -191,7 +201,7 @@ var FidoHTML = function(options){
             addSourceData,
             '>',
             '<img src="',
-            Dauria.getBase64DataURI(objectUUE.data, mimeType),
+            _s.escapeHTML( imageURL ),
             '">',
             '</div>'
          ].join('');
@@ -207,9 +217,19 @@ var FidoHTML = function(options){
                '</div>'
             ].join('');
          } else { // not an image, and not in dataMode
+            var fileURL;
+            if( Array.isArray(_converter.options.fileURLParts) ){
+               fileURL = [
+                  _converter.options.fileURLParts[0],
+                  encodeURIComponent( objectUUE.name ),
+                  _converter.options.fileURLParts[1]
+               ].join('');
+            } else {
+               fileURL = Dauria.getBase64DataURI(objectUUE.data, mimeType);
+            }
             return [
                '<div class="linkUUE"><a href="',
-               Dauria.getBase64DataURI(objectUUE.data, mimeType),
+               _s.escapeHTML( fileURL ),
                '">',
                objectUUE.source,
                '</a></div>'
