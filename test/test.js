@@ -311,6 +311,51 @@ describe('UUE decoder', function(){
          ].join('')
       );
    });
+   it('can use fileURLParts in an URL and then stop using them', function(){
+      FidoHTML.setOptions({
+         fileURLParts: [
+            'https://example.org/bbs?area://Test/',
+            '?time=2015'
+         ]
+      });
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo.',
+            'begin 644 cat.txt',
+            '#0V%T',
+            '`',
+            'end',
+            'Quux.'
+         ].join('\n')),
+         [
+            'Foo.',
+            '<div class="linkUUE"><a ',
+            'href="https://example.org/bbs?area://Test/cat.txt?time=2015">',
+            'begin 644 cat.txt<br>#0V%T<br>`<br>end</a></div>',
+            'Quux.'
+         ].join('')
+      );
+      FidoHTML.setOptions({
+         fileURLParts: false
+      });
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo.',
+            'begin 644 cat.txt',
+            '#0V%T',
+            '`',
+            'end',
+            'Quux.'
+         ].join('\n')),
+         [
+            'Foo.',
+            '<div class="linkUUE">',
+            '<a href="data:text/plain;base64,Q2F0">',
+            'begin 644 cat.txt<br>#0V%T<br>`<br>end</a></div>',
+            'Quux.'
+         ].join('')
+      );
+   });
 });
 
 describe('Quote processor', function(){
