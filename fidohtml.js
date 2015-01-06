@@ -16,7 +16,10 @@ var defaults = {
       tagline: colorsCSS.orange
    },
    styleCodes: 'Yes',
-   fileURLParts: false
+   fileURLParts: false,
+   URLPrefixes: {
+      '*': ''
+   }
 };
 
 var FidoHTML = function(options){
@@ -476,11 +479,34 @@ var FidoHTML = function(options){
       { type: 'tagline', props: ['content'] }
    ]);
    this.ASTree.defineRenderer(['hyperlink'], function(hyperlink /*, render*/){
+      var linkURLPrefix;
+      if(
+         typeof _converter.options.URLPrefixes[ hyperlink.URLScheme ] !==
+         'undefined'
+      ){
+      } else if(
+         typeof _converter.options.URLPrefixes[ '*' ] !== 'undefined'
+      ){
+      } else linkURLPrefix = '';
+
       if( _converter.options.dataMode ){
-         return '<a href="javascript:;" data-href="' + hyperlink.URL + '">' +
-                hyperlink.textURL + '</a>';
+         return [
+            '<a href="javascript:;" data-href="',
+            linkURLPrefix,
+            hyperlink.URL,
+            '">',
+            hyperlink.textURL,
+            '</a>'
+         ].join('');
       }
-      return '<a href="' + hyperlink.URL + '">' + hyperlink.textURL + '</a>';
+      return [
+         '<a href="',
+         linkURLPrefix,
+         hyperlink.URL,
+         '">',
+         hyperlink.textURL,
+         '</a>'
+      ].join('');
    });
 
    // perform character replacements:
