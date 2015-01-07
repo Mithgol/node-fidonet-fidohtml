@@ -38,6 +38,9 @@ The `options` object (or any of its properties) may be absent. When present,
    * `'No'` — style codes are ignored (treated as any other characters).
 
 * `options.fileURLParts` — by default it is `false`; when altered, it should be given an array of two strings where the first string is added before and the second string is added after a filename to get the complete URL of that file. (For example, when the array `['https://example.org/fidonet?area://Test/', '?time=2015']` is given, it means that the file `example.zip` has the complete URL `https://example.org/fidonet?area://Test/example.zip?time=2015`.) The default `false` value means that the file's URL is not known (and thus some [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the file has to be used instead of it).
+   * **Note:**   URLs of the files are not affected by the `URLPrefixes` option.
+
+* `options.URLPrefixes` — by default it is `{'*': ''}`; in this object properties' names correspond to URL schemes and properties' values correspond to the prefixes that should be added to URLs when they are converted to hyperlinks. (For example, the URL `telnet:towel.blinkenlights.nl` gets converted to the hyperlink pointing to `https://example.org/console?telnet:towel.blinkenlights.nl` if `options.URLPrefixes.telnet` is `'https://example.org/console?'`.) The value of `options.URLPrefixes['*']` is used when the value for a particular URL scheme is `undefined`.
 
 The constructed object has the following methods:
 
@@ -99,6 +102,7 @@ The following conversions are performed:
 * URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags.
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
+   * A value from `options.URLPrefixes` is added before an URL. (For example, the URL `telnet:towel.blinkenlights.nl` is converted to `https://example.org/console?telnet:towel.blinkenlights.nl` if `options.URLPrefixes.telnet` is `'https://example.org/console?'`.) The value of `options.URLPrefixes['*']` is used when the prefix value for a particular URL scheme is `undefined`.
 
 * If lines of text contain any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), then a sequence of such lines is wrapped in `<code>…</code>` tags (to be rendered with some monospace font) and then also in `<div class="monospaceBlock">…</div>`. The latter is useful in CSS in the following cases:
    * When the style of `.monospaceBlock > code` elements has to be different from the other `code` elements.
