@@ -484,9 +484,11 @@ var FidoHTML = function(options){
          typeof _converter.options.URLPrefixes[ hyperlink.URLScheme ] !==
          'undefined'
       ){
+         linkURLPrefix = _converter.options.URLPrefixes[hyperlink.URLScheme];
       } else if(
          typeof _converter.options.URLPrefixes[ '*' ] !== 'undefined'
       ){
+         linkURLPrefix = _converter.options.URLPrefixes[ '*' ];
       } else linkURLPrefix = '';
 
       if( _converter.options.dataMode ){

@@ -1,6 +1,7 @@
 /* global describe, it */
 var FidoHTML;
 var inDataMode;
+var FidoHTMLPrefixArea;
 var assert = require('assert');
 
 describe('Fidonet HTML parser creation', function(){
@@ -12,6 +13,14 @@ describe('Fidonet HTML parser creation', function(){
    it('a Fidonet HTML parser is created in inDataMode', function(){
       assert.doesNotThrow(function(){
          inDataMode = require('../')({dataMode: true});
+      });
+   });
+   it('yet another parser is created with prefixed area:// URLs', function(){
+      assert.doesNotThrow(function(){
+         FidoHTMLPrefixArea = require('../')({URLPrefixes: {
+            '*': '',
+            'area': 'https://example.org/fidoviewer?'
+         }});
       });
    });
 });
@@ -77,6 +86,14 @@ describe('URL processor', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo <area://Ru.Blog.Mithgol> bar'),
          'foo &lt;<a href="area://Ru.Blog.Mithgol">' +
+         'area://Ru.Blog.Mithgol</a>&gt; bar'
+      );
+   });
+   it('an URL prefix is added to an area:// URL', function(){
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText('foo <area://Ru.Blog.Mithgol> bar'),
+         'foo &lt;' +
+         '<a href="https://example.org/fidoviewer?area://Ru.Blog.Mithgol">' +
          'area://Ru.Blog.Mithgol</a>&gt; bar'
       );
    });
