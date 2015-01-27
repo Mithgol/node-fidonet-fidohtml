@@ -122,7 +122,7 @@ The following conversions are performed:
 
 ## Testing Fidonet HTML
 
-[![(build testing status)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml.svg?branch=master)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
+[![(build testing status)](https://img.shields.io/travis/Mithgol/node-fidonet-fidohtml/master.svg?style=plastic)](https://travis-ci.org/Mithgol/node-fidonet-fidohtml)
 
 It is necessary to install [Mocha](http://visionmedia.github.io/mocha/) and [JSHint](http://jshint.com/) for testing.
 
