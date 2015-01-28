@@ -1,7 +1,7 @@
 {
 "name": "fidohtml",
 "main": "fidohtml.js",
-"version": "0.18.0",
+"version": "0.18.1",
 "description": "Makes HTML code out of a Fidonet message.",
 "keywords": ["Fidonet", "Fido", "HTML"],
 "author": { "name": "Mithgol the Webmaster" },
@@ -17,7 +17,7 @@
    "extend": "~2.0.0",
    "fiunis": "~1.1.1",
    "mime": "~1.2.11",
-   "underscore.string": "~2.4.0",
+   "underscore.string": "~3.0.2",
    "uue": "~2.0.0"
 },
 "scripts": {

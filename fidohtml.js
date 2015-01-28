@@ -5,7 +5,11 @@ var extend = require('extend');
 var Fiunis = require('fiunis');
 var MIME = require('mime');
 var UUE = require('uue');
-var _s = require('underscore.string');
+
+var endsWith = require('underscore.string/endsWith');
+var startsWith = require('underscore.string/startsWith');
+var escapeHTML = require('underscore.string/escapeHTML');
+var repeat = require('underscore.string/repeat');
 
 var defaults = {
    dataMode: false,
@@ -66,7 +70,7 @@ var FidoHTML = function(options){
       }
       outputHTML += render(origin.preParens);
       outputHTML += '(<span data-addr="';
-      outputHTML += _s.escapeHTML(origin.addrSource);
+      outputHTML += escapeHTML(origin.addrSource);
       outputHTML += '">';
       outputHTML += render(origin.addrText);
       outputHTML += '</span>)';
@@ -154,13 +158,13 @@ var FidoHTML = function(options){
          if( typeof chunk !== 'string' ) return chunk;
 
          if( idx < chunkList.length - 1 ){ // not the last chunk
-            if( _s.endsWith(chunk, '\n') ){
+            if( endsWith(chunk, '\n') ){
                chunk = chunk.slice(0, chunk.length - 1);
             }
          }
 
          if( idx > 0 ){ // not the first chunk
-            if( _s.startsWith(chunk, '\n') ){
+            if( startsWith(chunk, '\n') ){
                chunk = chunk.slice(1, chunk.length);
             }
          }
@@ -199,12 +203,12 @@ var FidoHTML = function(options){
          return [
             '<div class="imageUUE" ',
             'data-name="',
-            _s.escapeHTML( objectUUE.name ),
+            escapeHTML( objectUUE.name ),
             '"',
             addSourceData,
             '>',
             '<img src="',
-            _s.escapeHTML( imageURL ),
+            escapeHTML( imageURL ),
             '">',
             '</div>'
          ].join('');
@@ -212,7 +216,7 @@ var FidoHTML = function(options){
          if( _converter.options.dataMode ){
             return [
                '<div class="fileUUE" data-name="',
-               _s.escapeHTML( objectUUE.name ),
+               escapeHTML( objectUUE.name ),
                '" data-content="',
                objectUUE.data.toString('base64'),
                '">',
@@ -232,7 +236,7 @@ var FidoHTML = function(options){
             }
             return [
                '<div class="linkUUE"><a href="',
-               _s.escapeHTML( fileURL ),
+               escapeHTML( fileURL ),
                '">',
                objectUUE.source,
                '</a></div>'
@@ -258,7 +262,7 @@ var FidoHTML = function(options){
 
       var grabNewlinesFromQuote = function(){
          newlines = '';
-         while( _s.endsWith(accum, '\n') ){
+         while( endsWith(accum, '\n') ){
             accum = accum.slice(0, accum.length - 1);
             newlines += '\n';
          }
@@ -341,20 +345,20 @@ var FidoHTML = function(options){
    };
    this.ASTree.defineSplitter(quoteSplitter);
    this.ASTree.defineRenderer(['quote'], function(quote, render){
-      var outputHTML = _s.repeat(
+      var outputHTML = repeat(
          '<blockquote class="fidoQuoteOuter">', quote.quoteLevel - 1
       );
       outputHTML += '<blockquote ';
       if( _converter.options.dataMode ){
          outputHTML += 'data-authorID="';
-         outputHTML += _s.escapeHTML(quote.authorID);
+         outputHTML += escapeHTML(quote.authorID);
          outputHTML += '" data-quoteLevel="';
-         outputHTML += _s.escapeHTML(quote.quoteLevel);
+         outputHTML += escapeHTML(quote.quoteLevel);
          outputHTML += '" ';
       }
       outputHTML += 'class="fidoQuote">';
       outputHTML += render(quote.quotedText);
-      outputHTML += _s.repeat('</blockquote>', quote.quoteLevel);
+      outputHTML += repeat('</blockquote>', quote.quoteLevel);
 
       return outputHTML;
    });
@@ -369,10 +373,10 @@ var FidoHTML = function(options){
       if( sourceText === '\n' ){
          sourceText = '\u00A0';
       } else {
-         if( _s.startsWith(sourceText, '\n') ){
+         if( startsWith(sourceText, '\n') ){
             sourceText = '\u00A0' + sourceText;
          }
-         if( _s.endsWith(sourceText, '\n') ) sourceText += '\u00A0';
+         if( endsWith(sourceText, '\n') ) sourceText += '\u00A0';
       }
 
       return sourceText;
