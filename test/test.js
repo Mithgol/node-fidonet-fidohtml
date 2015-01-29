@@ -236,9 +236,9 @@ function(){
    function(){
       assert.deepEqual(
          FidoHTML.fromText(
-            'foo &+BDAENwRK;\nbar\n... &+BDEEQwQ6BDg;' +
-            '\n--- &+BDIEYwQ0BDg;' +
-            '\n * Origin: &+BDMEOwQwBDMEPgQ7BEw; (1:2/3.4)'
+            'foo &+BDAENwRK-;\nbar\n... &+BDEEQwQ6BDg-;' +
+            '\n--- &+BDIEYwQ0BDg-;' +
+            '\n * Origin: &+BDMEOwQwBDMEPgQ7BEw-; (1:2/3.4)'
          ),
          'foo азъ<br>bar<div class="tagline">... буки' +
          '</div><div class="tearline">--- в\u0463ди</div>' +
