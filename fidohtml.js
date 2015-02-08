@@ -279,14 +279,14 @@ var FidoHTML = function(options){
 
       lines.forEach(function(nextLine){
          if( !modeQuote ){ // plain text mode, not in a quote
-            if( /^\s*[^\s>]*>+/.test(nextLine) ){
+            if( /^\s*[^\s<>]*>+/.test(nextLine) ){
                // a quote is found
                // abort the plain text mode, start the quote mode
                if( initialMode ){
                   initialMode = false;
                } else arrayAccum.push(accum);
                modeQuote = true;
-               matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
+               matches = /^\s*([^\s<>]*)(>+)\s*(.*)$/.exec(nextLine);
                authorID = matches[1];
                quoteLevel = matches[2].length;
                accum = matches[3];
@@ -302,7 +302,7 @@ var FidoHTML = function(options){
             return;
          }
          // we are inside a quote AND `initialMode` is already false
-         matches = /^\s*([^\s>]*)(>+)\s*(.*)$/.exec(nextLine);
+         matches = /^\s*([^\s<>]*)(>+)\s*(.*)$/.exec(nextLine);
          if( matches === null ){ // a quote is not detected
             if( /^\s*$/.test(nextLine) ){ // but the line is visually empty
                accum += '\n' + nextLine;

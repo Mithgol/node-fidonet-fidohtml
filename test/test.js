@@ -483,6 +483,16 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
+   it("does not allow left angle bracket in quote's initials", function(){
+      assert.deepEqual(
+         FidoHTML.fromText('<foo> bar'),
+         '&lt;foo&gt; bar'
+      );
+      assert.deepEqual(
+         inDataMode.fromText('<foo> bar'),
+         '&lt;foo&gt; bar'
+      );
+   });
 });
 
 describe('Fixed width character lines detector', function(){
