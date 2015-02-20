@@ -1,6 +1,6 @@
 The **Fidonet HTML** module makes HTML code out of a Fidonet message.
 
-It is a module for Node.js (using Node.js version 0.10.x is recommended).
+This module is written in JavaScript and requires [Node.js](http://nodejs.org/) to run. (Node.js version 0.10.x or 0.12.x is recommended. The latest stable [io.js](https://iojs.org/) is fine too.)
 
 ## Installing Fidonet HTML
 
