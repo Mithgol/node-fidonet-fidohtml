@@ -1,3 +1,5 @@
+[![(a histogram of downloads)](https://nodei.co/npm-dl/fidohtml.png?height=3)](https://npmjs.org/package/fidohtml)
+
 The **Fidonet HTML** module makes HTML code out of a Fidonet message.
 
 This module is written in JavaScript and requires [Node.js](http://nodejs.org/) to run. (Node.js version 0.10.x or 0.12.x is recommended. The latest stable [io.js](https://iojs.org/) is fine too.)
