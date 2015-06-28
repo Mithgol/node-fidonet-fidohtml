@@ -34,7 +34,7 @@ The `options` object (or any of its properties) may be absent. When present,
    * `options.color.tearline` — color of the tearline (see FTS-0004.001, “Conference Mail Message Control Information”, section 2). By default, [clrs.cc](http://clrs.cc/) olive.
    * `options.color.tagline` — color of the tagline. By default, [clrs.cc](http://clrs.cc/) orange.
 
-* `options.styleCodes` — by default it is `'Yes'`; this string (not case-sensitive) may have one of the following values that control the processing of style codes:
+* ![(TODO: not ready)](https://img.shields.io/badge/TODO-%28not_ready%29-001f3f.svg?style=plastic) `options.styleCodes` — by default it is `'Yes'`; this string (not case-sensitive) may have one of the following values that control the processing of style codes:
    * `'Yes'` (default) — style codes affect the style of words surrounded by them. There are four types of style codes: `*asterisks*`, `_underscores_`, `#hashes#` or `/slashes/` around words.
    * `'Hide'` — same as above, but the style codes themselves are not displayed.
    * `'No'` — style codes are ignored (treated as any other characters).
