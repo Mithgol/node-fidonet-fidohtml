@@ -8,8 +8,10 @@ var UUE = require('uue');
 
 var endsWith = require('underscore.string/endsWith');
 var startsWith = require('underscore.string/startsWith');
-var escapeHTML = require('underscore.string/escapeHTML');
 var repeat = require('underscore.string/repeat');
+
+var _ = require('underscore');
+var escapeHTML = _.escape.bind(_);
 
 var defaults = {
    dataMode: false,
