@@ -6,10 +6,6 @@ var Fiunis = require('fiunis');
 var MIME = require('mime');
 var UUE = require('uue');
 
-var endsWith = require('underscore.string/endsWith');
-var startsWith = require('underscore.string/startsWith');
-var repeat = require('underscore.string/repeat');
-
 var _ = require('underscore');
 var escapeHTML = _.escape.bind(_);
 
@@ -160,13 +156,13 @@ var FidoHTML = function(options){
          if( typeof chunk !== 'string' ) return chunk;
 
          if( idx < chunkList.length - 1 ){ // not the last chunk
-            if( endsWith(chunk, '\n') ){
+            if( chunk.endsWith('\n') ){
                chunk = chunk.slice(0, chunk.length - 1);
             }
          }
 
          if( idx > 0 ){ // not the first chunk
-            if( startsWith(chunk, '\n') ){
+            if( chunk.startsWith('\n') ){
                chunk = chunk.slice(1, chunk.length);
             }
          }
@@ -264,7 +260,7 @@ var FidoHTML = function(options){
 
       var grabNewlinesFromQuote = function(){
          newlines = '';
-         while( endsWith(accum, '\n') ){
+         while( accum.endsWith('\n') ){
             accum = accum.slice(0, accum.length - 1);
             newlines += '\n';
          }
@@ -347,8 +343,8 @@ var FidoHTML = function(options){
    };
    this.ASTree.defineSplitter(quoteSplitter);
    this.ASTree.defineRenderer(['quote'], function(quote, render){
-      var outputHTML = repeat(
-         '<blockquote class="fidoQuoteOuter">', quote.quoteLevel - 1
+      var outputHTML = '<blockquote class="fidoQuoteOuter">'.repeat(
+         quote.quoteLevel - 1
       );
       outputHTML += '<blockquote ';
       if( _converter.options.dataMode ){
@@ -360,7 +356,7 @@ var FidoHTML = function(options){
       }
       outputHTML += 'class="fidoQuote">';
       outputHTML += render(quote.quotedText);
-      outputHTML += repeat('</blockquote>', quote.quoteLevel);
+      outputHTML += '</blockquote>'.repeat(quote.quoteLevel);
 
       return outputHTML;
    });
@@ -375,10 +371,10 @@ var FidoHTML = function(options){
       if( sourceText === '\n' ){
          sourceText = '\u00A0';
       } else {
-         if( startsWith(sourceText, '\n') ){
+         if( sourceText.startsWith('\n') ){
             sourceText = '\u00A0' + sourceText;
          }
-         if( endsWith(sourceText, '\n') ) sourceText += '\u00A0';
+         if( sourceText.endsWith('\n') ) sourceText += '\u00A0';
       }
 
       return sourceText;
