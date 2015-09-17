@@ -19,7 +19,10 @@ describe('Fidonet HTML parser creation', function(){
       assert.doesNotThrow(function(){
          FidoHTMLPrefixArea = require('../')({URLPrefixes: {
             '*': '',
-            'area': 'https://example.org/fidoviewer?'
+            'area': 'https://example.org/fidoviewer?',
+            'fs': function processIPFSURL(IPFSURL){
+               return IPFSURL.replace(/^fs:\/*/g, 'http://ipfs.io/');
+            }
          }});
       });
    });
@@ -95,6 +98,32 @@ describe('URL processor', function(){
          'foo &lt;' +
          '<a href="https://example.org/fidoviewer?area://Ru.Blog.Mithgol">' +
          'area://Ru.Blog.Mithgol</a>&gt; bar'
+      );
+   });
+   it('an IPFS URL is directed to the default IPFS gateway', function(){
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText(
+            'foo fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
+         ),
+         'foo <a href="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText(
+            'foo fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
+         ),
+         'foo <a href="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText(
+            'foo fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
+         ),
+         'foo <a href="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
    });
    it('dataMode works fine', function(){

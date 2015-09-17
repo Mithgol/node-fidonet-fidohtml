@@ -493,11 +493,15 @@ var FidoHTML = function(options){
          linkURLPrefix = _converter.options.URLPrefixes[ '*' ];
       } else linkURLPrefix = '';
 
+      var linkURLPrefixed;
+      if( typeof linkURLPrefix === 'function' ){
+         linkURLPrefixed = linkURLPrefix(hyperlink.URL);
+      } else linkURLPrefixed = linkURLPrefix + hyperlink.URL;
+
       if( _converter.options.dataMode ){
          return [
             '<a href="javascript:;" data-href="',
-            linkURLPrefix,
-            hyperlink.URL,
+            linkURLPrefixed,
             '">',
             hyperlink.textURL,
             '</a>'
@@ -505,8 +509,7 @@ var FidoHTML = function(options){
       }
       return [
          '<a href="',
-         linkURLPrefix,
-         hyperlink.URL,
+         linkURLPrefixed,
          '">',
          hyperlink.textURL,
          '</a>'
