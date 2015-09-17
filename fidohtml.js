@@ -457,7 +457,7 @@ var FidoHTML = function(options){
       /* jshint -W101 */
       if( typeof sourceCode !== 'string' ) return sourceCode;
       return sourceCode.split(
-         /(\b(https?|ftp|mailto|bitcoin|dchub|ed2k|facetime|feed|geo|irc(?:6|s)?|magnet|mms|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp|netmail|areafix|echomail|area|faqserv|fecho|freq):[^\s<>\x22\x27{}\^\[\]`]+)/
+         /(\b(https?|ftp|mailto|bitcoin|dchub|ed2k|facetime|feed|fs|geo|irc(?:6|s)?|magnet|mms|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp|netmail|areafix|echomail|area|faqserv|fecho|freq):[^\s<>\x22\x27{}\^\[\]`]+)/
       ).map(function(sourceFragment, fragmentIndex, fragmentArray){
          if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
             return sourceFragment;
