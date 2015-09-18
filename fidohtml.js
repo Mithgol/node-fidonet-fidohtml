@@ -452,7 +452,7 @@ var FidoHTML = function(options){
       ].join('');
    });
 
-   // convert URLs to hyperlinks
+   // convert lone URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
       if( typeof sourceCode !== 'string' ) return sourceCode;
@@ -464,7 +464,7 @@ var FidoHTML = function(options){
          } else if( fragmentIndex % 3 === 1 ){
             // whole regex-captured fragment's index: 1, 4, 7...
             return {
-               type: 'hyperlink',
+               type: 'loneURL',
                URL: sourceFragment,
                textURL: sourceFragment,
                URLScheme: fragmentArray[ fragmentIndex + 1 ]
@@ -480,13 +480,13 @@ var FidoHTML = function(options){
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
    ]);
-   this.ASTree.defineRenderer(['hyperlink'], function(hyperlink /*, render*/){
+   this.ASTree.defineRenderer(['loneURL'], function(loneURL /*, render*/){
       var linkURLPrefix;
       if(
-         typeof _converter.options.URLPrefixes[ hyperlink.URLScheme ] !==
+         typeof _converter.options.URLPrefixes[ loneURL.URLScheme ] !==
          'undefined'
       ){
-         linkURLPrefix = _converter.options.URLPrefixes[hyperlink.URLScheme];
+         linkURLPrefix = _converter.options.URLPrefixes[loneURL.URLScheme];
       } else if(
          typeof _converter.options.URLPrefixes[ '*' ] !== 'undefined'
       ){
@@ -495,15 +495,15 @@ var FidoHTML = function(options){
 
       var linkURLPrefixed;
       if( typeof linkURLPrefix === 'function' ){
-         linkURLPrefixed = linkURLPrefix(hyperlink.URL);
-      } else linkURLPrefixed = linkURLPrefix + hyperlink.URL;
+         linkURLPrefixed = linkURLPrefix(loneURL.URL);
+      } else linkURLPrefixed = linkURLPrefix + loneURL.URL;
 
       if( _converter.options.dataMode ){
          return [
             '<a href="javascript:;" data-href="',
             linkURLPrefixed,
             '">',
-            hyperlink.textURL,
+            loneURL.textURL,
             '</a>'
          ].join('');
       }
@@ -511,7 +511,7 @@ var FidoHTML = function(options){
          '<a href="',
          linkURLPrefixed,
          '">',
-         hyperlink.textURL,
+         loneURL.textURL,
          '</a>'
       ].join('');
    });
@@ -543,7 +543,7 @@ var FidoHTML = function(options){
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'UUE', props: [ 'source' ] },
-      { type: 'hyperlink', props: [ 'textURL' ] },
+      { type: 'loneURL', props: [ 'textURL' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }
