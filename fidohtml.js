@@ -24,6 +24,22 @@ var defaults = {
    }
 };
 
+// linkURLPrefixed = getPrefixedURL(
+//    _converter.options.URLPrefixes, loneURL.URLScheme, loneURL.URL
+// );
+var getPrefixedURL = function(convPrefixes, URLScheme, theURL){
+   var linkURLPrefix;
+   if( typeof convPrefixes[ URLScheme ] !== 'undefined' ){
+      linkURLPrefix = convPrefixes[URLScheme];
+   } else if( typeof convPrefixes[ '*' ] !== 'undefined' ){
+      linkURLPrefix = convPrefixes[ '*' ];
+   } else linkURLPrefix = '';
+
+   if( typeof linkURLPrefix === 'function' ) return linkURLPrefix(theURL);
+
+   return linkURLPrefix + theURL;
+};
+
 var FidoHTML = function(options){
    if (!(this instanceof FidoHTML)) return new FidoHTML(options);
 
@@ -452,6 +468,76 @@ var FidoHTML = function(options){
       ].join('');
    });
 
+   // convert ![alt](URL "title") to images
+   this.ASTree.defineSplitter(function(sourceCode){
+      /* jshint -W101 */
+      if( typeof sourceCode !== 'string' ) return sourceCode;
+      // TODO: add area|faqserv|fecho|freq support
+      return sourceCode.split(
+         /!\[((?:[^\]]|\\])*)\]\(((https?|ftp|fs):[^\s<>\x22\x27{}\^\[\]`]+)\s*(?:"((?:[^"]|\\")*)")?\)/
+      ).map(function(sourceFragment, fragmentIndex, fragmentArray){
+         if( fragmentIndex % 5 === 0 ){ // simple fragment's index: 0, 5...
+            return sourceFragment;
+         } else if( fragmentIndex % 5 === 1 ){
+            // alt text's index: 1, 6, 11...
+            // next(+1) is the whole URL's index: 2, 7, 12...
+            // next(+2) is the URL scheme's index: 3, 8, 13...
+            // next(+3) is the title's index: 4, 9, 14...
+            var imageTitle = fragmentArray[ fragmentIndex + 3 ];
+            if( typeof imageTitle === 'undefined' ){
+               imageTitle = '';
+            } else imageTitle = imageTitle.replace(/\\"/g, '"');
+            return {
+               type: 'inlineImage',
+               textAlt: sourceFragment.replace(/\\]/g, ']'),
+               imageURL: fragmentArray[ fragmentIndex + 1 ],
+               URLScheme: fragmentArray[ fragmentIndex + 2 ],
+               imageTitle: imageTitle
+            };
+         } else return null;
+      }).filter(function(elem){
+         return elem !== null;
+      });
+   }, [
+      { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'monospaceBlock', props: [ 'content' ] },
+      { type: 'origin', props: ['preParens'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
+   ]);
+   this.ASTree.defineRenderer(['inlineImage'], function(inlineImage){
+      if( _converter.options.dataMode ){
+         return [
+            '<img src="',
+            'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
+            '" data-src="',
+            getPrefixedURL(
+               _converter.options.URLPrefixes,
+               inlineImage.URLScheme,
+               inlineImage.imageURL
+            ),
+	         '" alt="',
+	         inlineImage.textAlt,
+	         '" title="',
+	         inlineImage.imageTitle,
+	         '">'
+         ].join('');
+      }
+      return [
+         '<img src="',
+         getPrefixedURL(
+            _converter.options.URLPrefixes,
+            inlineImage.URLScheme,
+            inlineImage.imageURL
+         ),
+         '" alt="',
+         inlineImage.textAlt,
+         '" title="',
+         inlineImage.imageTitle,
+         '">'
+      ].join('');
+   });
+
    // convert lone URLs to hyperlinks
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
@@ -481,27 +567,12 @@ var FidoHTML = function(options){
       { type: 'tagline', props: ['content'] }
    ]);
    this.ASTree.defineRenderer(['loneURL'], function(loneURL /*, render*/){
-      var linkURLPrefix;
-      if(
-         typeof _converter.options.URLPrefixes[ loneURL.URLScheme ] !==
-         'undefined'
-      ){
-         linkURLPrefix = _converter.options.URLPrefixes[loneURL.URLScheme];
-      } else if(
-         typeof _converter.options.URLPrefixes[ '*' ] !== 'undefined'
-      ){
-         linkURLPrefix = _converter.options.URLPrefixes[ '*' ];
-      } else linkURLPrefix = '';
-
-      var linkURLPrefixed;
-      if( typeof linkURLPrefix === 'function' ){
-         linkURLPrefixed = linkURLPrefix(loneURL.URL);
-      } else linkURLPrefixed = linkURLPrefix + loneURL.URL;
-
       if( _converter.options.dataMode ){
          return [
             '<a href="javascript:;" data-href="',
-            linkURLPrefixed,
+            getPrefixedURL(
+               _converter.options.URLPrefixes, loneURL.URLScheme, loneURL.URL
+            ),
             '">',
             loneURL.textURL,
             '</a>'
@@ -509,7 +580,9 @@ var FidoHTML = function(options){
       }
       return [
          '<a href="',
-         linkURLPrefixed,
+         getPrefixedURL(
+            _converter.options.URLPrefixes, loneURL.URLScheme, loneURL.URL
+         ),
          '">',
          loneURL.textURL,
          '</a>'
@@ -544,6 +617,7 @@ var FidoHTML = function(options){
       { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'loneURL', props: [ 'textURL' ] },
+      { type: 'inlineImage', props: [ 'textAlt', 'imageTitle' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
       { type: 'tagline', props: ['content'] }

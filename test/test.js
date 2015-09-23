@@ -28,7 +28,78 @@ describe('Fidonet HTML parser creation', function(){
    });
 });
 
-describe('URL processor', function(){
+describe('Inline image processor', function(){
+   it('http:// image is processed in the middle of a string', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo ![bar](http://example.com "baz") quux'),
+         'foo <img src="http://example.com" alt="bar" title="baz"> quux'
+      );
+   });
+   it('https:// image with a blank title is processed', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('![foo](https://example.com "") bar'),
+         '<img src="https://example.com" alt="foo" title=""> bar'
+      );
+   });
+   it('ftp:// URL with a missing title is processed', function(){
+      assert.deepEqual(
+         FidoHTML.fromText('foo ![bar](ftp://example.com/)'),
+         'foo <img src="ftp://example.com/" alt="bar" title="">'
+      );
+   });
+   it('IPFS images are directed to the default IPFS gateway', function(){
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText([
+            'foo ',
+            '![bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
+            ' baz'
+         ].join('')),
+         'foo <img src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
+         'alt="bar" title=""> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText([
+            'foo ![](',
+            'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "bar") baz'
+         ].join('')),
+         'foo <img src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
+         'alt="" title="bar"> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixArea.fromText([
+            'foo ',
+            '![bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
+            ' baz'
+         ].join('')),
+         'foo <img src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
+         'alt="bar" title=""> baz'
+      );
+   });
+   it('dataMode works fine', function(){
+      assert.deepEqual(
+         inDataMode.fromText('foo ![bar](http://example.com "baz") quux'),
+         [
+            'foo <img src="',
+            'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
+            '" data-src="http://example.com" alt="bar" title="baz"> quux'
+         ].join('')
+      );
+      assert.deepEqual(
+         inDataMode.fromText('foo ![bar](ftp://example.com/)'),
+         [
+            'foo <img src="',
+            'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
+            '" data-src="ftp://example.com/" alt="bar" title="">'
+         ].join('')
+      );
+   });
+});
+
+describe('Standalone URL processor', function(){
    it('http:// URL is processed in the middle of a string', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo http://example.com bar'),
@@ -100,7 +171,7 @@ describe('URL processor', function(){
          'area://Ru.Blog.Mithgol</a>&gt; bar'
       );
    });
-   it('an IPFS URL is directed to the default IPFS gateway', function(){
+   it('IPFS URLs are directed to the default IPFS gateway', function(){
       assert.deepEqual(
          FidoHTMLPrefixArea.fromText(
             'foo fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'

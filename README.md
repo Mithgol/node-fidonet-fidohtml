@@ -25,6 +25,8 @@ var FidoHTML = require('fidohtml');
 var decoder = FidoHTML(options);
 ```
 
+### Options
+
 The `options` object (or any of its properties) may be absent. When present, the following properties are used:
 
 * `options.dataMode` — by default it is `false`; when it's `true`, some HTML5 attributes remain unpopulated and the corresponding `data-XXXX` attributes are populated instead. (In this mode additional client-side JavaScript processing of HTML5 tags becomes necessary. Useful for whitelisting, preprocessing or otherwise preventing the default behaviour of a browser.)
@@ -44,15 +46,19 @@ The `options` object (or any of its properties) may be absent. When present,
 * `options.fileURLParts` — by default it is `false`; when altered, it should be given an array of two strings that control the appearance of an URL for every uuencoded file in the message: the first string is added before the filename and the second string is added after a filename to get the complete URL of that file. (For example, when the array `['https://example.org/fidonet?area://Test/', '?time=2015']` is given, it means that the file `example.zip` has the complete URL `https://example.org/fidonet?area://Test/example.zip?time=2015`.) The default `false` value means that there's no known way to construct a file's URL from its name. (In that default case an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the file is created and used. Its length is usually much greater.)
    * **Note:**   URLs of the files are not affected by the `URLPrefixes` option.
 
-* `options.URLPrefixes` — by default it is `{'*': ''}`; in this object properties' names correspond to URL schemes and properties' values correspond to the prefixes that should be added to URLs (encountered in the message) when these URLs are finally converted to hyperlinks. (For example, the URL `telnet:towel.blinkenlights.nl` gets converted to a hyperlink pointing to `https://example.org/console?telnet:towel.blinkenlights.nl` if `options.URLPrefixes.telnet` is `'https://example.org/console?'`.) The value of `options.URLPrefixes['*']` is used when the value for a particular URL scheme is `undefined`. If a mere prefix is not sufficient, a function may be given that accepts an original URL and returns the transformed URL (such function should be synchronous).
+* `options.URLPrefixes` — by default it is `{'*': ''}`; in this object properties' names correspond to URL schemes and properties' values correspond to the prefixes that should be added to URLs (encountered in the message) when these URLs are finally converted to hyperlinks (or to images' addresses). For example, the URL `telnet:towel.blinkenlights.nl` gets converted to a hyperlink pointing to `https://example.org/console?telnet:towel.blinkenlights.nl` if `options.URLPrefixes.telnet` is `'https://example.org/console?'`.
+   * If a mere prefix is not sufficient, a function may be given that accepts an original URL and returns the transformed URL (such function must be synchronous).
+   * The value of `options.URLPrefixes['*']` is used when the value for a particular URL scheme is `undefined`.
+
+### Methods
 
 The constructed object has the following methods:
 
-### setOptions(options)
+#### setOptions(options)
 
 This method can be used to alter some (or all) of the options that were previously set in the constructor. It affects the subsequent `.fromText` calls.
 
-### fromText(messageText)
+#### fromText(messageText)
 
 This method generates (and returns) HTML code from the given Fidonet message's text.
 
@@ -103,10 +109,18 @@ The following conversions are performed:
 
 * [Fidonet Unicode substrings](https://github.com/Mithgol/fiunis) are converted to their Unicode equivalents (but not in UUE blocks).
 
-* URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags.
+* Inline Markdown-alike image declarations `![alt text](URL "title")` are converted to images.
+   * Backslashes can be used to escape literal closing square brackets (i.e. `\]` means a literal `]` character) in the alternative text to prevent a premature ending of the text.
+   * Backslashes can be used to escape literal quotes (i.e. `\"` means a literal `"` character) in the title to prevent a premature ending of the title.
+   * Titles are optional (i.e. `(URL)` can be given instead of `(URL "title")`).
+   * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
+   * `options.dataMode === false` → the URL is copied to the image's `src` attribute.
+   * `options.dataMode === true` → an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of [the tiniest GIF](http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever) appears in the image's `src` attribute and the real image's URL is copied to the image's `data-src` attribute instead of `src`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
+
+* Standalone URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags (unless it was already processed as a part of some Markdown-alike declaration).
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
-   * A value from `options.URLPrefixes` is added before an URL. (For example, the URL `telnet:towel.blinkenlights.nl` is converted to `https://example.org/console?telnet:towel.blinkenlights.nl` if `options.URLPrefixes.telnet` is `'https://example.org/console?'`.) The value of `options.URLPrefixes['*']` is used when the prefix value for a particular URL scheme is `undefined`.
+   * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
 
 * If lines of text contain any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), then a sequence of such lines is wrapped in `<code>…</code>` tags (to be rendered with some monospace font) and then also in `<div class="monospaceBlock">…</div>`. The latter is useful in CSS in the following cases:
    * When the style of `.monospaceBlock > code` elements has to be different from the other `code` elements.
