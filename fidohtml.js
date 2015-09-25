@@ -489,7 +489,11 @@ var FidoHTML = function(options){
             } else imageTitle = imageTitle.replace(/\\"/g, '"');
             return {
                type: 'inlineImage',
-               textAlt: sourceFragment.replace(/\\]/g, ']'),
+               textAlt: sourceFragment.replace(
+                  /\\]/g, ']'
+               ).replace(
+                  /\n/g, ' ' // where <br> might appear in further processing
+               ),
                imageURL: fragmentArray[ fragmentIndex + 1 ],
                URLScheme: fragmentArray[ fragmentIndex + 2 ],
                imageTitle: imageTitle
