@@ -492,7 +492,11 @@ var FidoHTML = function(options){
                textAlt: sourceFragment.replace(
                   /\\]/g, ']'
                ).replace(
-                  /\n/g, ' ' // where <br> might appear in further processing
+                  /^\n+/g, '' // remove initial newlines from the alt text
+               ).replace(
+                  /\n+$/g, '' // remove final newlines from the alt text
+               ).replace(
+                  /\n/g, ' ' // where <br> would appear in further processing
                ),
                imageURL: fragmentArray[ fragmentIndex + 1 ],
                URLScheme: fragmentArray[ fragmentIndex + 2 ],
