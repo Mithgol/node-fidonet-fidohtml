@@ -117,6 +117,8 @@ The following conversions are performed:
    * `options.dataMode === false` → the URL is copied to the image's `src` attribute.
    * `options.dataMode === true` → an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of [the tiniest GIF](http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever) appears in the image's `src` attribute and the real image's URL is copied to the image's `data-src` attribute instead of `src`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
+* ![(TODO: not ready)](https://img.shields.io/badge/TODO-%28not_ready%29-001f3f.svg?style=plastic) Inline Markdown-alike hyperlink declarations `![link text](URL "title")` are converted to hyperlinks.
+
 * Standalone URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags (unless it was already processed as a part of some Markdown-alike declaration).
    * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
    * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
