@@ -468,6 +468,96 @@ var FidoHTML = function(options){
       ].join('');
    });
 
+   // convert [link text](URL "title") to hyperlinks
+   this.ASTree.defineSplitter(function(sourceCode){
+      /* jshint -W101 */
+      if( typeof sourceCode !== 'string' ) return sourceCode;
+
+      // http://blog.stevenlevithan.com/archives/mimic-lookbehind-javascript
+      // an unsupported lookbehind is mimicked by:
+      // *) resersing the incoming string by .split('').reverse().join('')
+      // *) using a regex that is written backwards
+      // *) using a lookahead instead of a lookbehind
+      // *) reversing the (array) results of .split
+      // *) reversing each (string) element in the results of .split
+      // CAUTION: use an inner subregex similar to inline image regex,
+      //          but accept any URL scheme (because typos should not explode)
+      return sourceCode.split('').reverse().join('').split(
+         /\)"((?:[^"]|"\\)*)"\s*([^\s<>\x22\x27{}\^\[\]`]+:(s?ptth|ptf|otliam|nioctib|buhcd|k2de|emitecaf|deef|sf|oeg|(?:6|s)?cri|tengam|smm|swen|ptnn|s?pis|epyks|sms|hss|let|tenlet|ptft|ppmx|liamten|xifaera|liamohce|aera|vresqaf|ohcef|qerf))\(\]((?:[^\]]|\)"(?:[^"]|"\\)*"\s*[^\s<>\x22\x27{}\^\[\]`]+:[a-z0-9]+[a-z]{2,}\(\](?:[^\]]|]\\)*\[!|]\\)*)\[(?!!)/
+      ).reverse().map(unreversed => {
+         if( typeof unreversed === 'undefined' ) return unreversed;
+         return unreversed.split('').reverse().join('');
+      }).map(function(sourceFragment, fragmentIndex, fragmentArray){
+         if( fragmentIndex % 5 === 0 ){ // simple fragment's index: 0, 5...
+            return sourceFragment;
+         } else if( fragmentIndex % 5 === 1 ){
+            // link text's index: 1, 6, 11...
+            // next(+1) is the URL scheme's index: 2, 7, 12...
+            // next(+2) is the whole URL's index: 3, 8, 13...
+            // next(+3) is the title's index: 4, 9, 14...
+            // TODO: the order of +1 and +2 becomes reversed
+            //       if ECMAScript 7 introduces lookbehind assertions
+            var linkTitle = fragmentArray[ fragmentIndex + 3 ];
+            if( typeof linkTitle === 'undefined' ){
+               linkTitle = '';
+            } else linkTitle = linkTitle.replace(/\\"/g, '"');
+            return {
+               type: 'inlineHyperlink',
+               // TODO: better inline image handling
+               linkText: sourceFragment.replace(
+                  /\\]/g, ']'
+               ).replace(
+                  /^\n+/g, '' // remove initial newlines from the link text
+               ).replace(
+                  /\n+$/g, '' // remove final newlines from the link text
+               ).replace(
+                  /\n/g, ' ' // where <br> would appear in further processing
+               ),
+               linkURL: fragmentArray[ fragmentIndex + 1 ],
+               URLScheme: fragmentArray[ fragmentIndex + 2 ],
+               linkTitle: linkTitle
+            };
+         } else return null;
+      }).filter(function(elem){
+         return elem !== null;
+      });
+   }, [
+      { type: 'quote', props: [ 'quotedText' ] },
+      { type: 'monospaceBlock', props: [ 'content' ] },
+      { type: 'origin', props: ['preParens'] },
+      { type: 'tearline', props: ['content'] },
+      { type: 'tagline', props: ['content'] }
+   ]);
+   this.ASTree.defineRenderer(
+      ['inlineHyperlink'],
+      function(inlineHyperlink, render){
+         if( _converter.options.dataMode ){
+            return [
+               '<a href="javascript:;" data-href="',
+               getPrefixedURL(
+                  _converter.options.URLPrefixes,
+                  inlineHyperlink.URLScheme,
+                  inlineHyperlink.linkURL
+               ),
+               '">',
+               render( inlineHyperlink.linkText ),
+               '</a>'
+            ].join('');
+         }
+         return [
+            '<a href="',
+            getPrefixedURL(
+               _converter.options.URLPrefixes,
+               inlineHyperlink.URLScheme,
+               inlineHyperlink.linkURL
+            ),
+            '">',
+            render( inlineHyperlink.linkText ),
+            '</a>'
+         ].join('');
+      }
+   );
+
    // convert ![alt](URL "title") to images
    this.ASTree.defineSplitter(function(sourceCode){
       /* jshint -W101 */
@@ -511,7 +601,8 @@ var FidoHTML = function(options){
       { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'origin', props: ['preParens'] },
       { type: 'tearline', props: ['content'] },
-      { type: 'tagline', props: ['content'] }
+      { type: 'tagline', props: ['content'] },
+      { type: 'inlineHyperlink', props: ['linkText'] }
    ]);
    this.ASTree.defineRenderer(['inlineImage'], function(inlineImage){
       if( _converter.options.dataMode ){
