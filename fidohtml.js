@@ -548,7 +548,9 @@ var FidoHTML = function(options){
                   inlineHyperlink.URLScheme,
                   inlineHyperlink.linkURL
                ),
-               '">',
+               '" title="',
+   	         inlineHyperlink.linkTitle,
+	            '">',
                render( inlineHyperlink.linkText ),
                '</a>'
             ].join('');
@@ -560,7 +562,9 @@ var FidoHTML = function(options){
                inlineHyperlink.URLScheme,
                inlineHyperlink.linkURL
             ),
-            '">',
+            '" title="',
+	         inlineHyperlink.linkTitle,
+	         '">',
             render( inlineHyperlink.linkText ),
             '</a>'
          ].join('');
@@ -726,7 +730,7 @@ var FidoHTML = function(options){
       { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'loneURL', props: [ 'textURL' ] },
-      { type: 'inlineHyperlink', props: ['linkText'] },
+      { type: 'inlineHyperlink', props: ['linkText', 'linkTitle'] },
       { type: 'inlineImage', props: [ 'textAlt', 'imageTitle' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
