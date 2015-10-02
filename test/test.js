@@ -1,7 +1,7 @@
 /* global describe, it */
 var FidoHTML;
 var inDataMode;
-var FidoHTMLPrefixArea;
+var FidoHTMLPrefixed;
 var assert = require('assert');
 
 describe('Fidonet HTML parser creation', function(){
@@ -15,9 +15,9 @@ describe('Fidonet HTML parser creation', function(){
          inDataMode = require('../')({dataMode: true});
       });
    });
-   it('yet another parser is created with prefixed area:// URLs', function(){
+   it('yet another parser is created with prefixed URLs', function(){
       assert.doesNotThrow(function(){
-         FidoHTMLPrefixArea = require('../')({URLPrefixes: {
+         FidoHTMLPrefixed = require('../')({URLPrefixes: {
             '*': '',
             'area': 'https://example.org/fidoviewer?',
             'fs': function processIPFSURL(IPFSURL){
@@ -49,7 +49,7 @@ describe('Inline image processor', function(){
    });
    it('IPFS images are directed to the default IPFS gateway', function(){
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText([
+         FidoHTMLPrefixed.fromText([
             'foo ',
             '![bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
@@ -59,7 +59,7 @@ describe('Inline image processor', function(){
          'alt="bar" title=""> baz'
       );
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText([
+         FidoHTMLPrefixed.fromText([
             'foo ![](',
             'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
             ' "bar") baz'
@@ -69,7 +69,7 @@ describe('Inline image processor', function(){
          'alt="" title="bar"> baz'
       );
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText([
+         FidoHTMLPrefixed.fromText([
             'foo ',
             '![bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
@@ -165,7 +165,7 @@ describe('Standalone URL processor', function(){
    });
    it('an URL prefix is added to an area:// URL', function(){
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText('foo <area://Ru.Blog.Mithgol> bar'),
+         FidoHTMLPrefixed.fromText('foo <area://Ru.Blog.Mithgol> bar'),
          'foo &lt;' +
          '<a href="https://example.org/fidoviewer?area://Ru.Blog.Mithgol">' +
          'area://Ru.Blog.Mithgol</a>&gt; bar'
@@ -173,7 +173,7 @@ describe('Standalone URL processor', function(){
    });
    it('IPFS URLs are directed to the default IPFS gateway', function(){
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText(
+         FidoHTMLPrefixed.fromText(
             'foo fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
          'foo <a href="http://ipfs.io/' +
@@ -181,7 +181,7 @@ describe('Standalone URL processor', function(){
          'fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText(
+         FidoHTMLPrefixed.fromText(
             'foo fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
          'foo <a href="http://ipfs.io/' +
@@ -189,7 +189,7 @@ describe('Standalone URL processor', function(){
          'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
       assert.deepEqual(
-         FidoHTMLPrefixArea.fromText(
+         FidoHTMLPrefixed.fromText(
             'foo fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
          'foo <a href="http://ipfs.io/' +
