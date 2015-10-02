@@ -726,6 +726,7 @@ var FidoHTML = function(options){
       { type: 'monospaceBlock', props: [ 'content' ] },
       { type: 'UUE', props: [ 'source' ] },
       { type: 'loneURL', props: [ 'textURL' ] },
+      { type: 'inlineHyperlink', props: ['linkText'] },
       { type: 'inlineImage', props: [ 'textAlt', 'imageTitle' ] },
       { type: 'origin', props: ['preParens', 'addrText'] },
       { type: 'tearline', props: ['content'] },
