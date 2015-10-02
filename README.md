@@ -74,7 +74,7 @@ The following conversions are performed:
 
 * A tagline (a line that immediately precedes the origin and/or the tearline and starts with three dots `...`) is wrapped in `<div class="tagline">`. It is also wrapped in `<font color="…">` (using `options.color.tagline`) when `options.fontColor` is `true`.
 
-* Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…" data-quoteLevel="…"` tag. (The value of `data-authorID` contains the quote's author's initials, and the value of `data-quoteLevel` contains the number of the following “greater than” characters. However, these `data-` attributes do not appear if `options.dataMode === false`.) The tag is then wrapped in additional `<blockquote class="fidoQuoteOuter">` tags if the `quoteLevel` is greater than 1 (these outer tags do not have `data-` attributes even if `options.dataMode === true`). For example, a quote preceded by `MtW>>>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
+* Properly quoted text (see [FSC-0032.001](http://ftsc.org/docs/fsc-0032.001)) is wrapped in `blockquote class="fidoQuote" data-authorID="…" data-quoteLevel="…"` tag. (The value of `data-authorID` contains the quote's author's initials, and the value of `data-quoteLevel` contains the number of the following “greater than” characters. However, these `data-` attributes do not appear if `options.dataMode == false`.) The tag is then wrapped in additional `<blockquote class="fidoQuoteOuter">` tags if the `quoteLevel` is greater than 1 (these outer tags do not have `data-` attributes even if `options.dataMode == true`). For example, a quote preceded by `MtW>>>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
 
 ```html
 <blockquote class="fidoQuoteOuter">
@@ -86,7 +86,7 @@ The following conversions are performed:
 </blockquote>
 ```
 
-* The above conversion is recursively applied to the quote's contents, and thus even improperly quoted text (where a quote appears inside another quote despite being forbidden in FSC-0032.001) is also processed. For example, if `options.dataMode === true`, then a quote preceded by `foo> bar>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
+* The above conversion is recursively applied to the quote's contents, and thus even improperly quoted text (where a quote appears inside another quote despite being forbidden in FSC-0032.001) is also processed. For example, if `options.dataMode == true`, then a quote preceded by `foo> bar>` characters would be converted to the following HTML (newlines and indentation added here for clarity):
 
 ```html
 <blockquote data-authorID="foo" data-quoteLevel="1" class="fidoQuote">
@@ -99,11 +99,11 @@ The following conversions are performed:
 * [Uuencoded](https://en.wikipedia.org/wiki/Uuencoding) data (unless it is quoted) is decoded and may appear as an image or a hyperlink:
    * If a UUE block represents an image (i.e. if the [`mime`](https://www.npmjs.org/package/mime) package thinks that the block's filename corresponds to `'image/jpeg'`, or `'image/png'`, or `'image/gif'`, or `'image/svg+xml'` MIME type), then it is converted to an image. The image is wrapped in a `div` element with `class="imageUUE"` and a `data-name` attribute containing the file's name. The image's `src` attribute contains an URL of the image.
       * If `options.fileURLParts` is an array, `src` contains an URL of the image constructed using the array's elements and the file's name. Otherwise an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the image is used.
-      * `options.dataMode === true` → a `data-source` attribute is also added to that `div`, containing the base64-encoded HTML5 representation of UUE codes
+      * `options.dataMode == true` → a `data-source` attribute is also added to that `div`, containing the base64-encoded HTML5 representation of UUE codes
    * If a UUE block does not represent an image,
-      * `options.dataMode === false` → the block of UUE code lines is wrapped in `a` element with a `href` attribute containing an URL of the decoded file. That element is additionally wrapped in `div class="linkUUE"` element.
+      * `options.dataMode == false` → the block of UUE code lines is wrapped in `a` element with a `href` attribute containing an URL of the decoded file. That element is additionally wrapped in `div class="linkUUE"` element.
          * If `options.fileURLParts` is an array, `href` contains an URL of the decoded file constructed using the array's elements and the file's name. Otherwise an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of the decoded file is used.
-      * `options.dataMode === true` → the block of UUE code lines is wrapped in `div class="fileUUE"` element with the following attributes:
+      * `options.dataMode == true` → the block of UUE code lines is wrapped in `div class="fileUUE"` element with the following attributes:
          * `data-name` — name of the encoded file
          * `data-content` — base64-encoded content of the file
 
@@ -114,15 +114,22 @@ The following conversions are performed:
    * Backslashes can be used to escape literal quotes (i.e. `\"` means a literal `"` character) in the title to prevent a premature ending of the title.
    * Titles are optional (i.e. `(URL)` can be given instead of `(URL "title")`).
    * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
-   * `options.dataMode === false` → the URL is copied to the image's `src` attribute.
-   * `options.dataMode === true` → an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of [the tiniest GIF](http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever) appears in the image's `src` attribute and the real image's URL is copied to the image's `data-src` attribute instead of `src`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
+   * `options.dataMode == false` → the URL is copied to the image's `src` attribute.
+   * `options.dataMode == true` → an [RFC2397-compliant](http://tools.ietf.org/html/rfc2397) Data URI of [the tiniest GIF](http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever) appears in the image's `src` attribute and the real image's URL is copied to the image's `data-src` attribute instead of `src`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
-* ![(TODO: not ready)](https://img.shields.io/badge/TODO-%28not_ready%29-001f3f.svg?style=plastic) Inline Markdown-alike hyperlink declarations `![link text](URL "title")` are converted to hyperlinks.
-
-* Standalone URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags (unless it was already processed as a part of some Markdown-alike declaration).
-   * `options.dataMode === false` → the URL is copied to the tag's `href` attribute.
-   * `options.dataMode === true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
+* Inline Markdown-alike hyperlink declarations `[link text](URL "title")` are converted to hyperlinks.
+   * Inline Markdown-alike hyperlink declarations may contain inline Markdown-alike image declarations in link texts.
+   * Backslashes can be used to escape literal closing square brackets (i.e. `\]` means a literal `]` character) in the link's text to prevent a premature ending of the text.
+   * Backslashes can be used to escape literal quotes (i.e. `\"` means a literal `"` character) in the title to prevent a premature ending of the title.
+   * Titles are optional (i.e. `(URL)` can be given instead of `(URL "title")`).
    * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
+   * `options.dataMode == false` → the URL is copied to the tag's `href` attribute.
+   * `options.dataMode == true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
+
+* Standalone URLs become hyperlinks, i.e. each URL is wrapped in `<a>…</a>` tags (unless it has already been processed as a part of some Markdown-alike declaration).
+   * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
+   * `options.dataMode == false` → the URL is copied to the tag's `href` attribute.
+   * `options.dataMode == true` → `href="javascript:;"` attribute appears and the URL is copied to the tag's `data-href` attribute instead of `href`. (Use JavaScript for whitelisting, preprocessing or otherwise preventing the default browser's action.)
 
 * If lines of text contain any character for [Box Drawing](http://www.unicode.org/charts/PDF/U2500.pdf) (except `U+2500`) or [Block Elements](http://www.unicode.org/charts/PDF/U2580.pdf), then a sequence of such lines is wrapped in `<code>…</code>` tags (to be rendered with some monospace font) and then also in `<div class="monospaceBlock">…</div>`. The latter is useful in CSS in the following cases:
    * When the style of `.monospaceBlock > code` elements has to be different from the other `code` elements.
