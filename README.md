@@ -112,6 +112,7 @@ The following conversions are performed:
 * Inline Markdown-alike image declarations `![alt text](URL "title")` are converted to images.
    * Backslashes can be used to escape literal closing square brackets (i.e. `\]` means a literal `]` character) in the alternative text to prevent a premature ending of the text.
    * Backslashes can be used to escape literal quotes (i.e. `\"` means a literal `"` character) in the title to prevent a premature ending of the title.
+   * Leading and training newlines are ignored in the alternative text. Inner newlines become whitespaces.
    * Titles are optional (i.e. `(URL)` can be given instead of `(URL "title")`).
    * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
    * `options.dataMode == false` → the URL is copied to the image's `src` attribute.
@@ -120,7 +121,9 @@ The following conversions are performed:
 * Inline Markdown-alike hyperlink declarations `[link text](URL "title")` are converted to hyperlinks.
    * Inline Markdown-alike hyperlink declarations may contain inline Markdown-alike image declarations in link texts.
    * Backslashes can be used to escape literal closing square brackets (i.e. `\]` means a literal `]` character) in the link's text to prevent a premature ending of the text.
+   * Backslashes can be used to escape literal opening square brackets (i.e. `\[` means a literal `[` character) immediately before the link's text to prevent a premature beginning of the text (for example, if a hyperlink should appear in square brackets, then the opening bracket should be escaped).
    * Backslashes can be used to escape literal quotes (i.e. `\"` means a literal `"` character) in the title to prevent a premature ending of the title.
+   * Leading and training newlines are ignored in the link's text. Inner newlines become HTML linebreaks (`<br>` tags).
    * Titles are optional (i.e. `(URL)` can be given instead of `(URL "title")`).
    * A value from `options.URLPrefixes` is used to modify an URL. (See above: “[Options](#options)”.)
    * `options.dataMode == false` → the URL is copied to the tag's `href` attribute.

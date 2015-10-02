@@ -483,13 +483,16 @@ var FidoHTML = function(options){
       // CAUTION: use an inner subregex similar to inline image regex,
       //          but accept any URL scheme (because typos should not explode)
       return sourceCode.split('').reverse().join('').split(
-         /\)"((?:[^"]|"\\)*)"\s*([^\s<>\x22\x27{}\^\[\]`]+:(s?ptth|ptf|otliam|nioctib|buhcd|k2de|emitecaf|deef|sf|oeg|(?:6|s)?cri|tengam|smm|swen|ptnn|s?pis|epyks|sms|hss|let|tenlet|ptft|ppmx|liamten|xifaera|liamohce|aera|vresqaf|ohcef|qerf))\(\]((?:[^\]]|\)"(?:[^"]|"\\)*"\s*[^\s<>\x22\x27{}\^\[\]`]+:[a-z0-9]*[a-z]{2,}\(\](?:[^\]]|]\\)*\[!|]\\)*)\[(?!!)/
+         /\)(?:"((?:[^"]|"\\)*)")?\s*([^()\s<>\x22\x27{}\^\[\]`]+:(s?ptth|ptf|otliam|nioctib|buhcd|k2de|emitecaf|deef|sf|oeg|(?:6|s)?cri|tengam|smm|swen|ptnn|s?pis|epyks|sms|hss|let|tenlet|ptft|ppmx|liamten|xifaera|liamohce|aera|vresqaf|ohcef|qerf))\(\]((?:[^\]]|\)(?:"(?:[^"]|"\\)*")?\s*[^()\s<>\x22\x27{}\^\[\]`]+:[a-z0-9]*[a-z]{2,}\(\](?:[^\]]|]\\)*\[!|]\\)*)\[(?![!\\])/
       ).reverse().map(unreversed => {
          if( typeof unreversed === 'undefined' ) return unreversed;
          return unreversed.split('').reverse().join('');
       }).map(function(sourceFragment, fragmentIndex, fragmentArray){
          if( fragmentIndex % 5 === 0 ){ // simple fragment's index: 0, 5...
-            return sourceFragment;
+            if( fragmentIndex === fragmentArray.length - 1 ){ // final
+               return sourceFragment;
+            }
+            return sourceFragment.replace(/\\\[$/g, '[');
          } else if( fragmentIndex % 5 === 1 ){
             // link text's index: 1, 6, 11...
             // next(+1) is the URL scheme's index: 2, 7, 12...
@@ -511,19 +514,17 @@ var FidoHTML = function(options){
                   // CAUTION: use an inner subregex similar to inline image,
                   //          but accept any URL scheme
                   //          (because typos should not explode)
-                  /(!\[(?:[^\]]|\\])*\]\([a-z]{2,}[a-z0-9]*:[^\s<>\x22\x27{}\^\[\]`]+\s*(?:"(?:[^"]|\\")*")?\))/
+                  /(!\[(?:[^\]]|\\])*\]\([a-z]{2,}[a-z0-9]*:[^()\s<>\x22\x27{}\^\[\]`]+\s*(?:"(?:[^"]|\\")*")?\))/
                ).map(function(linkTextFragment, linkTextFragmentIndex){
                   if( linkTextFragmentIndex % 2 === 0 ){
                      // simple fragment's index: 0, 2...
                      return linkTextFragment.replace(
                         /\\]/g, ']'
-                     ).replace(
-                        /\n/g, ' ' // where <br> appears in further processing
                      );
                   } else return linkTextFragment; // inline image → verbatim
                }),
-               linkURL: fragmentArray[ fragmentIndex + 1 ],
-               URLScheme: fragmentArray[ fragmentIndex + 2 ],
+               linkURL: fragmentArray[ fragmentIndex + 2 ],
+               URLScheme: fragmentArray[ fragmentIndex + 1 ],
                linkTitle: linkTitle
             };
          } else return null;
@@ -578,7 +579,7 @@ var FidoHTML = function(options){
       // TODO: add area|faqserv|fecho|freq support
       // CAUTION: inlineHyperlink should use similar regex twice
       return sourceCode.split(
-         /!\[((?:[^\]]|\\])*)\]\(((https?|ftp|fs):[^\s<>\x22\x27{}\^\[\]`]+)\s*(?:"((?:[^"]|\\")*)")?\)/
+         /!\[((?:[^\]]|\\])*)\]\(((https?|ftp|fs):[^()\s<>\x22\x27{}\^\[\]`]+)\s*(?:"((?:[^"]|\\")*)")?\)/
       ).map(function(sourceFragment, fragmentIndex, fragmentArray){
          if( fragmentIndex % 5 === 0 ){ // simple fragment's index: 0, 5...
             return sourceFragment;
