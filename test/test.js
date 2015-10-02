@@ -20,9 +20,7 @@ describe('Fidonet HTML parser creation', function(){
          FidoHTMLPrefixed = require('../')({URLPrefixes: {
             '*': '',
             'area': 'https://example.org/fidoviewer?',
-            'fs': function processIPFSURL(IPFSURL){
-               return IPFSURL.replace(/^fs:\/*/g, 'http://ipfs.io/');
-            }
+            'fs': IPFSURL => IPFSURL.replace(/^fs:\/*/g, 'http://ipfs.io/')
          }});
       });
    });
