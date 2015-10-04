@@ -528,9 +528,7 @@ var FidoHTML = function(options){
                linkTitle: linkTitle
             };
          } else return null;
-      }).filter(function(elem){
-         return elem !== null;
-      });
+      }).filter( elem => elem !== null );
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'monospaceBlock', props: [ 'content' ] },
@@ -608,9 +606,7 @@ var FidoHTML = function(options){
                imageTitle: imageTitle
             };
          } else return null;
-      }).filter(function(elem){
-         return elem !== null;
-      });
+      }).filter( elem => elem !== null );
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'monospaceBlock', props: [ 'content' ] },
@@ -670,9 +666,7 @@ var FidoHTML = function(options){
                URLScheme: fragmentArray[ fragmentIndex + 1 ]
             };
          } else return null;
-      }).filter(function(elem){
-         return elem !== null;
-      });
+      }).filter( elem => elem !== null );
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'monospaceBlock', props: [ 'content' ] },
@@ -723,9 +717,10 @@ var FidoHTML = function(options){
          [/\n/g, '<br>']
       ];
 
-      return replacements.reduce(function(result, replacement){
-         return result.replace(replacement[0], replacement[1]);
-      }, sourceNode);
+      return replacements.reduce(
+         (result, nextRep) => result.replace(nextRep[0], nextRep[1]),
+         sourceNode
+      );
    }, [
       { type: 'quote', props: [ 'quotedText' ] },
       { type: 'monospaceBlock', props: [ 'content' ] },
