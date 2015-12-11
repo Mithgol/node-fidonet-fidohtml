@@ -6,6 +6,10 @@ This module is written in JavaScript and requires [Node.js](http://nodejs.org
 * Starting from v1.0.0, this module requires Node.js version 4.0.0 or newer.
 * You may run older versions of this module in Node.js version 0.10.x or 0.12.x. These older versions, however, had to contain additional dependencies as polyfills for missing ECMAScript 2015 (ES6) features which are now present in Node.js.
 
+This repository will also contain draft standards of **Fidonet runes** for the Fidonet Global Hypertext Interface project.
+
+This module is a reference implementation of these standards.
+
 ## Installing Fidonet HTML
 
 [![(npm package version)](https://nodei.co/npm/fidohtml.png?downloads=true&downloadRank=true)](https://npmjs.org/package/fidohtml)
