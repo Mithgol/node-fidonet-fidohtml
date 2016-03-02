@@ -5,12 +5,13 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  13 Dec 2015
+Revision Date:  02 Mar 2016
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
    2. Introduction
    3. Key words to indicate requirement levels
+   Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
 1. Status of this document
@@ -42,6 +43,24 @@ Contents:
   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY",
   and "OPTIONAL" in this document are to be interpreted as described
   in FTA-1006 (based on RFC 2119).
+
+Appendix A. Known implementations
+-+-------------------------------
+
+  By the time of this writing there are several implementation of the
+  draft editions of this standard.
+
+  Reference implementation (free open source):
+
+  https://github.com/Mithgol/node-fidonet-fidohtml
+
+  Applications written by the standard's author:
+
+  *) Fido2RSS https://github.com/Mithgol/fido2rss
+
+  *) PhiDo https://github.com/Mithgol/phido
+
+  *) twi2fido https://github.com/Mithgol/node-twi2fido/
 
 **********************************************************************
 EOTD                                               END OF THE DOCUMENT
