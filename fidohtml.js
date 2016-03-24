@@ -3,11 +3,9 @@ var colorsCSS = require('colors.css');
 var Dauria = require('dauria');
 var extend = require('extend');
 var Fiunis = require('fiunis');
+var escapeHTML = require('lodash.escape');
 var MIME = require('mime');
 var UUE = require('uue');
-
-var _ = require('underscore');
-var escapeHTML = _.escape.bind(_);
 
 var defaults = {
    dataMode: false,
