@@ -186,17 +186,17 @@ var FidoHTML = function(options){
    });
    this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
       var mimeType = MIME.lookup(objectUUE.name);
-      if([
+      if( [
          'image/jpeg',
          'image/png',
          'image/gif',
          'image/svg+xml'
-      ].indexOf(mimeType) >= 0 ){ // image
+      ].includes(mimeType) ){ // image
          var addSourceData = '';
          if( _converter.options.dataMode ){
             addSourceData = [
                ' data-source="',
-               Buffer(
+               Buffer.from(
                   objectUUE.source
                ).toString('base64'),
                '"'

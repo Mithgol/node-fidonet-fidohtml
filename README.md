@@ -3,7 +3,8 @@
 The **Fidonet HTML** module makes HTML code out of a Fidonet message.
 
 This module is written in JavaScript and requires [Node.js](http://nodejs.org/) to run.
-* Starting from v1.0.0, this module requires Node.js version 4.0.0 or newer.
+* Starting from v2.0.0, this module requires Node.js version 6.0.0 (or newer) because it is rewritten in ECMAScript 2016 (ES7).
+* Starting from v1.0.0, this module requires Node.js version 4.0.0 (or newer) because it is rewritten in ECMAScript 2015 (ES6).
 * You may run older versions of this module in Node.js version 0.10.x or 0.12.x. These older versions, however, had to contain additional dependencies as polyfills for missing ECMAScript 2015 (ES6) features which are now present in Node.js.
 
 This repository will also contain draft standards of **Fidonet runes** for the Fidonet Global Hypertext Interface project.
