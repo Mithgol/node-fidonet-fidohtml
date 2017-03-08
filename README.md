@@ -7,9 +7,15 @@ This module is written in JavaScript and requires [Node.js](http://nodejs.org
 * Starting from v1.0.0, this module requires Node.js version 4.0.0 (or newer) because it is rewritten in ECMAScript 2015 (ES6).
 * You may run older versions of this module in Node.js version 0.10.x or 0.12.x. These older versions, however, had to contain additional dependencies as polyfills for missing ECMAScript 2015 (ES6) features which are now present in Node.js.
 
-This repository will also contain draft standards of **Fidonet runes** for the Fidonet Global Hypertext Interface project.
+This repository also contains draft standards of **Fidonet runes** for the Fidonet Global Hypertext Interface project.
 
-This module is a reference implementation of these standards.
+* The [`runes.txt`](runes.txt) file is the English version of the draft.
+
+* The [`runes.rus.txt`](runes.rus.txt) file is the Russian version of the draft. This version is provided in UTF-8 (for the diffs to look reasonably good on GitHub and other git tools) and thus should be converted to CP866 encoding (common in Russian Fidonet) before posting to Fidonet.
+
+These draft are currently in an early phase of their development and thus do not have the desired level of feature completeness.
+
+This module is a reference implementation of these standards, more or less feature-complete.
 
 ## Installing Fidonet HTML
 
