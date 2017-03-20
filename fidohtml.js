@@ -545,9 +545,13 @@ var FidoHTML = function(options){
                   inlineHyperlink.URLScheme,
                   inlineHyperlink.linkURL
                ),
-               '" title="',
-   	         inlineHyperlink.linkTitle,
-	            '">',
+               '"',
+               inlineHyperlink.linkTitle ? [
+                  ' title="',
+                  inlineHyperlink.linkTitle,
+                  '"'
+               ].join('') : '',
+               '>',
                render( inlineHyperlink.linkText ),
                '</a>'
             ].join('');
@@ -559,9 +563,13 @@ var FidoHTML = function(options){
                inlineHyperlink.URLScheme,
                inlineHyperlink.linkURL
             ),
-            '" title="',
-	         inlineHyperlink.linkTitle,
-	         '">',
+            '"',
+            inlineHyperlink.linkTitle ? [
+               ' title="',
+               inlineHyperlink.linkTitle,
+               '"'
+            ].join('') : '',
+            '>',
             render( inlineHyperlink.linkText ),
             '</a>'
          ].join('');
@@ -624,11 +632,15 @@ var FidoHTML = function(options){
                inlineImage.URLScheme,
                inlineImage.imageURL
             ),
-	         '" alt="',
-	         inlineImage.textAlt,
-	         '" title="',
-	         inlineImage.imageTitle,
-	         '">'
+            '" alt="',
+            inlineImage.textAlt,
+            '"',
+            inlineImage.imageTitle ? [
+               ' title="',
+               inlineImage.imageTitle,
+               '"'
+            ].join('') : '',
+            '>'
          ].join('');
       }
       return [
@@ -640,9 +652,13 @@ var FidoHTML = function(options){
          ),
          '" alt="',
          inlineImage.textAlt,
-         '" title="',
-         inlineImage.imageTitle,
-         '">'
+         '"',
+         inlineImage.imageTitle ? [
+            ' title="',
+            inlineImage.imageTitle,
+            '"'
+         ].join('') : '',
+         '>'
       ].join('');
    });
 

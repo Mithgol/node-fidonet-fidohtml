@@ -36,13 +36,13 @@ describe('Inline image processor', function(){
    it('https:// image with a blank title is processed', function(){
       assert.deepEqual(
          FidoHTML.fromText('![foo](https://example.com "") bar'),
-         '<img src="https://example.com" alt="foo" title=""> bar'
+         '<img src="https://example.com" alt="foo"> bar'
       );
    });
    it('ftp:// URL with a missing title loses inner newlines', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo ![\nbar\nbaz\n](ftp://example.com/)'),
-         'foo <img src="ftp://example.com/" alt="bar baz" title="">'
+         'foo <img src="ftp://example.com/" alt="bar baz">'
       );
    });
    it('IPFS images are directed to the default IPFS gateway', function(){
@@ -54,7 +54,7 @@ describe('Inline image processor', function(){
          ].join('')),
          'foo <img src="http://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
-         'alt="bar" title=""> baz'
+         'alt="bar"> baz'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
@@ -74,7 +74,7 @@ describe('Inline image processor', function(){
          ].join('')),
          'foo <img src="http://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
-         'alt="bar" title=""> baz'
+         'alt="bar"> baz'
       );
    });
    it('dataMode works fine', function(){
@@ -91,7 +91,7 @@ describe('Inline image processor', function(){
          [
             'foo <img src="',
             'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
-            '" data-src="ftp://example.com/" alt="bar" title="">'
+            '" data-src="ftp://example.com/" alt="bar">'
          ].join('')
       );
    });
@@ -107,19 +107,19 @@ describe('Inline hyperlink processor', function(){
    it("https:// link without a title at the string's beginning", function(){
       assert.deepEqual(
          FidoHTML.fromText('[foo](https://example.com) bar'),
-         '<a href="https://example.com" title="">foo</a> bar'
+         '<a href="https://example.com">foo</a> bar'
       );
    });
    it('ftp:// link with empty title at the end of a string', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo [bar](ftp://example.com/ "")'),
-         'foo <a href="ftp://example.com/" title="">bar</a>'
+         'foo <a href="ftp://example.com/">bar</a>'
       );
    });
    it('a lonely mailto: hyperlink is processed', function(){
       assert.deepEqual(
          FidoHTML.fromText('[mail](mailto:someone@example.com)'),
-         '<a href="mailto:someone@example.com" title="">mail</a>'
+         '<a href="mailto:someone@example.com">mail</a>'
       );
    });
    it('a mailto: scheme followed by a whitespace is not an URL', function(){
@@ -134,7 +134,7 @@ describe('Inline hyperlink processor', function(){
             'foo {[bar\n](ed2k://|server|example.org|4661|/)} baz'
          ),
          [
-            'foo {<a href="ed2k://|server|example.org|4661|/" title="">',
+            'foo {<a href="ed2k://|server|example.org|4661|/">',
             'bar</a>} baz'
          ].join('')
       );
@@ -156,7 +156,7 @@ describe('Inline hyperlink processor', function(){
          FidoHTML.fromText(
             'foo \\[[bar [baz\\] quux](skype:echo123)] quuux'
          ),
-         'foo [<a href="skype:echo123" title="">bar [baz] quux</a>] quuux'
+         'foo [<a href="skype:echo123">bar [baz] quux</a>] quuux'
       );
    });
    it('area:// hyperlink in angle brackets contains an image', function(){
@@ -197,7 +197,7 @@ describe('Inline hyperlink processor', function(){
             ' baz'
          ].join('')),
          'foo <a href="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="">' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
       assert.deepEqual(
@@ -207,7 +207,7 @@ describe('Inline hyperlink processor', function(){
             ' baz'
          ].join('')),
          'foo <a href="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="">' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
       assert.deepEqual(
@@ -217,7 +217,7 @@ describe('Inline hyperlink processor', function(){
             ' baz'
          ].join('')),
          'foo <a href="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="">' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
    });
