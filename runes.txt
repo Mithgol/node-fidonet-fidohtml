@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  02 Mar 2016
+Revision Date:  16 Apr 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -32,9 +32,36 @@ Contents:
 2. Introduction
 -+-------------
 
-  Fidonet runes are hypermedia elements of Fidonet messages.
+  Hypermedia elements (such as hyperlinks or images) have not been
+  initially designed to appear in Fidonet messages: these messages
+  have a textual nature.
 
-  This document specifies a light-weight markup of these runes.
+  This document specifies a lightweight markup that can be used
+  for marking up some places in Fidonet messages where an element
+  of hypermedia is necessary. Such markings are designed to be
+  syntactically distinguishable from the text.
+
+  These elements of lightweight markup are called Fidonet runes.
+
+  Fidonet runes are not based on the systems that heavily utilize
+  start tags and end tags (such as HTML or BBCode) because these
+  do not have enough lightweightness in them.
+
+  Fidonet runes are based on their Markdown counterparts because
+  that markup language (Markdown) is both lightweight and popular.
+
+  There are less Fidonet runes than Markdown markings. That's because
+  some Markdown markings correspond to Fidonet features defined
+  elsewhere (such as blockquotes, defined in FSC-0032) and also
+  because some Fidonet runes are yet to be defined in the future
+  versions of this document.
+
+  Some Fidonet runes differ from their Markdown counterparts
+  (for example, permit and ignore an extra newline character)
+  because Fidonet runes have to deal with limitations of its medium
+  (Fidonet lines of text are 78 or 79 characters long traditionally,
+  and IBM 80-column punched card format, designed in 1928, seems to be
+  the historical cause for that).
 
 3. Key words to indicate requirement levels
 -+-----------------------------------------
