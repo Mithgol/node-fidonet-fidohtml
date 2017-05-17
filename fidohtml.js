@@ -375,25 +375,6 @@ var FidoHTML = function(options){
       return outputHTML;
    });
 
-   // if an empty line appears immediately before tagline-tearline-origin,
-   // or immediately before (or after) some quoted text,
-   // or in the beginning of the whole message,
-   // then add a non-breaking space on that line
-   this.ASTree.defineSplitter(function(sourceText){
-      if( typeof sourceText !== 'string' ) return sourceText;
-
-      if( sourceText === '\n' ){
-         sourceText = '\u00A0';
-      } else {
-         if( sourceText.startsWith('\n') ){
-            sourceText = '\u00A0' + sourceText;
-         }
-         if( sourceText.endsWith('\n') ) sourceText += '\u00A0';
-      }
-
-      return sourceText;
-   });
-
    // convert Fidonet Unicode substrings (but not in UUE blocks)
    this.ASTree.defineSplitter(function(sourceWithFiunis){
       if( typeof sourceWithFiunis !== 'string' ) return sourceWithFiunis;
@@ -464,6 +445,26 @@ var FidoHTML = function(options){
          render( msBlock.content ),
          '</code></div>'
       ].join('');
+   });
+
+   // if an empty line appears immediately before tagline-tearline-origin,
+   // or immediately before (or after) some quoted text,
+   // or immediately before (or after) a monospace block,
+   // or in the beginning of the whole message,
+   // then add a non-breaking space on that line
+   this.ASTree.defineSplitter(function(sourceText){
+      if( typeof sourceText !== 'string' ) return sourceText;
+
+      if( sourceText === '\n' ){
+         sourceText = '\u00A0';
+      } else {
+         if( sourceText.startsWith('\n') ){
+            sourceText = '\u00A0' + sourceText;
+         }
+         if( sourceText.endsWith('\n') ) sourceText += '\u00A0';
+      }
+
+      return sourceText;
    });
 
    // convert [link text](URL "title") to hyperlinks
