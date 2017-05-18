@@ -779,4 +779,29 @@ describe('Fixed width character lines detector', function(){
          ].join('')
       );
    });
+   it('correctly presents empty lines surrounding a block', function(){
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'Foo bar',
+            '',
+            '╔═══════════════╗',
+            '║ Baz.          ║',
+            '╟───────────────╢',
+            '║ skype:echo123 ║',
+            '╚═══════════════╝',
+            '',
+            'Fnord.'
+         ].join('\n')),
+         [
+            'Foo bar<br>\u00A0',
+            '<div class="monospaceBlock"><code>',
+            '╔═══════════════╗<br>',
+            '║ Baz. \u00A0 \u00A0 \u00A0 \u00A0 \u00A0║<br>',
+            '╟───────────────╢<br>',
+            '║ <a href="skype:echo123">skype:echo123</a> ║<br>',
+            '╚═══════════════╝</code></div>',
+            '\u00A0<br>Fnord.'
+         ].join('')
+      );
+   });
 });
