@@ -5,12 +5,13 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  16 Apr 2017
+Revision Date:  21 May 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
    2. Introduction
    3. Key words to indicate requirement levels
+   4. Fidonet runes of images
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -70,6 +71,24 @@ Contents:
   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY",
   and "OPTIONAL" in this document are to be interpreted as described
   in FTA-1006 (based on RFC 2119).
+
+4. Fidonet runes of images
+-+------------------------
+
+  The Fidonet rune of an image has the following form:
+
+  ![alt text](URL "title")
+
+  where the words "alt text" (without quotes) are replaced by the
+  alternative text (which is displayed instead of the image if that
+  image itself cannot be displayed), and the word "URL" (without
+  quotes) is replaced by the image's URL, and the word "title"
+  (in quotes) is replaced by the image's title (which might be shown
+  as a tooltip on a mouse's hover or a thumb's long press).
+
+  Example:
+
+  ![Fidonet nodelist chart](https://t.co/8sGOXI2EdB "a gloomy chart")
 
 Appendix A. Known implementations
 -+-------------------------------
