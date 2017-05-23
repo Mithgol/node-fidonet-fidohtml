@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  21 May 2017
+Revision Date:  23 May 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -89,6 +89,20 @@ Contents:
   Example:
 
   ![Fidonet nodelist chart](https://t.co/8sGOXI2EdB "a gloomy chart")
+
+  Initial and final newline characters in the alternative text MUST be
+  ignored. Newline characters elsewhere in the alternative text MUST
+  be treated as whitespaces. Therefore authors (and authoring tools)
+  MAY insert newlines there to deal with limitations of the medium
+  (Fidonet lines of text are 78 or 79 characters long traditionally,
+  and IBM 80-column punched card format, designed in 1928, seems to be
+  the historical cause for that).
+
+  The alternative text is enclosed in square brackets. Therefore, if
+  such text itself contains a closing square bracket ("]" without
+  quotes), such bracket MUST be preceded by a backslash in the rune
+  ("\]" without quotes MUST be interpreted as a literal "]" character
+  instead of the alternative text's ending).
 
 Appendix A. Known implementations
 -+-------------------------------
