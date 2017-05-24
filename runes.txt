@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  23 May 2017
+Revision Date:  24 May 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -103,6 +103,42 @@ Contents:
   quotes), such bracket MUST be preceded by a backslash in the rune
   ("\]" without quotes MUST be interpreted as a literal "]" character
   instead of the alternative text's ending).
+
+  The image's title is OPTIONAL. When it is present, it MUST be
+  separated (by one or more blank characters) from the URL, and only
+  the following blank characters MAY be used:
+
+  *) horizontal tab (\t, Unicode U+0009),
+
+  *) line feed (\n, Unicode U+000A),
+
+  *) vertical tab (\v, Unicode U+000B),
+
+  *) form feed (\f, Unicode U+000C),
+
+  *) carriage return (\r, Unicode U+000D),
+
+  *) whitespace (Unicode U+0020),
+
+  *) no-break space (Unicode U+00A0),
+
+  *) Ogham space mark (Unicode U+1680),
+
+  *) Mongolian vowel separator (Unicode U+180E),
+
+  *) general punctuation spaces (Unicode from U+2000 to U+200A),
+
+  *) line separator (Unicode U+2028),
+
+  *) paragraph separator (Unicode U+2029),
+
+  *) narrow no-break space (Unicode U+202F),
+
+  *) medium mathematical space (Unicode U+205F),
+
+  *) ideographic space (Unicode U+3000),
+
+  *) zero width no-break space (Unicode U+FEFF).
 
 Appendix A. Known implementations
 -+-------------------------------
