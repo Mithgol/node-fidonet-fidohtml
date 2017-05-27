@@ -596,11 +596,15 @@ var FidoHTML = function(options){
             var imageTitle = fragmentArray[ fragmentIndex + 3 ];
             if( typeof imageTitle === 'undefined' ){
                imageTitle = '';
-            } else imageTitle = imageTitle.replace(/\\"/g, '"');
+            } else imageTitle = imageTitle.replace(
+               /\\"/g, '"' // unescape
+            ).replace(
+               /\n/g, ' ' // where <br> would appear in further processing
+            );
             return {
                type: 'inlineImage',
                textAlt: sourceFragment.replace(
-                  /\\]/g, ']'
+                  /\\]/g, ']' // unescape
                ).replace(
                   /^\n+/g, '' // remove initial newlines from the alt text
                ).replace(
@@ -610,7 +614,7 @@ var FidoHTML = function(options){
                ),
                imageURL: fragmentArray[ fragmentIndex + 1 ],
                URLScheme: fragmentArray[ fragmentIndex + 2 ],
-               imageTitle: imageTitle
+               imageTitle: imageTitle // unescaped above
             };
          } else return null;
       }).filter( elem => elem !== null );

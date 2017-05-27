@@ -39,6 +39,15 @@ describe('Inline image processor', function(){
          '<img src="https://example.com" alt="foo"> bar'
       );
    });
+   it("https:// image's title is properly escaped if necessary", function(){
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo ![bar](https://example.com "<baz> \\"quux\\" quuux") fnord'
+         ),
+         'foo <img src="https://example.com" alt="bar" ' +
+         'title="&lt;baz&gt; &quot;quux&quot; quuux"> fnord'
+      );
+   });
    it('ftp:// URL with a missing title loses inner newlines', function(){
       assert.deepEqual(
          FidoHTML.fromText('foo ![\nbar\nbaz\n](ftp://example.com/)'),
