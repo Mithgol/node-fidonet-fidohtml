@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  24 May 2017
+Revision Date:  28 May 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -101,8 +101,8 @@ Contents:
   The alternative text is enclosed in square brackets. Therefore, if
   such text itself contains a closing square bracket ("]" without
   quotes), such bracket MUST be preceded by a backslash in the rune
-  ("\]" without quotes MUST be interpreted as a literal "]" character
-  instead of the alternative text's ending).
+  (and "\]" without quotes MUST be interpreted as a literal "]"
+  character and not as the alternative text's ending).
 
   The image's title is OPTIONAL. When it is present, it MUST be
   separated (by one or more blank characters) from the URL, and only
@@ -139,6 +139,13 @@ Contents:
   *) ideographic space (Unicode U+3000),
 
   *) zero width no-break space (Unicode U+FEFF).
+
+  The image's title is enclosed in quotes. Double quotation marks
+  ("like these") are used instead of single ('like these'). If the
+  title itself contains a double quotation mark, such mark MUST be
+  preceded by a backslash in the rune (and '\"' without single
+  quotation marks MUST be interpreted as a literal '"' character
+  and not as the title's ending).
 
 Appendix A. Known implementations
 -+-------------------------------
