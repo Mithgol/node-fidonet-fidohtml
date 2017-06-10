@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  28 May 2017
+Revision Date:  11 Jun 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -106,7 +106,7 @@ Contents:
 
   The image's title is OPTIONAL. When it is present, it MUST be
   separated (by one or more blank characters) from the URL, and only
-  the following blank characters MAY be used:
+  the following blank characters MAY be used as such separators:
 
   *) horizontal tab (\t, Unicode U+0009),
 
@@ -146,6 +146,11 @@ Contents:
   preceded by a backslash in the rune (and '\"' without single
   quotation marks MUST be interpreted as a literal '"' character
   and not as the title's ending).
+
+  The image's URL MUST NOT contain a closing parenthesis (the ")"
+  character) because that would cause a premature end of the rune.
+  Such parenthesis (if it appears in the URL) MUST be URL-encoded
+  (presented as "%29" without quotes).
 
 Appendix A. Known implementations
 -+-------------------------------
