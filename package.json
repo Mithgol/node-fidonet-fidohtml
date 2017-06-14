@@ -1,7 +1,7 @@
 {
 "name": "fidohtml",
 "main": "fidohtml.js",
-"version": "2.0.2",
+"version": "2.0.3",
 "description": "Makes HTML code out of a Fidonet message.",
 "keywords": ["Fidonet", "Fido", "HTML"],
 "author": { "name": "Mithgol the Webmaster" },
@@ -13,7 +13,7 @@
 "dependencies": {
    "astree": "~2.0.0",
    "colors.css": "~3.0.0",
-   "dauria": "~1.1.2",
+   "dauria": "~2.0.0",
    "extend": "~3.0.0",
    "fiunis": "~2.1.1",
    "lodash.escape": "~4.0.0",
