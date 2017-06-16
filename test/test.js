@@ -4,19 +4,19 @@ var inDataMode;
 var FidoHTMLPrefixed;
 var assert = require('assert');
 
-describe('Fidonet HTML parser creation', function(){
-   it('a simple Fidonet HTML parser is created', function(){
-      assert.doesNotThrow(function(){
+describe('Fidonet HTML parser creation', () => {
+   it('a simple Fidonet HTML parser is created', () => {
+      assert.doesNotThrow(() => {
          FidoHTML = require('../')();
       });
    });
-   it('a Fidonet HTML parser is created in inDataMode', function(){
-      assert.doesNotThrow(function(){
+   it('a Fidonet HTML parser is created in inDataMode', () => {
+      assert.doesNotThrow(() => {
          inDataMode = require('../')({dataMode: true});
       });
    });
-   it('yet another parser is created with prefixed URLs', function(){
-      assert.doesNotThrow(function(){
+   it('yet another parser is created with prefixed URLs', () => {
+      assert.doesNotThrow(() => {
          FidoHTMLPrefixed = require('../')({URLPrefixes: {
             '*': '',
             'area': 'https://example.org/fidoviewer?',
@@ -26,20 +26,20 @@ describe('Fidonet HTML parser creation', function(){
    });
 });
 
-describe('Inline image processor', function(){
-   it('http:// image is processed in the middle of a string', function(){
+describe('Inline image processor', () => {
+   it('http:// image is processed in the middle of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo ![bar](http://example.com "baz") quux'),
          'foo <img src="http://example.com" alt="bar" title="baz"> quux'
       );
    });
-   it('https:// image with a blank title is processed', function(){
+   it('https:// image with a blank title is processed', () => {
       assert.deepEqual(
          FidoHTML.fromText('![foo](https://example.com "") bar'),
          '<img src="https://example.com" alt="foo"> bar'
       );
    });
-   it("https:// image's title is properly escaped if necessary", function(){
+   it("https:// image's title is properly escaped if necessary", () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo ![bar](https://example.com "<baz> \\"quux\\" quuux") fnord'
@@ -48,13 +48,13 @@ describe('Inline image processor', function(){
          'title="&lt;baz&gt; &quot;quux&quot; quuux"> fnord'
       );
    });
-   it('ftp:// URL with a missing title loses inner newlines', function(){
+   it('ftp:// URL with a missing title loses inner newlines', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo ![\nbar\nbaz\n](ftp://example.com/)'),
          'foo <img src="ftp://example.com/" alt="bar baz">'
       );
    });
-   it('IPFS images are directed to the default IPFS gateway', function(){
+   it('IPFS images are directed to the default IPFS gateway', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
@@ -86,7 +86,7 @@ describe('Inline image processor', function(){
          'alt="bar"> baz'
       );
    });
-   it('dataMode works fine', function(){
+   it('dataMode works fine', () => {
       assert.deepEqual(
          inDataMode.fromText('foo ![bar](http://example.com "baz") quux'),
          [
@@ -106,38 +106,38 @@ describe('Inline image processor', function(){
    });
 });
 
-describe('Inline hyperlink processor', function(){
-   it('http:// link is processed in the middle of a string', function(){
+describe('Inline hyperlink processor', () => {
+   it('http:// link is processed in the middle of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo [bar](http://example.com "baz") quux'),
          'foo <a href="http://example.com" title="baz">bar</a> quux'
       );
    });
-   it("https:// link without a title at the string's beginning", function(){
+   it("https:// link without a title at the string's beginning", () => {
       assert.deepEqual(
          FidoHTML.fromText('[foo](https://example.com) bar'),
          '<a href="https://example.com">foo</a> bar'
       );
    });
-   it('ftp:// link with empty title at the end of a string', function(){
+   it('ftp:// link with an empty title at the end of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo [bar](ftp://example.com/ "")'),
          'foo <a href="ftp://example.com/">bar</a>'
       );
    });
-   it('a lonely mailto: hyperlink is processed', function(){
+   it('a lonely mailto: hyperlink is processed', () => {
       assert.deepEqual(
          FidoHTML.fromText('[mail](mailto:someone@example.com)'),
          '<a href="mailto:someone@example.com">mail</a>'
       );
    });
-   it('a mailto: scheme followed by a whitespace is not an URL', function(){
+   it('a mailto: scheme followed by a whitespace is not an URL', () => {
       assert.deepEqual(
          FidoHTML.fromText('[mail](mailto: someone@example.com)'),
          '[mail](mailto: someone@example.com)'
       );
    });
-   it('ed2k:// hyperlink in curly braces loses a final newline', function(){
+   it('ed2k:// hyperlink in curly braces loses its final newline', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo {[bar\n](ed2k://|server|example.org|4661|/)} baz'
@@ -148,7 +148,7 @@ describe('Inline hyperlink processor', function(){
          ].join('')
       );
    });
-   it('dchub:// hyperlink in carets processes its inner newlines', function(){
+   it('dchub:// hyperlink in carets processes its inner newlines', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo ^[\nbar\nbaz\n](dchub://example.org:411 "quux")^ quuux'
@@ -160,7 +160,7 @@ describe('Inline hyperlink processor', function(){
          ].join('')
       );
    });
-   it('skype: hyperlink in square brackets with inner brackets', function(){
+   it('skype: link in square brackets with escaped inner brackets', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo \\[[bar [baz\\] quux](skype:echo123)] quuux'
@@ -168,7 +168,7 @@ describe('Inline hyperlink processor', function(){
          'foo [<a href="skype:echo123">bar [baz] quux</a>] quuux'
       );
    });
-   it('area:// hyperlink in angle brackets contains an image', function(){
+   it('area:// hyperlink in angle brackets contains an image', () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'foo <[',
@@ -182,7 +182,7 @@ describe('Inline hyperlink processor', function(){
          ].join('')
       );
    });
-   it('an URL prefix is added to an area:// URL', function(){
+   it('an URL prefix, if given, is properly added to an area:// URL', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo <[',
@@ -198,7 +198,7 @@ describe('Inline hyperlink processor', function(){
          ].join('')
       );
    });
-   it('IPFS hyperlinks lead to the default IPFS gateway', function(){
+   it('IPFS hyperlinks lead to the default IPFS gateway', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
@@ -230,7 +230,7 @@ describe('Inline hyperlink processor', function(){
          'bar</a> baz'
       );
    });
-   it('dataMode works fine', function(){
+   it('dataMode works fine', () => {
       assert.deepEqual(
          inDataMode.fromText('[foo](mailto:someone@example.com "bar")'),
          '<a href="javascript:;" data-href="mailto:someone@example.com"' +
@@ -244,71 +244,61 @@ describe('Inline hyperlink processor', function(){
    });
 });
 
-describe('Standalone URL processor', function(){
-   it('http:// URL is processed in the middle of a string', function(){
+describe('Standalone URL processor', () => {
+   it('http:// URL is processed in the middle of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo http://example.com bar'),
          'foo <a href="http://example.com">http://example.com</a> bar'
       );
    });
-   it('https:// URL is processed at the beginning of a string', function(){
+   it('https:// URL is processed at the beginning of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('https://example.com foo'),
          '<a href="https://example.com">https://example.com</a> foo'
       );
    });
-   it('ftp:// URL is processed at the end of a string', function(){
+   it('ftp:// URL is processed at the end of a string', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo ftp://example.com/'),
          'foo <a href="ftp://example.com/">ftp://example.com/</a>'
       );
    });
-   it('a lonely mailto: URL is processed', function(){
+   it('a lonely mailto: URL is processed', () => {
       assert.deepEqual(
          FidoHTML.fromText('mailto:someone@example.com'),
          '<a href="mailto:someone@example.com">mailto:someone@example.com</a>'
       );
    });
-   it('a mailto: scheme followed by a whitespace is not an URL', function(){
+   it('a mailto: scheme followed by a whitespace is not an URL', () => {
       assert.deepEqual(
          FidoHTML.fromText('mailto: someone@example.com'),
          'mailto: someone@example.com'
       );
    });
-   it('ed2k:// URL in curly braces is processed', function(){
-      assert.deepEqual(
-         FidoHTML.fromText('foo {ed2k://|server|example.org|4661|/} bar'),
-         [
-            'foo {<a href="ed2k://|server|example.org|4661|/">',
-            'ed2k://|server|example.org|4661|/',
-            '</a>} bar'
-         ].join('')
-      );
-   });
-   it('dchub:// URL in carets is processed', function(){
-      assert.deepEqual(
-         FidoHTML.fromText('foo ^dchub://example.org:411^ bar'),
-         [
-            'foo ^<a href="dchub://example.org:411">',
-            'dchub://example.org:411',
-            '</a>^ bar'
-         ].join('')
-      );
-   });
-   it('skype: URL in square brackets is processed', function(){
-      assert.deepEqual(
-         FidoHTML.fromText('foo [skype:echo123] bar'),
-         'foo [<a href="skype:echo123">skype:echo123</a>] bar'
-      );
-   });
-   it('area:// URL in angle brackets is processed', function(){
-      assert.deepEqual(
-         FidoHTML.fromText('foo <area://Ru.Blog.Mithgol> bar'),
-         'foo &lt;<a href="area://Ru.Blog.Mithgol">' +
-         'area://Ru.Blog.Mithgol</a>&gt; bar'
-      );
-   });
-   it('an URL prefix is added to an area:// URL', function(){
+   it('ed2k:// URL in curly braces is processed', () => assert.deepEqual(
+      FidoHTML.fromText('foo {ed2k://|server|example.org|4661|/} bar'),
+      [
+         'foo {<a href="ed2k://|server|example.org|4661|/">',
+         'ed2k://|server|example.org|4661|/</a>} bar'
+      ].join('')
+   ));
+   it('dchub:// URL in carets is processed', () => assert.deepEqual(
+      FidoHTML.fromText('foo ^dchub://example.org:411^ bar'),
+      [
+         'foo ^<a href="dchub://example.org:411">',
+         'dchub://example.org:411</a>^ bar'
+      ].join('')
+   ));
+   it('skype: URL in square brackets is processed', () => assert.deepEqual(
+      FidoHTML.fromText('foo [skype:echo123] bar'),
+      'foo [<a href="skype:echo123">skype:echo123</a>] bar'
+   ));
+   it('area:// URL in angle brackets is processed', () => assert.deepEqual(
+      FidoHTML.fromText('foo <area://Ru.Blog.Mithgol> bar'),
+      'foo &lt;<a href="area://Ru.Blog.Mithgol">' +
+      'area://Ru.Blog.Mithgol</a>&gt; bar'
+   ));
+   it('an URL prefix, if given, is properly added to an area:// URL', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText('foo <area://Ru.Blog.Mithgol> bar'),
          'foo &lt;' +
@@ -316,7 +306,7 @@ describe('Standalone URL processor', function(){
          'area://Ru.Blog.Mithgol</a>&gt; bar'
       );
    });
-   it('IPFS URLs are directed to the default IPFS gateway', function(){
+   it('IPFS URLs are directed to the default IPFS gateway', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText(
             'foo fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
@@ -342,7 +332,7 @@ describe('Standalone URL processor', function(){
          'fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
    });
-   it('dataMode works fine', function(){
+   it('dataMode works fine', () => {
       assert.deepEqual(
          inDataMode.fromText('mailto:someone@example.com'),
          '<a href="javascript:;" data-href="mailto:someone@example.com">' +
@@ -356,8 +346,8 @@ describe('Standalone URL processor', function(){
    });
 });
 
-describe('Plain text processor', function(){
-   it('The space in the beginning of a line becomes NBSP', function(){
+describe('Plain text processor', () => {
+   it('The space in the beginning of a line becomes NBSP', () => {
       assert.deepEqual(
          FidoHTML.fromText(' foo'),
          '\u00A0foo'
@@ -367,7 +357,7 @@ describe('Plain text processor', function(){
          'foo bar'
       );
    });
-   it('The second of two adjacent spaces becomes NBSP', function(){
+   it('The second of two adjacent spaces becomes NBSP', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo '),
          'foo '
@@ -385,7 +375,7 @@ describe('Plain text processor', function(){
          'foo \u00A0 \u00A0'
       );
    });
-   it('A starting linebreak generates both NBSP and <br>', function(){
+   it('A starting linebreak generates both NBSP and <br>', () => {
       assert.deepEqual(
          FidoHTML.fromText('\nfoo'),
          '\u00A0<br>foo'
@@ -399,25 +389,25 @@ describe('Plain text processor', function(){
          '\u00A0<br>foo<br><br>bar'
       );
    });
-   it('Angle brackets are converted to &lt; and &gt;', function(){
+   it('Angle brackets are converted to &lt; and &gt;', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo <bar> more'),
          'foo &lt;bar&gt; more'
       );
    });
-   it('Quotes are converted to &quot;', function(){
+   it('Quotes are converted to &quot;', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo "bar" quux'),
          'foo &quot;bar&quot; quux'
       );
    });
-   it('Ampersands are converted to &amp;', function(){
+   it('Ampersands are converted to &amp;', () => {
       assert.deepEqual(
          FidoHTML.fromText('for you & forever'),
          'for you &amp; forever'
       );
    });
-   it('Linebreaks (LF aka 0x0A) become <br> tags', function(){
+   it('Linebreaks (LF aka 0x0A) become <br> tags', () => {
       assert.deepEqual(
          FidoHTML.fromText('foo\nbar\nbuzz'),
          'foo<br>bar<br>buzz'
@@ -426,8 +416,8 @@ describe('Plain text processor', function(){
 });
 
 describe('Tagline / tearline / origin parser, Fidonet Unicode substrings',
-function(){
-   it('parses tagline / tearline / origin', function(){
+() => {
+   it('parses tagline / tearline / origin', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo\nbar\n... baz\n--- quux\n * Origin: FGHI (1:2/3.4)'
@@ -438,7 +428,7 @@ function(){
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
-   it('an empty tearline is fine too', function(){
+   it('an empty tearline is fine too', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo\nbar\n... baz\n---\n * Origin: FGHI (1:2/3.4)'
@@ -449,7 +439,7 @@ function(){
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
-   it('an empty line before tagline / tearline / origin is kept', function(){
+   it('an empty line before tagline / tearline / origin is kept', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo\n\n... baz\n---\n * Origin: FGHI (1:2/3.4)'
@@ -460,7 +450,7 @@ function(){
          '(<span data-addr="1:2/3.4">1:2/3.4</span>)</div>'
       );
    });
-   it('URLs are processed in taglines / tearlines / origins', function(){
+   it('URLs are processed in taglines / tearlines / origins', () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo\nbar\n... telnet:slothmud.org:6101' +
@@ -478,7 +468,7 @@ function(){
       );
    });
    it('Fidonet Unicode substrings in these lines and the rest of the message',
-   function(){
+   () => {
       assert.deepEqual(
          FidoHTML.fromText(
             'foo &+BDAENwRK-;\nbar\n... &+BDEEQwQ6BDg-;' +
@@ -493,8 +483,8 @@ function(){
    });
 });
 
-describe('UUE decoder', function(){
-   it('decodes UUE buffer with the word "Cat"', function(){
+describe('UUE decoder', () => {
+   it('decodes UUE buffer with the word "Cat"', () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'Foo.',
@@ -513,7 +503,7 @@ describe('UUE decoder', function(){
          ].join('')
       );
    });
-   it('decodes UUE text with the word "Cat"', function(){
+   it('decodes UUE text with the word "Cat"', () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'Foo.',
@@ -532,7 +522,7 @@ describe('UUE decoder', function(){
          ].join('')
       );
    });
-   it('can decode that text in dataMode and then leave dataMode', function(){
+   it('can decode that text in dataMode and then leave dataMode', () => {
       FidoHTML.setOptions({
          dataMode: true
       });
@@ -573,7 +563,7 @@ describe('UUE decoder', function(){
          ].join('')
       );
    });
-   it('can use fileURLParts in an URL and then stop using them', function(){
+   it('can use fileURLParts in an URL and then stop using them', () => {
       FidoHTML.setOptions({
          fileURLParts: [
             'https://example.org/bbs?area://Test/',
@@ -620,17 +610,31 @@ describe('UUE decoder', function(){
    });
 });
 
-describe('Quote processor', function(){
-   it('detects simple quoted text', function(){
+describe('Quote processor', () => {
+   it('detects simple quoted text', () => assert.deepEqual(
+      inDataMode.fromText([
+         'foo',
+         ' bar> baz',
+         ' bar> quux',
+         'Fnord.'
+      ].join('\n')),
+      [
+         'foo',
+         '<blockquote data-authorID="bar" data-quoteLevel="1"',
+         ' class="fidoQuote">',
+         'baz<br>quux',
+         '</blockquote>',
+         'Fnord.'
+      ].join('')
+   ));
+   it('detects quoted text in the beginning of a message', () => {
       assert.deepEqual(
          inDataMode.fromText([
-            'foo',
             ' bar> baz',
             ' bar> quux',
             'Fnord.'
          ].join('\n')),
          [
-            'foo',
             '<blockquote data-authorID="bar" data-quoteLevel="1"',
             ' class="fidoQuote">',
             'baz<br>quux',
@@ -639,23 +643,7 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
-   it('detects quoted text in the beginning of a message', function(){
-      assert.deepEqual(
-         inDataMode.fromText([
-            ' bar> baz',
-            ' bar> quux',
-            'Fnord.'
-         ].join('\n')),
-         [
-            '<blockquote data-authorID="bar" data-quoteLevel="1"',
-            ' class="fidoQuote">',
-            'baz<br>quux',
-            '</blockquote>',
-            'Fnord.'
-         ].join('')
-      );
-   });
-   it('includes empty (unquoted) lines in a surrounding quote', function(){
+   it('includes empty (unquoted) lines in a quote surrounding them', () => {
       assert.deepEqual(
          inDataMode.fromText([
             'Realm.',
@@ -675,7 +663,7 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
-   it('does not include empty lines surrounding a quote', function(){
+   it('does not include in a quote empty lines surrounding the quote', () => {
       assert.deepEqual(
          inDataMode.fromText([
             'Realm.',
@@ -699,8 +687,7 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
-   it('detects a quote inside another quote (FSC-0032.001 violation)',
-   function(){
+   it('detects a quote inside another quote (FSC-0032.001 violation)', () => {
       assert.deepEqual(
          inDataMode.fromText([
             'Realm.',
@@ -728,7 +715,7 @@ describe('Quote processor', function(){
          ].join('')
       );
    });
-   it("does not allow left angle bracket in quote's initials", function(){
+   it("does not allow left angle bracket in quote's initials", () => {
       assert.deepEqual(
          FidoHTML.fromText('<foo> bar'),
          '&lt;foo&gt; bar'
@@ -740,8 +727,8 @@ describe('Quote processor', function(){
    });
 });
 
-describe('Fixed width character lines detector', function(){
-   it("pseudographical box characters' width is fixed", function(){
+describe('Fixed width character lines detector', () => {
+   it("pseudographical box characters' width is fixed", () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'Foo bar',
@@ -764,8 +751,7 @@ describe('Fixed width character lines detector', function(){
          ].join('')
       );
    });
-   it('URLs are hyperlinked in blocks of fixed width characters',
-   function(){
+   it('URLs are hyperlinked in blocks of fixed width characters', () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'Foo bar',
@@ -788,7 +774,7 @@ describe('Fixed width character lines detector', function(){
          ].join('')
       );
    });
-   it('correctly presents empty lines surrounding a block', function(){
+   it('correctly presents empty lines surrounding a block', () => {
       assert.deepEqual(
          FidoHTML.fromText([
             'Foo bar',
