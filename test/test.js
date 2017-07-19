@@ -168,6 +168,24 @@ describe('Inline hyperlink processor', () => {
          'foo [<a href="skype:echo123">bar [baz] quux</a>] quuux'
       );
    });
+   it('escaped outer brackets inside parentheses ([1], [2], [3]) are fine',
+      () => assert.deepEqual(
+         FidoHTML.fromText([
+            'foo (',
+            '\\[[1](http://example.org/baz)], ',
+            '\\[[2](http://example.org/quux)], ',
+            '\\[[3](http://example.org/quuux)]',
+            ') bar'
+         ].join('')),
+         [
+            'foo (',
+            '[<a href="http://example.org/baz">1</a>], ',
+            '[<a href="http://example.org/quux">2</a>], ',
+            '[<a href="http://example.org/quuux">3</a>]',
+            ') bar'
+         ].join('')
+      )
+   );
    it('area:// hyperlink in angle brackets contains an image', () => {
       assert.deepEqual(
          FidoHTML.fromText([
