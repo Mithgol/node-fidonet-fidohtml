@@ -5,13 +5,14 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  11 Jun 2017
+Revision Date:  21 Jul 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
    2. Introduction
    3. Key words to indicate requirement levels
-   4. Fidonet runes of images
+   4. Blank characters
+   5. Fidonet runes of images
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -72,41 +73,10 @@ Contents:
   and "OPTIONAL" in this document are to be interpreted as described
   in FTA-1006 (based on RFC 2119).
 
-4. Fidonet runes of images
--+------------------------
+4. Blank characters
+-+-----------------
 
-  The Fidonet rune of an image has the following form:
-
-  ![alt text](URL "title")
-
-  where the words "alt text" (without quotes) are replaced by the
-  alternative text (which is displayed instead of the image if that
-  image itself cannot be displayed), and the word "URL" (without
-  quotes) is replaced by the image's URL, and the word "title"
-  (in quotes) is replaced by the image's title (which might be shown
-  as a tooltip on a mouse's hover or a thumb's long press).
-
-  Example:
-
-  ![Fidonet nodelist chart](https://t.co/8sGOXI2EdB "a gloomy chart")
-
-  Initial and final newline characters in the alternative text MUST be
-  ignored. Newline characters elsewhere in the alternative text MUST
-  be treated as whitespaces. Therefore authors (and authoring tools)
-  MAY insert newlines there to deal with limitations of the medium
-  (Fidonet lines of text are 78 or 79 characters long traditionally,
-  and IBM 80-column punched card format, designed in 1928, seems to be
-  the historical cause for that).
-
-  The alternative text is enclosed in square brackets. Therefore, if
-  such text itself contains a closing square bracket ("]" without
-  quotes), such bracket MUST be preceded by a backslash in the rune
-  (and "\]" without quotes MUST be interpreted as a literal "]"
-  character and not as the alternative text's ending).
-
-  The image's title is OPTIONAL. When it is present, it MUST be
-  separated (by one or more blank characters) from the URL, and only
-  the following blank characters MAY be used as such separators:
+  The following characters are blank characters:
 
   *) horizontal tab (\t, Unicode U+0009),
 
@@ -139,6 +109,44 @@ Contents:
   *) ideographic space (Unicode U+3000),
 
   *) zero width no-break space (Unicode U+FEFF).
+
+  They are used (as explained below) as separators in runes.
+
+5. Fidonet runes of images
+-+------------------------
+
+  The Fidonet rune of an image has the following form:
+
+  ![alt text](URL "title")
+
+  where the words "alt text" (without quotes) are replaced by the
+  alternative text (which is displayed instead of the image if that
+  image itself cannot be displayed), and the word "URL" (without
+  quotes) is replaced by the image's URL, and the word "title"
+  (in quotes) is replaced by the image's title (which might be shown
+  as a tooltip on a mouse's hover or a thumb's long press).
+
+  Example:
+
+  ![Fidonet nodelist chart](https://t.co/8sGOXI2EdB "a gloomy chart")
+
+  Initial and final newline characters in the alternative text MUST be
+  ignored. Newline characters elsewhere in the alternative text MUST
+  be treated as whitespaces. Therefore authors (and authoring tools)
+  MAY insert newlines there to deal with limitations of the medium
+  (Fidonet lines of text are 78 or 79 characters long traditionally,
+  and IBM 80-column punched card format, designed in 1928, seems to be
+  the historical cause for that).
+
+  The alternative text is enclosed in square brackets. Therefore, if
+  such text itself contains a closing square bracket ("]" without
+  quotes), such bracket MUST be preceded by a backslash in the rune
+  (and "\]" without quotes MUST be interpreted as a literal "]"
+  character and not as the alternative text's ending).
+
+  The image's title is OPTIONAL. When it is present, it MUST be
+  separated (by one or more blank characters, see section 4)
+  from the URL.
 
   The image's title is enclosed in quotes. Double quotation marks
   ("like these") are used instead of single ('like these'). If the
