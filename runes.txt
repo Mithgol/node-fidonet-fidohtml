@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  21 Jul 2017
+Revision Date:  7 Aug 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -13,6 +13,7 @@ Contents:
    3. Key words to indicate requirement levels
    4. Blank characters
    5. Fidonet runes of images
+   6. Fidonet runes of hyperlinks
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -156,6 +157,66 @@ Contents:
   and not as the title's ending).
 
   The image's URL MUST NOT contain a closing parenthesis (the ")"
+  character) because that would cause a premature end of the rune.
+  Such parenthesis (if it appears in the URL) MUST be URL-encoded
+  (presented as "%29" without quotes).
+
+6. Fidonet runes of hyperlinks
+-+----------------------------
+
+  The Fidonet rune of a hyperlink has the following form:
+
+  [link text](URL "title")
+
+  where the words "link text" (without quotes) are replaced by the
+  hyperlink's text, and the word "URL" (without quotes) is replaced
+  by the hyperlink's URL, and the word "title" (in quotes) is replaced
+  by the hyperlink's title (which might be shown as a tooltip
+  on a mouse's hover or a thumb's long press).
+
+  Example:
+
+  [FTSC's docs](http://ftsc.org/docs/ "Standards, proposals, etc.")
+
+  Initial and final newline characters in the hyperlink's text MUST be
+  ignored. Newline characters elsewhere in the hyperlink's text MUST
+  be treated as whitespaces. Therefore authors (and authoring tools)
+  MAY insert newlines there to deal with limitations of the medium
+  (Fidonet lines of text are 78 or 79 characters long traditionally,
+  and IBM 80-column punched card format, designed in 1928, seems to be
+  the historical cause for that).
+
+  The hyperlink's text is enclosed in square brackets. Therefore, if
+  such text itself contains a closing square bracket ("]" without
+  quotes), such bracket MUST be preceded by a backslash in the rune
+  (and "\]" without quotes MUST be interpreted as a literal "]"
+  character and not as the hyperlink's text's ending).
+
+  As an exception to the aforementioned rule, the hyperlink's text MAY
+  contain one or several Fidonet runes of images (see the previous
+  section), and backslashes are not REQUIRED before the square
+  brackets around the images' alternative texts.
+
+  Example:
+
+  [The beginning of a hyperlink.
+  ![The first image's alternative text.](https://t.co/8sGOXI2EdB)
+  The hyperlink's text continues.
+  ![The second image's alternative text.](https://t.co/8sGOXI2EdB)
+  The remaining text.](http://example.org/)
+
+  The hyperlink's title is OPTIONAL. When it is present, it MUST be
+  separated (by one or more blank characters, see section 4)
+  from the URL.
+
+  The hyperlink's title is enclosed in quotes. Double quotation marks
+  ("like these") are used instead of single ('like these'). If the
+  title itself contains a double quotation mark, such mark MUST be
+  preceded by a backslash in the rune (and '\"' without single
+  quotation marks MUST be interpreted as a literal '"' character
+  and not as the title's ending).
+
+  The hyperlink's URL MUST NOT contain a closing parenthesis (the ")"
   character) because that would cause a premature end of the rune.
   Such parenthesis (if it appears in the URL) MUST be URL-encoded
   (presented as "%29" without quotes).
