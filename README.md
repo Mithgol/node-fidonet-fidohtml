@@ -13,9 +13,7 @@ This repository also contains draft standards of **Fidonet runes** for the Fidon
 
 * The [`runes.rus.txt`](runes.rus.txt) file is the Russian version of the draft. This version is provided in UTF-8 (for the diffs to look reasonably good on GitHub and other git tools) and thus should be converted to CP866 encoding (common in Russian Fidonet) before posting to Fidonet.
 
-These drafts are currently in an early phase of their development and thus do not have the desired level of feature completeness.
-
-This module is a reference implementation of these standards, more or less feature-complete.
+This module is a reference implementation of these standards.
 
 ## Installing Fidonet HTML
 
