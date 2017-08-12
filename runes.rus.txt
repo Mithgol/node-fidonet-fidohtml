@@ -5,7 +5,7 @@ FGHI                                FIDONET GLOBAL HYPERTEXT INTERFACE
 Номер редакции: первоначальный черновик
 Заглавие:       Фидонетовские руны
 Автор:          Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Дата редакции:  7 Aug 2017
+Дата редакции:  12 Aug 2017
 -+--------------------------------------------------------------------
 Содержание:
    1. Статус этого документа
@@ -254,6 +254,8 @@ FGHI                                FIDONET GLOBAL HYPERTEXT INTERFACE
   Приложения, написанные автором стандарта:
 
   *) Fido2RSS https://github.com/Mithgol/fido2rss
+
+  *) fido2twi https://github.com/Mithgol/node-fido2twi
 
   *) PhiDo https://github.com/Mithgol/phido
 
