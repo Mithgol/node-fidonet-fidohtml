@@ -538,7 +538,31 @@ var FidoHTML = function(options){
    this.ASTree.defineRenderer(
       ['inlineHyperlink'],
       function(inlineHyperlink, render){
-         if( _converter.options.dataMode ){
+         var lcTitle = inlineHyperlink.linkTitle.toLowerCase();
+         var realTitle = '';
+         if(
+            lcTitle.startsWith('runevideo') && [
+               // TODO: add area|faqserv|fecho|freq support
+               'http', 'https', 'ftp', 'fs'
+            ].includes(inlineHyperlink.URLScheme)
+         ){ // video runeword detected
+            realTitle = inlineHyperlink.linkTitle.replace(
+               /^runevideo\s*/gi, ''
+            );
+            return [
+               '<video controls src="',
+               getPrefixedURL(
+                  _converter.options.URLPrefixes,
+                  inlineHyperlink.URLScheme,
+                  inlineHyperlink.linkURL
+               ),
+               '"',
+               realTitle ? ( ' title="' + realTitle + '"' ) : '',
+               '>',
+               render( inlineHyperlink.linkText ),
+               '</video>'
+            ].join('');
+         } else if( _converter.options.dataMode ){ // normal link, data mode
             return [
                '<a href="javascript:;" data-href="',
                getPrefixedURL(
@@ -556,8 +580,7 @@ var FidoHTML = function(options){
                render( inlineHyperlink.linkText ),
                '</a>'
             ].join('');
-         }
-         return [
+         } else return [ // normal hyperlink, normal mode
             '<a href="',
             getPrefixedURL(
                _converter.options.URLPrefixes,

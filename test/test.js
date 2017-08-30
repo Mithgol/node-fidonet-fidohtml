@@ -262,6 +262,62 @@ describe('Inline hyperlink processor', () => {
    });
 });
 
+describe('Video runeword processor', () => {
+   it('http:// video is processed in the middle of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo [bar](http://example.com "runevideo baz") quux'
+         ),
+         'foo <video controls src="http://example.com" title="baz">' +
+         'bar</video> quux'
+      );
+   });
+   it("https:// video without a title at the string's beginning", () => {
+      assert.deepEqual(
+         FidoHTML.fromText('[foo](https://example.com "runevideo") bar'),
+         '<video controls src="https://example.com">foo</video> bar'
+      );
+   });
+   it('ftp:// video without a title at the end of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText('foo [bar](ftp://example.com/ "runevideo ")'),
+         'foo <video controls src="ftp://example.com/">bar</video>'
+      );
+   });
+   it('IPFS video URLs lead to the default IPFS gateway', () => {
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runevideo") baz'
+         ].join('')),
+         'foo <video controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'bar</video> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runevideo baz") quux'
+         ].join('')),
+         'foo <video controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</video> quux'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runevideobaz") quux'
+         ].join('')),
+         'foo <video controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</video> quux'
+      );
+   });
+});
+
 describe('Standalone URL processor', () => {
    it('http:// URL is processed in the middle of a string', () => {
       assert.deepEqual(
