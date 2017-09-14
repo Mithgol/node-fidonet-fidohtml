@@ -185,7 +185,7 @@ var FidoHTML = function(options){
       });
    });
    this.ASTree.defineRenderer(['UUE'], function(objectUUE /*, render*/){
-      var mimeType = MIME.lookup(objectUUE.name);
+      var mimeType = MIME.getType(objectUUE.name);
       if( [
          'image/jpeg',
          'image/png',
