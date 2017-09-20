@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  12 Aug 2017
+Revision Date:  20 Sep 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -14,6 +14,7 @@ Contents:
    4. Blank characters
    5. Fidonet runes of images
    6. Fidonet runes of hyperlinks
+   7. Runewords
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -220,6 +221,16 @@ Contents:
   character) because that would cause a premature end of the rune.
   Such parenthesis (if it appears in the URL) MUST be URL-encoded
   (presented as "%29" without quotes).
+
+  If the hyperlink's title starts with a runeword (see the following
+  section), then a more complex element of the hypertext SHOULD appear
+  instead of the hyperlink.
+
+7. Runewords
+-+----------
+
+   This section is currently in an early phase of its development
+   and thus does not have the desired level of completeness.
 
 Appendix A. Known implementations
 -+-------------------------------
