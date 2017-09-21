@@ -562,6 +562,28 @@ var FidoHTML = function(options){
                render( inlineHyperlink.linkText ),
                '</video>'
             ].join('');
+         } else if(
+            lcTitle.startsWith('runeaudio') && [
+               // TODO: add area|faqserv|fecho|freq support
+               'http', 'https', 'ftp', 'fs'
+            ].includes(inlineHyperlink.URLScheme)
+         ){ // audio runeword detected
+            realTitle = inlineHyperlink.linkTitle.replace(
+               /^runeaudio\s*/gi, ''
+            );
+            return [
+               '<audio controls src="',
+               getPrefixedURL(
+                  _converter.options.URLPrefixes,
+                  inlineHyperlink.URLScheme,
+                  inlineHyperlink.linkURL
+               ),
+               '"',
+               realTitle ? ( ' title="' + realTitle + '"' ) : '',
+               '>',
+               render( inlineHyperlink.linkText ),
+               '</audio>'
+            ].join('');
          } else if( _converter.options.dataMode ){ // normal link, data mode
             return [
                '<a href="javascript:;" data-href="',
