@@ -482,7 +482,7 @@ var FidoHTML = function(options){
       // CAUTION: use an inner subregex similar to inline image regex,
       //          but accept any URL scheme (because typos should not explode)
       return sourceCode.split('').reverse().join('').split(
-         /\)(?:"((?:[^"]|"\\)*)")?\s*([^()\s<>\x22\x27{}\^\[\]`]+:(s?ptth|ptf|otliam|nioctib|hsad|buhcd|k2de|emitecaf|deef|sf|oeg|(?:6|s)?cri|tengam|smm|swen|ptnn|s?pis|epyks|sms|hss|let|tenlet|ptft|ppmx|liamten|xifaera|liamohce|aera|vresqaf|ohcef|qerf))\(\]((?:[^\]]|\)(?:"(?:[^"]|"\\)*"\s+)?\s*[^()\s<>\x22\x27{}\^\[\]`]+:[a-z0-9]*[a-z]{2,}\(\](?:[^\]]|]\\)*\[!|]\\)*)\[(?![!\\])/
+         /\)(?:"((?:[^"]|"\\)*)")?\s*([^()\s<>\x22\x27{}\^\[\]`]+:(s?ptth|ptf|otliam|nioctib|niocetil|hsad|buhcd|k2de|emitecaf|deef|sf|oeg|(?:6|s)?cri|tengam|smm|swen|ptnn|s?pis|epyks|sms|hss|let|tenlet|ptft|ppmx|liamten|xifaera|liamohce|aera|vresqaf|ohcef|qerf))\(\]((?:[^\]]|\)(?:"(?:[^"]|"\\)*"\s+)?\s*[^()\s<>\x22\x27{}\^\[\]`]+:[a-z0-9]*[a-z]{2,}\(\](?:[^\]]|]\\)*\[!|]\\)*)\[(?![!\\])/
       ).reverse().map(unreversed => {
          if( typeof unreversed === 'undefined' ) return unreversed;
          return unreversed.split('').reverse().join('');
@@ -717,7 +717,7 @@ var FidoHTML = function(options){
       /* jshint -W101 */
       if( typeof sourceCode !== 'string' ) return sourceCode;
       return sourceCode.split(
-         /(\b(https?|ftp|mailto|bitcoin|dash|dchub|ed2k|facetime|feed|fs|geo|irc(?:6|s)?|magnet|mms|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp|netmail|areafix|echomail|area|faqserv|fecho|freq):[^\s<>\x22\x27{}\^\[\]`]+)/
+         /(\b(https?|ftp|mailto|bitcoin|litecoin|dash|dchub|ed2k|facetime|feed|fs|geo|irc(?:6|s)?|magnet|mms|news|nntp|sips?|skype|sms|ssh|tel|telnet|tftp|xmpp|netmail|areafix|echomail|area|faqserv|fecho|freq):[^\s<>\x22\x27{}\^\[\]`]+)/
       ).map(function(sourceFragment, fragmentIndex, fragmentArray){
          if( fragmentIndex % 3 === 0 ){ // simple fragment's index: 0, 3...
             return sourceFragment;
