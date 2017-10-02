@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  27 Sep 2017
+Revision Date:  2 Oct 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -15,6 +15,7 @@ Contents:
    5. Fidonet runes of images
    6. Fidonet runes of hyperlinks
    7. Runewords
+      7.1. Runewords of audio players
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -237,6 +238,49 @@ Contents:
   Runewords are somewhat forward compatible: if an unknown runeword is
   encountered or if a Fidonet browser decides to ignore the runeword,
   then a plain hyperlink MUST be displayed, serving as a fallback.
+
+  7.1. Runewords of audio players
+  -+-----------------------------
+
+    If the title in a Fidonet rune of a hyperlink starts with
+    the word "runeaudio" (without quotes and not case-sensitive),
+    then Fidonet browsers SHOULD display an audio player instead of
+    a plain hyperlink there.
+
+    The hyperlink's URL MUST be used as the audio's URL.
+
+    The hyperlink's title (except the starting runeword) MUST be
+    used as the player's title (which might be shown as a tooltip
+    on a mouse's hover or a thumb's long press).
+
+    If some Fidonet browsers can display the audio player and some
+    cannot (for example, when Internet browsers are browsing a WebBBS
+    that does not know if they support HTML5 audio tags), a fallback
+    content MUST be provided for browsers that cannot display an audio
+    player.
+
+    (Such fallback content MUST at least contain the hyperlink's text,
+    but it MAY contain the whole hyperlink, clickable and titled.)
+
+    An audio player MUST NOT autostart the audio.
+
+    An audio player MUST offer controls, allowing the user to control
+    audio playback, including volume, seeking, pause/resume playback.
+
+    A Fidonet browser MAY decide not to display an audio player
+    in some cases. For example,
+
+    *) when the hyperlink's URL scheme is not expected to address
+       media files (such as "bitcoin:" or "geo:" or "sms:"),
+
+    *) when the hyperlink's URL scheme is not expected to address
+       immediately available files (such as "faqserv:" or "magnet:"),
+
+    *) when the hyperlink's URL scheme uses an unavailable medium
+       (such as "fecho:" on a system without file echomail archives).
+
+    In such cases a plain hyperlink MUST be displayed (ignoring
+    the runeword).
 
 Appendix A. Known implementations
 -+-------------------------------
