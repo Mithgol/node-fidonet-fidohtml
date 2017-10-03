@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  2 Oct 2017
+Revision Date:  3 Oct 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -16,6 +16,7 @@ Contents:
    6. Fidonet runes of hyperlinks
    7. Runewords
       7.1. Runewords of audio players
+      7.2. Runewords of video players
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -256,8 +257,8 @@ Contents:
     If some Fidonet browsers can display the audio player and some
     cannot (for example, when Internet browsers are browsing a WebBBS
     that does not know if they support HTML5 audio tags), a fallback
-    content MUST be provided for browsers that cannot display an audio
-    player.
+    content MUST be provided for browsers that cannot display audio
+    players.
 
     (Such fallback content MUST at least contain the hyperlink's text,
     but it MAY contain the whole hyperlink, clickable and titled.)
@@ -268,6 +269,49 @@ Contents:
     audio playback, including volume, seeking, pause/resume playback.
 
     A Fidonet browser MAY decide not to display an audio player
+    in some cases. For example,
+
+    *) when the hyperlink's URL scheme is not expected to address
+       media files (such as "bitcoin:" or "geo:" or "sms:"),
+
+    *) when the hyperlink's URL scheme is not expected to address
+       immediately available files (such as "faqserv:" or "magnet:"),
+
+    *) when the hyperlink's URL scheme uses an unavailable medium
+       (such as "fecho:" on a system without file echomail archives).
+
+    In such cases a plain hyperlink MUST be displayed (ignoring
+    the runeword).
+
+  7.2. Runewords of video players
+  -+-----------------------------
+
+    If the title in a Fidonet rune of a hyperlink starts with
+    the word "runevideo" (without quotes and not case-sensitive),
+    then Fidonet browsers SHOULD display a video player instead of
+    a plain hyperlink there.
+
+    The hyperlink's URL MUST be used as the video's URL.
+
+    The hyperlink's title (except the starting runeword) MUST be
+    used as the player's title (which might be shown as a tooltip
+    on a mouse's hover or a thumb's long press).
+
+    If some Fidonet browsers can display the video player and some
+    cannot (for example, when Internet browsers are browsing a WebBBS
+    that does not know if they support HTML5 video tags), a fallback
+    content MUST be provided for browsers that cannot display video
+    players.
+
+    (Such fallback content MUST at least contain the hyperlink's text,
+    but it MAY contain the whole hyperlink, clickable and titled.)
+
+    A video player MUST NOT autostart the video.
+
+    A video player MUST offer controls, allowing the user to control
+    video playback, including volume, seeking, pause/resume playback.
+
+    A Fidonet browser MAY decide not to display a video player
     in some cases. For example,
 
     *) when the hyperlink's URL scheme is not expected to address
