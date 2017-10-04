@@ -262,6 +262,62 @@ describe('Inline hyperlink processor', () => {
    });
 });
 
+describe('Audio runeword processor', () => {
+   it('http:// audio is processed in the middle of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo [bar](http://example.com "runeaudio baz") quux'
+         ),
+         'foo <audio controls src="http://example.com" title="baz">' +
+         'bar</audio> quux'
+      );
+   });
+   it("https:// audio without a title at the string's beginning", () => {
+      assert.deepEqual(
+         FidoHTML.fromText('[foo](https://example.com "runeaudio") bar'),
+         '<audio controls src="https://example.com">foo</audio> bar'
+      );
+   });
+   it('ftp:// audio without a title at the end of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText('foo [bar](ftp://example.com/ "runeaudio ")'),
+         'foo <audio controls src="ftp://example.com/">bar</audio>'
+      );
+   });
+   it('IPFS audio URLs lead to the default IPFS gateway', () => {
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeaudio") baz'
+         ].join('')),
+         'foo <audio controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'bar</audio> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeaudio baz") quux'
+         ].join('')),
+         'foo <audio controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</audio> quux'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeaudiobaz") quux'
+         ].join('')),
+         'foo <audio controls src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</audio> quux'
+      );
+   });
+});
+
 describe('Video runeword processor', () => {
    it('http:// video is processed in the middle of a string', () => {
       assert.deepEqual(
