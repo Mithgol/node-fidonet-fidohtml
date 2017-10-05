@@ -563,6 +563,28 @@ var FidoHTML = function(options){
                '</video>'
             ].join('');
          } else if(
+            lcTitle.startsWith('runeanim') && [
+               // TODO: add area|faqserv|fecho|freq support
+               'http', 'https', 'ftp', 'fs'
+            ].includes(inlineHyperlink.URLScheme)
+         ){ // video animation runeword detected
+            realTitle = inlineHyperlink.linkTitle.replace(
+               /^runeanim\s*/gi, ''
+            );
+            return [
+               '<video controls autoplay loop muted src="',
+               getPrefixedURL(
+                  _converter.options.URLPrefixes,
+                  inlineHyperlink.URLScheme,
+                  inlineHyperlink.linkURL
+               ),
+               '"',
+               realTitle ? ( ' title="' + realTitle + '"' ) : '',
+               '>',
+               render( inlineHyperlink.linkText ),
+               '</video>'
+            ].join('');
+         } else if(
             lcTitle.startsWith('runeaudio') && [
                // TODO: add area|faqserv|fecho|freq support
                'http', 'https', 'ftp', 'fs'
