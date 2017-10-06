@@ -374,6 +374,64 @@ describe('Video runeword processor', () => {
    });
 });
 
+describe('Animation runeword processor', () => {
+   it('http:// animation is processed in the middle of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo [bar](http://example.com "runeanim baz") quux'
+         ),
+         'foo <video controls autoplay loop muted src="http://example.com" ' +
+         'title="baz">bar</video> quux'
+      );
+   });
+   it("https:// animation without a title at the string's beginning", () => {
+      assert.deepEqual(
+         FidoHTML.fromText('[foo](https://example.com "runeanim") bar'),
+         '<video controls autoplay loop muted src="https://example.com">foo' +
+         '</video> bar'
+      );
+   });
+   it('ftp:// animation without a title at the end of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText('foo [bar](ftp://example.com/ "runeanim ")'),
+         'foo <video controls autoplay loop muted src="ftp://example.com/">' +
+         'bar</video>'
+      );
+   });
+   it('IPFS animation URLs lead to the default IPFS gateway', () => {
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeanim") baz'
+         ].join('')),
+         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'bar</video> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeanim baz") quux'
+         ].join('')),
+         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</video> quux'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            ' "runeanimbaz") quux'
+         ].join('')),
+         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'bar</video> quux'
+      );
+   });
+});
+
 describe('Standalone URL processor', () => {
    it('http:// URL is processed in the middle of a string', () => {
       assert.deepEqual(
