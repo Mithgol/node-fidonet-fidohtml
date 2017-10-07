@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  3 Oct 2017
+Revision Date:  7 Oct 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -282,6 +282,10 @@ Contents:
 
     In such cases a plain hyperlink MUST be displayed (ignoring
     the runeword).
+
+    Authors of Fidonet messages SHOULD use the audio format which is
+    supported by most engines of browsers. That's MP3 in late 2017;
+    it might be superseded by OPUS in the future.
 
   7.2. Runewords of video players
   -+-----------------------------
