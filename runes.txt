@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  7 Oct 2017
+Revision Date:  8 Oct 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -329,6 +329,11 @@ Contents:
 
     In such cases a plain hyperlink MUST be displayed (ignoring
     the runeword).
+
+    In late 2017 authors of Fidonet messages cannot choose
+    a universally acceptable video format. For example, .MP4 files
+    (MPEG-4/H.264) are not supported in Chromium, and WebM files
+    are not supported in iOS (on iPhones and iPads).
 
 Appendix A. Known implementations
 -+-------------------------------
