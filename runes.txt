@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  8 Oct 2017
+Revision Date:  9 Oct 2017
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -17,6 +17,7 @@ Contents:
    7. Runewords
       7.1. Runewords of audio players
       7.2. Runewords of video players
+      7.3. Runewords of video animation players
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -330,10 +331,83 @@ Contents:
     In such cases a plain hyperlink MUST be displayed (ignoring
     the runeword).
 
-    In late 2017 authors of Fidonet messages cannot choose
+    In late 2017 authors of Fidonet messages are unable to choose
     a universally acceptable video format. For example, .MP4 files
     (MPEG-4/H.264) are not supported in Chromium, and WebM files
     are not supported in iOS (on iPhones and iPads).
+
+  7.3. Runewords of video animation players
+  -+---------------------------------------
+
+    If the title in a Fidonet rune of a hyperlink starts with
+    the word "runeanim" (without quotes and not case-sensitive),
+    then Fidonet browsers SHOULD display a video animation player
+    instead of a plain hyperlink there.
+
+    The hyperlink's URL MUST be used as the video's URL.
+
+    The hyperlink's title (except the starting runeword) MUST be
+    used as the player's title (which might be shown as a tooltip
+    on a mouse's hover or a thumb's long press).
+
+    If some Fidonet browsers can display the video player and some
+    cannot (for example, when Internet browsers are browsing a WebBBS
+    that does not know if they support HTML5 video tags), a fallback
+    content MUST be provided for browsers that cannot display video
+    players.
+
+    (Such fallback content MUST at least contain the hyperlink's text,
+    but it MAY contain the whole hyperlink, clickable and titled.)
+
+    A video animation player MUST autostart the video.
+
+    The audio contained in the video MUST be initially silenced.
+    (The viewer MAY unmute the video later using its controls,
+    mentioned below.)
+
+    A video animation player MUST, upon reaching the end of the video,
+    automatically seek back to the start and continue playing.
+
+    A video animation player MUST offer controls, allowing the user
+    to control video playback, including volume, seeking, pause/resume
+    playback.
+
+    A Fidonet browser MAY decide not to display a video animation
+    player in some cases. For example,
+
+    *) when the hyperlink's URL scheme is not expected to address
+       media files (such as "bitcoin:" or "geo:" or "sms:"),
+
+    *) when the hyperlink's URL scheme is not expected to address
+       immediately available files (such as "faqserv:" or "magnet:"),
+
+    *) when the hyperlink's URL scheme uses an unavailable medium
+       (such as "fecho:" on a system without file echomail archives).
+
+    In such cases a plain hyperlink MUST be displayed (ignoring
+    the runeword).
+
+    In late 2017 authors of Fidonet messages are unable to choose
+    a universally acceptable video format. For example, .MP4 files
+    (MPEG-4/H.264) are not supported in Chromium, and WebM files
+    are not supported in iOS (on iPhones and iPads).
+
+    Video animation players (in this section) are designed almost like
+    regular video players (in the previous section) but they have the
+    following three differences:
+
+    1) they autostart,
+
+    2) they loop (automatically seek back to the start),
+
+    3) they are silent.
+
+    These differences allow video animation players to be suitable
+    replacements for animated GIF images (which also are silent and
+    also autostart and loop animations). The desired improvement is
+    that video files are generally smaller (filesize-wise) than
+    animated GIFs and they also provide more colors and thus better
+    quality of their frames.
 
 Appendix A. Known implementations
 -+-------------------------------
