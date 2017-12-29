@@ -606,6 +606,30 @@ var FidoHTML = function(options){
                render( inlineHyperlink.linkText ),
                '</audio>'
             ].join('');
+         } else if(
+            lcTitle.startsWith('runepano') && [
+               // TODO: add area|faqserv|fecho|freq support
+               'http', 'https', 'ftp', 'fs'
+            ].includes(inlineHyperlink.URLScheme)
+         ){ // audio runeword detected
+            realTitle = inlineHyperlink.linkTitle.replace(
+               /^runeaudio\s*/gi, ''
+            );
+            return [
+               '<iframe allowfullscreen style="border-style: none;" ',
+               'width=600 height=400 ',
+               'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=',
+               getPrefixedURL(
+                  _converter.options.URLPrefixes,
+                  inlineHyperlink.URLScheme,
+                  inlineHyperlink.linkURL
+               ),
+               '&autoLoad=true',
+               realTitle ? ( '&title=' + realTitle + '"' ) : '"',
+               '>',
+               render( inlineHyperlink.linkText ),
+               '</iframe>'
+            ].join('');
          } else if( _converter.options.dataMode ){ // normal link, data mode
             return [
                '<a href="javascript:;" data-href="',
