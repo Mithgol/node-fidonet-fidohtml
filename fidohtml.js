@@ -38,6 +38,11 @@ var getPrefixedURL = function(convPrefixes, URLScheme, theURL){
    return linkURLPrefix + theURL;
 };
 
+var encodeAnchorComponent = component => component.replace(
+   /[&=%"]/g,
+   nextChar => '%' + nextChar.charCodeAt(0).toString(16)
+);
+
 var FidoHTML = function(options){
    if (!(this instanceof FidoHTML)) return new FidoHTML(options);
 
@@ -608,24 +613,26 @@ var FidoHTML = function(options){
             ].join('');
          } else if(
             lcTitle.startsWith('runepano') && [
-               // TODO: add area|faqserv|fecho|freq support
-               'http', 'https', 'ftp', 'fs'
+               // TODO: add area|faqserv|fecho|freq|ftp support
+               'http', 'https', 'fs'
             ].includes(inlineHyperlink.URLScheme)
-         ){ // audio runeword detected
+         ){ // photo panorama runeword detected
             realTitle = inlineHyperlink.linkTitle.replace(
-               /^runeaudio\s*/gi, ''
+               /^runepano\s*/gi, ''
             );
             return [
-               '<iframe allowfullscreen style="border-style: none;" ',
-               'width=600 height=400 ',
+               '<iframe style="border-style: none; width: 100%;" ',
+               'allowfullscreen width=640 height=480 ',
                'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=',
-               getPrefixedURL(
+               encodeAnchorComponent(getPrefixedURL(
                   _converter.options.URLPrefixes,
                   inlineHyperlink.URLScheme,
                   inlineHyperlink.linkURL
-               ),
-               '&autoLoad=true',
-               realTitle ? ( '&title=' + realTitle + '"' ) : '"',
+               )),
+               '&autoLoad=true&autoRotate=-1',
+               realTitle ? (
+                  '&title=' + encodeAnchorComponent(realTitle) + '"'
+               ) : '"',
                '>',
                render( inlineHyperlink.linkText ),
                '</iframe>'
