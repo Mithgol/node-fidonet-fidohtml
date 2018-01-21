@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  18 Jan 2018
+Revision Date:  21 Jan 2018
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -336,7 +336,8 @@ Contents:
     (MPEG-4/H.264) are not supported in Chromium, and WebM files
     are not supported in iOS (on iPhones and iPads). In terms of
     quality newer WebM files (using VP9 video codec and Opus audio)
-    are usually superior.
+    are usually superior. In the future AV1 video codec (AOMedia
+    Video 1) is likely to prevail.
 
   7.3. Runewords of video animation players
   -+---------------------------------------
@@ -394,7 +395,8 @@ Contents:
     (MPEG-4/H.264) are not supported in Chromium, and WebM files
     are not supported in iOS (on iPhones and iPads). In terms of
     quality newer WebM files (using VP9 video codec and Opus audio)
-    are usually superior.
+    are usually superior. In the future AV1 video codec (AOMedia
+    Video 1) is likely to prevail.
 
     Video animation players (in this section) are designed almost like
     regular video players (in the previous section) but they have the
