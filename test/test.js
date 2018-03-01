@@ -288,31 +288,31 @@ describe('Audio runeword processor', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:/ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudio") baz'
          ].join('')),
          'foo <audio controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK">' +
          'bar</audio> baz'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs://ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudio baz") quux'
          ].join('')),
          'foo <audio controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK" title="baz">' +
          'bar</audio> quux'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudiobaz") quux'
          ].join('')),
          'foo <audio controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK" title="baz">' +
          'bar</audio> quux'
       );
    });
