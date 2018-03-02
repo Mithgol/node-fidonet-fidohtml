@@ -344,31 +344,31 @@ describe('Video runeword processor', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:/ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideo") baz'
          ].join('')),
          'foo <video controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR">' +
          'bar</video> baz'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs://ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideo baz") quux'
          ].join('')),
          'foo <video controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideobaz") quux'
          ].join('')),
          'foo <video controls src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
    });
@@ -402,31 +402,31 @@ describe('Animation runeword processor', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:/ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanim") baz'
          ].join('')),
          'foo <video controls autoplay loop muted src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR">' +
          'bar</video> baz'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs://ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanim baz") quux'
          ].join('')),
          'foo <video controls autoplay loop muted src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
             'foo ',
-            '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
+            '[bar](fs:ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanimbaz") quux'
          ].join('')),
          'foo <video controls autoplay loop muted src="http://ipfs.io/' +
-         'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" title="baz">' +
+         'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
    });
