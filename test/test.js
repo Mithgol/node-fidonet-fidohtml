@@ -20,7 +20,7 @@ describe('Fidonet HTML parser creation', () => {
          FidoHTMLPrefixed = require('../')({URLPrefixes: {
             '*': '',
             'area': 'https://example.org/fidoviewer?',
-            'fs': IPFSURL => IPFSURL.replace(/^fs:\/*/g, 'http://ipfs.io/')
+            'fs': IPFSURL => IPFSURL.replace(/^fs:\/*/g, 'https://ipfs.io/')
          }});
       });
    });
@@ -61,7 +61,7 @@ describe('Inline image processor', () => {
             '![bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
          ].join('')),
-         'foo <img src="http://ipfs.io/' +
+         'foo <img src="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
          'alt="bar"> baz'
       );
@@ -71,7 +71,7 @@ describe('Inline image processor', () => {
             'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi',
             ' "bar") baz'
          ].join('')),
-         'foo <img src="http://ipfs.io/' +
+         'foo <img src="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
          'alt="" title="bar"> baz'
       );
@@ -81,7 +81,7 @@ describe('Inline image processor', () => {
             '![bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
          ].join('')),
-         'foo <img src="http://ipfs.io/' +
+         'foo <img src="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi" ' +
          'alt="bar"> baz'
       );
@@ -223,7 +223,7 @@ describe('Inline hyperlink processor', () => {
             '[bar](fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
          ].join('')),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
@@ -233,7 +233,7 @@ describe('Inline hyperlink processor', () => {
             '[bar](fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
          ].join('')),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
@@ -243,7 +243,7 @@ describe('Inline hyperlink processor', () => {
             '[bar](fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi)',
             ' baz'
          ].join('')),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'bar</a> baz'
       );
@@ -291,7 +291,7 @@ describe('Audio runeword processor', () => {
             '[bar](fs:/ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudio") baz'
          ].join('')),
-         'foo <audio controls src="http://ipfs.io/' +
+         'foo <audio controls src="https://ipfs.io/' +
          'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK">' +
          'bar</audio> baz'
       );
@@ -301,7 +301,7 @@ describe('Audio runeword processor', () => {
             '[bar](fs://ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudio baz") quux'
          ].join('')),
-         'foo <audio controls src="http://ipfs.io/' +
+         'foo <audio controls src="https://ipfs.io/' +
          'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK" title="baz">' +
          'bar</audio> quux'
       );
@@ -311,7 +311,7 @@ describe('Audio runeword processor', () => {
             '[bar](fs:ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK',
             ' "runeaudiobaz") quux'
          ].join('')),
-         'foo <audio controls src="http://ipfs.io/' +
+         'foo <audio controls src="https://ipfs.io/' +
          'ipfs/QmauQdZaQD9XarQn5gLexdu4PYberSm1EjvaQRcxD7s7zK" title="baz">' +
          'bar</audio> quux'
       );
@@ -347,7 +347,7 @@ describe('Video runeword processor', () => {
             '[bar](fs:/ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideo") baz'
          ].join('')),
-         'foo <video controls src="http://ipfs.io/' +
+         'foo <video controls src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR">' +
          'bar</video> baz'
       );
@@ -357,7 +357,7 @@ describe('Video runeword processor', () => {
             '[bar](fs://ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideo baz") quux'
          ].join('')),
-         'foo <video controls src="http://ipfs.io/' +
+         'foo <video controls src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
@@ -367,7 +367,7 @@ describe('Video runeword processor', () => {
             '[bar](fs:ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runevideobaz") quux'
          ].join('')),
-         'foo <video controls src="http://ipfs.io/' +
+         'foo <video controls src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
@@ -405,7 +405,7 @@ describe('Animation runeword processor', () => {
             '[bar](fs:/ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanim") baz'
          ].join('')),
-         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'foo <video controls autoplay loop muted src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR">' +
          'bar</video> baz'
       );
@@ -415,7 +415,7 @@ describe('Animation runeword processor', () => {
             '[bar](fs://ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanim baz") quux'
          ].join('')),
-         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'foo <video controls autoplay loop muted src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
       );
@@ -425,9 +425,75 @@ describe('Animation runeword processor', () => {
             '[bar](fs:ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR',
             ' "runeanimbaz") quux'
          ].join('')),
-         'foo <video controls autoplay loop muted src="http://ipfs.io/' +
+         'foo <video controls autoplay loop muted src="https://ipfs.io/' +
          'ipfs/QmNsAmDRaofp74VHsNcYjzYVTX1DjAohzNwXCFnGrm9MHR" title="baz">' +
          'bar</video> quux'
+      );
+   });
+});
+
+describe('Panoramic photo runeword processor', () => {
+   it('http:// panorama is processed in the middle of a string', () => {
+      assert.deepEqual(
+         FidoHTML.fromText(
+            'foo [bar](http://example.com "runepano baz") quux'
+         ),
+         'foo <iframe style="border-style: none; width: 100%;" ' +
+         'allowfullscreen width=640 height=480 ' +
+         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'http://example.com' +
+         '&autoLoad=true&autoRotate=-1&title=baz">bar</iframe> quux'
+      );
+   });
+   it("https:// panorama without a title at the string's beginning", () => {
+      assert.deepEqual(
+         FidoHTML.fromText('[foo](https://example.com "runepano") bar'),
+         '<iframe style="border-style: none; width: 100%;" ' +
+         'allowfullscreen width=640 height=480 ' +
+         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'https://example.com' +
+         '&autoLoad=true&autoRotate=-1">foo</iframe> bar'
+      );
+   });
+   it('IPFS panorama URLs lead to the default IPFS gateway', () => {
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:/ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA',
+            ' "runepano") baz'
+         ].join('')),
+         'foo <iframe style="border-style: none; width: 100%;" ' +
+         'allowfullscreen width=640 height=480 ' +
+         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'https://ipfs.io/' +
+         'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
+         '&autoLoad=true&autoRotate=-1">bar</iframe> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs://ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA',
+            ' "runepano") baz'
+         ].join('')),
+         'foo <iframe style="border-style: none; width: 100%;" ' +
+         'allowfullscreen width=640 height=480 ' +
+         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'https://ipfs.io/' +
+         'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
+         '&autoLoad=true&autoRotate=-1">bar</iframe> baz'
+      );
+      assert.deepEqual(
+         FidoHTMLPrefixed.fromText([
+            'foo ',
+            '[bar](fs:ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA',
+            ' "runepano") baz'
+         ].join('')),
+         'foo <iframe style="border-style: none; width: 100%;" ' +
+         'allowfullscreen width=640 height=480 ' +
+         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'https://ipfs.io/' +
+         'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
+         '&autoLoad=true&autoRotate=-1">bar</iframe> baz'
       );
    });
 });
@@ -499,7 +565,7 @@ describe('Standalone URL processor', () => {
          FidoHTMLPrefixed.fromText(
             'foo fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'fs:/ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
@@ -507,7 +573,7 @@ describe('Standalone URL processor', () => {
          FidoHTMLPrefixed.fromText(
             'foo fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'fs://ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
@@ -515,7 +581,7 @@ describe('Standalone URL processor', () => {
          FidoHTMLPrefixed.fromText(
             'foo fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi bar'
          ),
-         'foo <a href="http://ipfs.io/' +
+         'foo <a href="https://ipfs.io/' +
          'ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi">' +
          'fs:ipfs/QmWdss6Ucc7UrnovCmq355jSTTtLFs1amgb3j6Swb1sADi</a> bar'
       );
