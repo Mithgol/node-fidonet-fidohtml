@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  21 Jan 2018
+Revision Date:  14 Mar 2018
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -18,6 +18,7 @@ Contents:
       7.1. Runewords of audio players
       7.2. Runewords of video players
       7.3. Runewords of video animation players
+      7.4. Runewords of panorama viewers
    Appendix A. Known implementations
 -+--------------------------------------------------------------------
 
@@ -414,6 +415,63 @@ Contents:
     that video files are generally smaller (filesize-wise) than
     animated GIFs and they also provide more colors and thus better
     quality of their frames.
+
+  7.4. Runewords of panorama viewers
+  -+--------------------------------
+
+    If the title in a Fidonet rune of a hyperlink starts with
+    the word "runepano" (without quotes and not case-sensitive),
+    then Fidonet browsers SHOULD display a panorama viewer instead of
+    a plain hyperlink there.
+
+    The hyperlink's URL MUST be used as the panorama's URL. The URL is
+    expected to designate an image file containing a panoramic photo
+    in the equirectangular projection.
+
+    The hyperlink's title (except the starting runeword) MUST be
+    used as the viewer's title (which might be shown as a tooltip
+    on a mouse's hover or a thumb's long press, might be displayed
+    in a semi-transparent block over the viewer, etc.).
+
+    If some Fidonet browsers can display the panorama viewer and some
+    cannot (for example, when Internet browsers are browsing a WebBBS
+    that does not know if they support a WebGL-based viewer used by
+    that WebBBS), a fallback content SHOULD be provided for browsers
+    that cannot display panorama viewers.
+
+    (Such fallback content MUST at least contain the hyperlink's text,
+    but it MAY contain the whole hyperlink, clickable and titled.)
+
+    A panorama viewer MAY demonstrate its nature by autostarting
+    the panoramic photo's rotation slowly (a degree per second).
+
+    A panorama viewer MUST offer controls, allowing the user to rotate
+    the panorama by dragging. (It SHOULD also rotate when the user
+    rotates the mobile device, if any.)
+
+    A panorama viewer SHOULD read Google Photo Sphere XMP metadata
+    (when that metadata is present in the image file) and use it.
+    See https://developers.google.com/streetview/spherical-metadata
+    for details.
+
+    A Fidonet browser MAY decide not to display a panorama viewer
+    in some cases. For example,
+
+    *) when the hyperlink's URL scheme is not expected to address
+       media files (such as "bitcoin:" or "geo:" or "sms:"),
+
+    *) when the hyperlink's URL scheme is not expected to address
+       immediately available files (such as "faqserv:" or "magnet:"),
+
+    *) when the hyperlink's URL scheme uses an unavailable medium
+       (such as "fecho:" on a system without file echomail archives),
+
+    *) when the hyperlink's URL scheme cannot be used by the viewer
+       (such as "ftp:" that cannot provide CORS to WebGL-based viewers
+       using image files as WebGL textures).
+
+    In such cases a plain hyperlink MUST be displayed (ignoring
+    the runeword).
 
 Appendix A. Known implementations
 -+-------------------------------
