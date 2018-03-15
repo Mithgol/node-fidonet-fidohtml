@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  14 Mar 2018
+Revision Date:  15 Mar 2018
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -425,7 +425,7 @@ Contents:
     a plain hyperlink there.
 
     The hyperlink's URL MUST be used as the panorama's URL. The URL is
-    expected to designate an image file containing a panoramic photo
+    REQUIRED to designate an image file containing a panoramic photo
     in the equirectangular projection.
 
     The hyperlink's title (except the starting runeword) MUST be
@@ -458,7 +458,7 @@ Contents:
     in some cases. For example,
 
     *) when the hyperlink's URL scheme is not expected to address
-       media files (such as "bitcoin:" or "geo:" or "sms:"),
+       image files (such as "bitcoin:" or "geo:" or "sms:"),
 
     *) when the hyperlink's URL scheme is not expected to address
        immediately available files (such as "faqserv:" or "magnet:"),
@@ -472,6 +472,26 @@ Contents:
 
     In such cases a plain hyperlink MUST be displayed (ignoring
     the runeword).
+
+    Authors of Fidonet messages SHOULD use the image format and host
+    appropriate for most viewer engines and browsers. For example,
+
+    *) JPEG has wider support than WebP in 2018,
+
+    *) if Cross-Origin Resource Sharing (CORS) is not enabled
+       on a host, then WebGL-based viewers will fail (because
+       they won't be able to use the image as a texture) and also
+       canvas-based viewers will fail (because they won't be able
+       to use the image in drawImage),
+
+    *) HTTP-served images trigger warnings (or become blocked;
+       it depends on the browser's settings) in HTTPS-served viewers,
+
+    *) panorama viewers that use hardware acceleration might fail when
+       the image is wider than 8192 pixels (and even when it's wider
+       than 4096 pixels on older devices), and some GPU are rumoured
+       to struggle with large textures even if they technically
+       support them.
 
 Appendix A. Known implementations
 -+-------------------------------
