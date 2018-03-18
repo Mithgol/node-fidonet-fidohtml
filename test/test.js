@@ -440,7 +440,7 @@ describe('Panoramic photo runeword processor', () => {
          ),
          'foo <iframe style="border-style: none; width: 100%;" ' +
          'allowfullscreen width=640 height=480 ' +
-         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=' +
          'http://example.com' +
          '&autoLoad=true&autoRotate=-1&title=baz">bar</iframe> quux'
       );
@@ -450,7 +450,7 @@ describe('Panoramic photo runeword processor', () => {
          FidoHTML.fromText('[foo](https://example.com "runepano") bar'),
          '<iframe style="border-style: none; width: 100%;" ' +
          'allowfullscreen width=640 height=480 ' +
-         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=' +
          'https://example.com' +
          '&autoLoad=true&autoRotate=-1">foo</iframe> bar'
       );
@@ -464,7 +464,7 @@ describe('Panoramic photo runeword processor', () => {
          ].join('')),
          'foo <iframe style="border-style: none; width: 100%;" ' +
          'allowfullscreen width=640 height=480 ' +
-         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=' +
          'https://ipfs.io/' +
          'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
          '&autoLoad=true&autoRotate=-1">bar</iframe> baz'
@@ -477,7 +477,7 @@ describe('Panoramic photo runeword processor', () => {
          ].join('')),
          'foo <iframe style="border-style: none; width: 100%;" ' +
          'allowfullscreen width=640 height=480 ' +
-         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=' +
          'https://ipfs.io/' +
          'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
          '&autoLoad=true&autoRotate=-1">bar</iframe> baz'
@@ -490,7 +490,7 @@ describe('Panoramic photo runeword processor', () => {
          ].join('')),
          'foo <iframe style="border-style: none; width: 100%;" ' +
          'allowfullscreen width=640 height=480 ' +
-         'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=' +
+         'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=' +
          'https://ipfs.io/' +
          'ipfs/QmdqTGhBpCG8drkdokFr5569X1rM3FqyeVo3Vx7C59X7EA' +
          '&autoLoad=true&autoRotate=-1">bar</iframe> baz'

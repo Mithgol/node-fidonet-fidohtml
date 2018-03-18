@@ -623,7 +623,7 @@ var FidoHTML = function(options){
             return [
                '<iframe style="border-style: none; width: 100%;" ',
                'allowfullscreen width=640 height=480 ',
-               'src="https://cdn.pannellum.org/2.3/pannellum.htm#panorama=',
+               'src="https://cdn.pannellum.org/2.4/pannellum.htm#panorama=',
                encodeAnchorComponent(getPrefixedURL(
                   _converter.options.URLPrefixes,
                   inlineHyperlink.URLScheme,
