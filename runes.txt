@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  15 Mar 2018
+Revision Date:  25 Mar 2018
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -447,7 +447,7 @@ Contents:
 
     A panorama viewer MUST offer controls, allowing the user to rotate
     the panorama by dragging. (It SHOULD also rotate when the user
-    rotates the mobile device, if any.)
+    rotates the mobile device, if the viewer is run on such device.)
 
     A panorama viewer SHOULD read Google Photo Sphere XMP metadata
     (when that metadata is present in the image file) and use it.
