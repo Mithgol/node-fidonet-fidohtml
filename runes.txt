@@ -5,7 +5,7 @@ Status:         draft
 Revision:       initial draft
 Title:          Fidonet runes
 Author:         Mithgol the Webmaster   (aka Sergey Sokoloff, 2:50/88)
-Revision Date:  25 Mar 2018
+Revision Date:  15 Apr 2018
 -+--------------------------------------------------------------------
 Contents:
    1. Status of this document
@@ -491,7 +491,10 @@ Contents:
        the image is wider than 8192 pixels (and even when it's wider
        than 4096 pixels on older devices), and some GPU are rumoured
        to struggle with large textures even if they technically
-       support them.
+       support them,
+
+    *) a bug in Firefox ignores CORS of local IPFS-hosted images:
+       https://bugzilla.mozilla.org/show_bug.cgi?id=1450965
 
 Appendix A. Known implementations
 -+-------------------------------
