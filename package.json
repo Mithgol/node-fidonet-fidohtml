@@ -12,6 +12,7 @@
 },
 "dependencies": {
    "astree": "~2.0.0",
+   "cheerio": "~1.0.0-rc.2",
    "colors.css": "~3.0.0",
    "dauria": "~2.0.0",
    "extend": "~3.0.0",
