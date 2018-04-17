@@ -340,6 +340,18 @@ describe('Video runeword processor', () => {
          'foo <video controls src="ftp://example.com/">bar</video>'
       );
    });
+   it("an image inside the rune is not altered", () => {
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'foo [',
+            '![bar](http://example.com "baz")',
+            '](https://example.com "runevideo") quux'
+         ].join('')),
+         'foo <video controls src="https://example.com">' +
+         '<img src="http://example.com" alt="bar" title="baz">' +
+         '</video> quux'
+      );
+   });
    it('IPFS video URLs lead to the default IPFS gateway', () => {
       assert.deepEqual(
          FidoHTMLPrefixed.fromText([
@@ -389,6 +401,18 @@ describe('Animation runeword processor', () => {
          FidoHTML.fromText('[foo](https://example.com "runeanim") bar'),
          '<video controls autoplay loop muted src="https://example.com">foo' +
          '</video> bar'
+      );
+   });
+   it("an image inside the rune is not altered", () => {
+      assert.deepEqual(
+         FidoHTML.fromText([
+            'foo [',
+            '![bar](https://example.com "baz")',
+            '](http://example.com "runeanim") quux'
+         ].join('')),
+         'foo <video controls autoplay loop muted src="http://example.com">' +
+         '<img src="https://example.com" alt="bar" title="baz">' +
+         '</video> quux'
       );
    });
    it('ftp:// animation without a title at the end of a string', () => {
