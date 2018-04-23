@@ -544,6 +544,7 @@ var FidoHTML = function(options){
       ['inlineHyperlink'],
       function(inlineHyperlink, render){
          var lcTitle = inlineHyperlink.linkTitle.toLowerCase();
+         var innerContent = render(inlineHyperlink.linkText);
          var realTitle = '';
          if(
             lcTitle.startsWith('runevideo') && [
@@ -563,9 +564,7 @@ var FidoHTML = function(options){
                ),
                '"',
                realTitle ? ( ' title="' + realTitle + '"' ) : '',
-               '>',
-               render( inlineHyperlink.linkText ),
-               '</video>'
+               '>', innerContent, '</video>'
             ].join('');
          } else if(
             lcTitle.startsWith('runeanim') && [
@@ -585,9 +584,7 @@ var FidoHTML = function(options){
                ),
                '"',
                realTitle ? ( ' title="' + realTitle + '"' ) : '',
-               '>',
-               render( inlineHyperlink.linkText ),
-               '</video>'
+               '>', innerContent, '</video>'
             ].join('');
          } else if(
             lcTitle.startsWith('runeaudio') && [
@@ -607,9 +604,7 @@ var FidoHTML = function(options){
                ),
                '"',
                realTitle ? ( ' title="' + realTitle + '"' ) : '',
-               '>',
-               render( inlineHyperlink.linkText ),
-               '</audio>'
+               '>', innerContent, '</audio>'
             ].join('');
          } else if(
             lcTitle.startsWith('runepano') && [
@@ -633,9 +628,7 @@ var FidoHTML = function(options){
                realTitle ? (
                   '&title=' + encodeAnchorComponent(realTitle) + '"'
                ) : '"',
-               '>',
-               render( inlineHyperlink.linkText ),
-               '</iframe>'
+               '>', innerContent, '</iframe>'
             ].join('');
          } else if( _converter.options.dataMode ){ // normal link, data mode
             return [
@@ -651,9 +644,7 @@ var FidoHTML = function(options){
                   inlineHyperlink.linkTitle,
                   '"'
                ].join('') : '',
-               '>',
-               render( inlineHyperlink.linkText ),
-               '</a>'
+               '>', innerContent, '</a>'
             ].join('');
          } else return [ // normal hyperlink, normal mode
             '<a href="',
@@ -668,9 +659,7 @@ var FidoHTML = function(options){
                inlineHyperlink.linkTitle,
                '"'
             ].join('') : '',
-            '>',
-            render( inlineHyperlink.linkText ),
-            '</a>'
+            '>', innerContent, '</a>'
          ].join('');
       }
    );
