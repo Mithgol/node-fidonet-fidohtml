@@ -905,7 +905,7 @@ describe('UUE decoder', () => {
    });
 });
 
-describe('Quote processor', () => {
+describe('Blockquote processor', () => {
    it('detects simple quoted text', () => assert.deepEqual(
       inDataMode.fromText([
          'foo',
