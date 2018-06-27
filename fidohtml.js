@@ -526,7 +526,7 @@ var FidoHTML = function(options){
                         /\\]/g, ']'
                      );
                   } else return linkTextFragment; // inline image → verbatim
-               }),
+               }).join(''),
                linkURL: fragmentArray[ fragmentIndex + 2 ],
                URLScheme: fragmentArray[ fragmentIndex + 1 ],
                linkTitle: linkTitle

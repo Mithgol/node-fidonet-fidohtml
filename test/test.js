@@ -679,6 +679,23 @@ describe('Plain text processor', () => {
          'foo &quot;bar&quot; quux'
       );
    });
+   it("Quotes are converted to &quot; in an image's alt text", () => {
+      assert.deepEqual(
+         FidoHTML.fromText('![(foo "bar")](https://example.com/baz)'),
+         '<img src="https://example.com/baz" alt="(foo &quot;bar&quot;)">'
+      );
+   });
+   it("They are also converted in an image's alt text inside a link", () => {
+      assert.deepEqual(
+         FidoHTML.fromText([
+            '[![(foo "bar")](',
+            'https://example.com/baz)](',
+            'https://example.com/quux "quuux")'
+         ].join('')),
+         '<a href="https://example.com/quux" title="quuux">' +
+         '<img src="https://example.com/baz" alt="(foo &quot;bar&quot;)"></a>'
+      );
+   });
    it('Ampersands are converted to &amp;', () => {
       assert.deepEqual(
          FidoHTML.fromText('for you & forever'),
